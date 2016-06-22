@@ -4,7 +4,7 @@ from setuptools import setup
 exec(open("wia/version.py").read())
 
 setup(
-    name='wia-sdk',
+    name='wia',
     version=VERSION,
     description='This client library is designed to support the Wia APIs',
     author='Wia',
