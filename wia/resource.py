@@ -58,7 +58,7 @@ class Events(object):
     @classmethod
     def publish(self, **kwargs):
         path = 'events'
-        new_event = post(path, kwargs, True)
+        new_event = post(path, kwargs)
         return new_event
 
     @classmethod
@@ -79,7 +79,7 @@ class Sensors(object):
     @classmethod
     def publish(self, **kwargs):
         path = 'sensors'
-        new_sensor = post(path, kwargs, True)
+        new_sensor = post(path, kwargs)
         return new_sensor
 
     @classmethod
@@ -88,7 +88,7 @@ class Sensors(object):
         for sensor in list_sensors['sensors']:
             data = sensor
             logger.info("sensor: %s", data)
-        logger.info("count: %s", list_events['sensor'])
+        logger.info("count: %s", list_sensors['sensors'])
         return list_sensors
 
 class Locations(object):
@@ -96,3 +96,62 @@ class Locations(object):
         self.id = (kwargs['id'] if 'id' in kwargs else None)
         self.latitude = (kwargs['latitude'] if 'latitude' in kwargs else None)
         self.longitude = (kwargs['longitude'] if 'longitude' in kwargs else None)
+        self.altitude = (kwargs['altitude'] if 'altitude' in kwargs else None)
+        self.timestamp = (kwargs['timestamp'] if 'timestamp' in kwargs else None)
+        self.recievedTimestamp = (kwargs['recievedTimestamp'] if 'recievedTimestamp' in kwargs else None)
+
+    @classmethod
+    def publish(self, **kwargs):
+        path = 'locations'
+        new_location = post(path, kwargs)
+        return new_location
+
+    @classmethod
+    def list(self, **kwargs):
+        list_locations = get('locations', **kwargs)
+        for location in list_locations['locations']:
+            data = location
+            logger.info("location: %s", data)
+        logger.info("count: %s", list_locations['count'])
+        return list_locations
+
+class Logs(object):
+    def __init__(self, **kwargs):
+        self.level = (kwargs['level'] if 'level' in kwargs else None)
+        self.message = (kwargs['message'] if 'message' in kwargs else None)
+        self.data = (kwargs['data'] if 'data' in kwargs else None)
+        self.timestamp = (kwargs['timestamp'] if 'timestamp' in kwargs else None)
+
+    @classmethod
+    def publish(self, **kwargs):
+        path = 'logs'
+        new_log = post(path, kwargs)
+        return new_log
+
+    @classmethod
+    def list(self, **kwargs):
+        list_logs = get('logs', **kwargs)
+        for log in list_logs['logs']:
+            data = log
+            logger.info("log: %s", data)
+        logger.info("count: %s", list_logs['count'])
+        return list_logs
+
+class Functions(object):
+    def __init__(self, **kwargs):
+        self.id = (kwargs['id'] if 'id' in kwargs else None)
+        self.name = (kwargs['name'] if 'name' in kwargs else None)
+        self.isEnabled = (kwargs['isEnabled'] if 'isEnabled' in kwargs else None)
+        self.device = (kwargs['device'] if 'device' in kwargs else None)
+        self.enabledAt = (kwargs['enabledAt'] if 'enabledAt' in kwargs else None)
+        self.createdAt = (kwargs['createdAt'] if 'createdAt' in kwargs else None)
+        self.updatedAt = (kwargs['updatedAt'] if 'updatedAt' in kwargs else None)
+
+    def create(self, **kwargs):
+        pass
+
+    def delete(self, id):
+        pass
+
+    def call(self, name, id, **kwargs):
+        pass

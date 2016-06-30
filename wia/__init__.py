@@ -10,7 +10,10 @@ mqtt_api_base = 'https://api.wia.io'
 
 from wia.resource import (
     Device,
-    Events
+    Events,
+    Sensors,
+    Locations,
+    Logs
 )
 
 from wia.version import VERSION

@@ -9,10 +9,7 @@ wia_post:
                 contain data for post request
 '''
 def post(path, kwargs, device=None):
-    if device:
-        key = 'Bearer ' + wia.device_secret_key
-    else:
-        key = 'Bearer ' + wia.user_secret_key
+    key = 'Bearer ' + wia.secret_key
     url = wia.rest_api_base + '/' + path
     headers = {'Authorization': key}
     data = kwargs
@@ -28,7 +25,7 @@ wia_put:
 '''
 def put(path, **kwargs):
     url = wia.rest_api_base + '/' + path
-    key = 'Bearer ' + wia.user_secret_key
+    key = 'Bearer ' + wia.secret_key
     headers = {'Authorization': key}
     data = kwargs
     r = requests.put(url, json=data, headers=headers)
@@ -43,7 +40,7 @@ wia_get:
                 contain query params
 '''
 def get(path=None, **kwargs):
-    key = 'Bearer ' + wia.user_secret_key
+    key = 'Bearer ' + wia.secret_key
     url = wia.rest_api_base + '/' + path
     headers = {'Authorization': key}
     r = requests.get(url, headers=headers, params=kwargs)
@@ -55,7 +52,7 @@ wia_delete:
 '''
 def delete(path):
     url = wia.rest_api_base + '/' + path
-    key = 'Bearer ' + wia.user_secret_key
+    key = 'Bearer ' + wia.secret_key
     headers = {'Authorization': key}
     r = requests.delete(url, headers=headers)
     return r
