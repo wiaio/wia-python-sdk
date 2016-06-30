@@ -11,8 +11,7 @@ class DeviceTest(unittest2.TestCase):
         wia.secret_key = 'u_sk_0kl0z2W45SEs1SWk7Bu0hDxe'
 
     def test_create(self):
-        name = 'johnDoe'
-        device = wia.Device.create(name=name,serialNumber='test')
+        device = wia.Device.create(name='johnDoe',serialNumber='test')
         self.__class__.test_id = device['id']
         self.assertEqual(device['name'], 'johnDoe')
 
@@ -43,11 +42,19 @@ class DeviceTest(unittest2.TestCase):
 
     def test_device_list_order_sort(self):
         list_return = wia.Device.list(order='createdAt', sort='desc')
-        self.assertTrue(list_return['devices'][0]['createdAt'] > list_return['devices'][1]['createdAt'])
-        self.assertTrue(list_return['devices'][2]['createdAt'] > list_return['devices'][5]['createdAt'])
+        timestamp_list = []
+        for device in list_return['devices']:
+            timestamp_list.append(device['createdAt'])
+        descending = timestamp_list[:]
+        descending.sort(reverse=True)
+        self.assertTrue(descending == timestamp_list)
         list_return = wia.Device.list(order='createdAt', sort= 'asc')
-        self.assertTrue(list_return['devices'][0]['createdAt'] < list_return['devices'][1]['createdAt'])
-        self.assertTrue(list_return['devices'][2]['createdAt'] < list_return['devices'][5]['createdAt'])
+        timestamp_list = []
+        for device in list_return['devices']:
+            timestamp_list.append(device['createdAt'])
+        ascending = timestamp_list[:]
+        ascending.sort()
+        self.assertTrue(ascending == timestamp_list)
 
 
 if __name__ == '__main__':
