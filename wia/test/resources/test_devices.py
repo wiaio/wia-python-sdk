@@ -43,11 +43,11 @@ class DeviceTest(unittest2.TestCase):
 
     def test_device_list_order_sort(self):
         list_return = wia.Device.list(order='createdAt', sort='desc')
-        # self.assertTrue(list_return['devices'][0]['createdAt'] >= list_return['devices'][1]['createdAt'])
-        # self.assertTrue(list_return['devices'][2]['createdAt'] >= list_return['devices'][5]['createdAt'])
-        # list_return = wia.Device.list(order='createdAt', sort= 'asc')
-        # self.assertTrue(list_return['devices'][0]['createdAt'] <= list_return['devices'][1]['createdAt'])
-        # self.assertTrue(list_return['devices'][2]['createdAt'] <= list_return['devices'][5]['createdAt'])
+        self.assertTrue(list_return['devices'][0]['createdAt'] >= list_return['devices'][1]['createdAt'])
+        self.assertTrue(list_return['devices'][2]['createdAt'] >= list_return['devices'][5]['createdAt'])
+        list_return = wia.Device.list(order='createdAt', sort= 'asc')
+        self.assertTrue(list_return['devices'][0]['createdAt'] <= list_return['devices'][1]['createdAt'])
+        self.assertTrue(list_return['devices'][2]['createdAt'] <= list_return['devices'][5]['createdAt'])
 
 
 if __name__ == '__main__':
