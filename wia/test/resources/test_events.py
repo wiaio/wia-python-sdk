@@ -27,12 +27,21 @@ class EventsTest(unittest2.TestCase):
 
     def test_events_list_order_sort(self):
         list_return = wia.Events.list(device=wia.device_id, order='receivedTimestamp', sort='desc')
-        print(list_return['events'][0]['receivedTimestamp'])
-        self.assertTrue(list_return['events'][0]['receivedTimestamp'] >= list_return['events'][1]['receivedTimestamp'])
-        self.assertTrue(list_return['events'][2]['receivedTimestamp'] >= list_return['events'][5]['receivedTimestamp'])
+        timestamp_list = []
+        for event in list_return['events']:
+            timestamp_list.append(event['receivedTimestamp'])
+        descending = timestamp_list[:]
+        descending.sort(reverse=True)
+        self.assertEqual(descending, timestamp_list)
         list_return = wia.Events.list(device=wia.device_id, order='receivedTimestamp', sort='asc')
-        self.assertTrue(list_return['events'][0]['receivedTimestamp'] <= list_return['events'][1]['receivedTimestamp'])
-        self.assertTrue(list_return['events'][2]['receivedTimestamp'] <= list_return['events'][5]['receivedTimestamp'])
+        timestamp_list = []
+        for event in list_return['events']:
+            timestamp_list.append(event['receivedTimestamp'])
+        ascending = timestamp_list[:]
+        ascending.sort()
+        self.assertEqual(ascending, timestamp_list)
+
+
 
 
 if __name__ == '__main__':

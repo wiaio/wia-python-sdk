@@ -26,11 +26,20 @@ class LocationsTest(unittest2.TestCase):
 
     def test_locations_list_order_sort(self):
         list_return = wia.Locations.list(device=wia.device_id, order='receivedTimestamp', sort='desc')
-        # self.assertTrue(list_return['locations'][0]['receivedTimestamp'] >= list_return['locations'][1]['receivedTimestamp'])
-        # self.assertTrue(list_return['locations'][2]['receivedTimestamp'] >= list_return['locations'][5]['receivedTimestamp'])
-        # list_return = wia.Locations.list(device=wia.device_id, order='receivedTimestamp', sort='asc')
-        # self.assertTrue(list_return['locations'][0]['receivedTimestamp'] <= list_return['locations'][1]['receivedTimestamp'])
-        # self.assertTrue(list_return['locations'][2]['receivedTimestamp'] <= list_return['locations'][5]['receivedTimestamp'])
+        timestamp_list = []
+        for location in list_return['locations']:
+            timestamp_list.append(location['receivedTimestamp'])
+        descending = timestamp_list[:]
+        descending.sort(reverse=True)
+        self.assertEqual(descending, timestamp_list)
+        list_return = wia.Locations.list(device=wia.device_id, order='receivedTimestamp', sort='asc')
+        timestamp_list = []
+        for location in list_return['locations']:
+            timestamp_list.append(location['receivedTimestamp'])
+        ascending = timestamp_list[:]
+        ascending.sort()
+        self.assertEqual(ascending, timestamp_list)
+
 
 if __name__ == '__main__':
     unittest2.main()
