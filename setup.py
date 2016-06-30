@@ -3,6 +3,10 @@ from setuptools import setup
 
 exec(open("wia/version.py").read())
 
+install_requires = [
+    "requests>=2.7,<3.0"
+]
+
 setup(
     name='wia',
     version=VERSION,
@@ -12,7 +16,9 @@ setup(
     maintainer_email='team@wia.io',
     url='https://github.com/wiaio/wia-python-sdk',
     license='MIT',
-    packages=["wia"],
+    test_suite='wia.test.all',
+    tests_require=['unittest2', 'mock'],
+    packages=['wia', 'wia.test', 'wia.test.resources'],
     long_description=open("README.md").read(),
     classifiers=[
         'License :: OSI Approved :: MIT License',
@@ -24,7 +30,5 @@ setup(
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5'
     ],
-    install_requires=[
-        'requests',
-    ],
+    install_requires=install_requires,
 )
