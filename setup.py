@@ -4,7 +4,8 @@ from setuptools import setup
 exec(open("wia/version.py").read())
 
 install_requires = [
-    "requests>=2.7,<3.0"
+    "requests",
+    "paho-mqtt"
 ]
 
 setup(
