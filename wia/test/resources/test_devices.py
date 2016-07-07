@@ -6,10 +6,6 @@ import os
 class DeviceTest(unittest2.TestCase):
     test_id = ''
 
-    @classmethod
-    def setUpClass(cls):
-        wia.secret_key = 'u_sk_0kl0z2W45SEs1SWk7Bu0hDxe'
-
     def test_create(self):
         device = wia.Device.create(name='johnDoe',serialNumber='test')
         self.__class__.test_id = device['id']

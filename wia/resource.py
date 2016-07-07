@@ -1,5 +1,9 @@
+import wia
 from wia.rest_client import post, get, put, delete
 from wia.util import logger
+from wia.stream_client import Stream
+
+unsubscribe_flag = False
 
 class Device(object):
     def __init__(self, **kwargs):
@@ -59,7 +63,30 @@ class Events(object):
     def publish(self, **kwargs):
         path = 'events'
         new_event = post(path, kwargs)
+        if wia.Stream.connected:
+            topic = 'devices/' + wia.device_id + '/' + path + '/' + kwargs['name']
+            Stream.publish(topic=topic, **kwargs)
         return new_event
+
+    @classmethod
+    def subscribe(self, **kwargs):
+        device=kwargs['device']
+        topic='devices/' + device + '/events/'
+        if 'name' in kwargs:
+            topic += kwargs['name']
+        else:
+            topic += '+'
+        Stream.subscribe(topic=topic, func=kwargs['func'])
+
+    @classmethod
+    def unsubscribe(self, **kwargs):
+        device=kwargs['device']
+        topic='devices/' + device + '/events/'
+        if 'name' in kwargs:
+            topic += kwargs['name']
+        else:
+            topic += '+'
+        Stream.unsubscribe(topic=topic)
 
     @classmethod
     def list(self, **kwargs):
@@ -104,7 +131,21 @@ class Locations(object):
     def publish(self, **kwargs):
         path = 'locations'
         new_location = post(path, kwargs)
+        topic = 'devices/' + wia.device_id + '/' + path
+        Stream.publish(topic=topic, **kwargs)
         return new_location
+
+    @classmethod
+    def subscribe(self, **kwargs):
+        device = kwargs['device']
+        topic = 'devices/' + device + '/' + 'locations'
+        Stream.subscribe(topic=topic, **kwargs)
+
+    @classmethod
+    def unsubscribe(self, **kwargs):
+        device = kwargs['device']
+        topic = 'devices/' + device + '/' + 'locations'
+        Stream.unsubscribe(topic=topic)
 
     @classmethod
     def list(self, **kwargs):
