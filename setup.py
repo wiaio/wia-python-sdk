@@ -5,7 +5,7 @@ exec(open("wia/version.py").read())
 
 install_requires = [
     "requests>=2.7,<3.0",
-    "paho-mqtt=1.2"
+    "paho-mqtt>=1.2"
 ]
 
 setup(
