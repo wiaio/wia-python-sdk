@@ -4,6 +4,7 @@ import threading
 import resource
 import json
 import re
+import sys
 
 client = mqtt.Client()
 function_subscriptions = {}
@@ -75,8 +76,12 @@ class Stream(object):
             payload = json.loads(msg.payload.decode())
             payload = dict([(str(k), v) for k, v in payload.items()])
             for k, v in payload.items():
-                if isinstance(v, unicode):
-                    payload[k] = str(v)
+                if sys.version[0] >=3:
+                    if isinstance(v, bytes):
+                        payload[k] = str(v)
+                else:
+                    if isinstance(v, unicode):
+                        payload[k] = str(v)
             function_subscriptions[msg.topic](payload)
         # 2. Check for wildcard topic function. If exists, call
         wildcard_topic = topic[0] + "/" + topic[1] + "/" + topic[2] + "/+"
@@ -85,8 +90,12 @@ class Stream(object):
                 payload = json.loads(msg.payload.decode())
                 payload = dict([(str(k), v) for k, v in payload.items()])
                 for k, v in payload.items():
-                    if isinstance(v, unicode):
-                        payload[k] = str(v)
+                    if sys.version[0] >=3:
+                        if isinstance(v, bytes):
+                            payload[k] = str(v)
+                    else:
+                        if isinstance(v, unicode):
+                            payload[k] = str(v)
                 function_subscriptions[wildcard_topic](payload)
 
     @classmethod
