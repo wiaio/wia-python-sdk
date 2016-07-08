@@ -12,6 +12,7 @@ function_subscriptions = {}
 class Stream(object):
     connected = None
     subscribed = None
+    subscribed_count = 0
 
     @classmethod
     def connect(self):
@@ -66,6 +67,7 @@ class Stream(object):
     @classmethod
     def on_subscribe(self, client, userdata, msg, granted_qos):
         self.subscribed = True
+        self.subscribed_count += 1
         print("on_subscribe callback returned")
 
     @classmethod
@@ -100,5 +102,7 @@ class Stream(object):
 
     @classmethod
     def on_unsubscribe(self, client, userdata, mid):
-        self.subscribed = False
+        self.subscribed_count -= 1
+        if self.subscribed_count == 0:
+            self.subscribed = False
         print("unsubscribe callback reached")
