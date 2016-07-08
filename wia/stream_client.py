@@ -76,7 +76,7 @@ class Stream(object):
             payload = json.loads(msg.payload.decode())
             payload = dict([(str(k), v) for k, v in payload.items()])
             for k, v in payload.items():
-                if sys.version[0] >=3:
+                if int(sys.version_info[0]) >=3:
                     if isinstance(v, bytes):
                         payload[k] = str(v)
                 else:
@@ -90,7 +90,7 @@ class Stream(object):
                 payload = json.loads(msg.payload.decode())
                 payload = dict([(str(k), v) for k, v in payload.items()])
                 for k, v in payload.items():
-                    if sys.version[0] >=3:
+                    if int(sys.version_info[0]) >=3:
                         if isinstance(v, bytes):
                             payload[k] = str(v)
                     else:
