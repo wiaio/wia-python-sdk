@@ -62,7 +62,7 @@ class LocationsTest(unittest2.TestCase):
         while wia.Stream.subscribed is not True:
             pass
         wia.Locations.publish(longitude=60, latitude=50)
-        time.sleep(1)
+        time.sleep(4)
         self.assertEqual(self.__class__.mailbox['longitude'], 60)
         self.assertEqual(self.__class__.mailbox['latitude'], 50)
         wia.Locations.unsubscribe(device='dev_4sEIfy5QbtIdYO5k')
