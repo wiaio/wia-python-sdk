@@ -10,7 +10,7 @@ client = mqtt.Client()
 function_subscriptions = {}
 
 class Stream(object):
-    connected = None
+    connected = False
     subscribed = None
     subscribed_count = 0
 
@@ -41,7 +41,6 @@ class Stream(object):
 
     @classmethod
     def subscribe(self, **kwargs):
-        print("in Stream.subscribe")
         function_subscriptions[kwargs['topic']] = kwargs['func']
         def thread_proc():
             client.subscribe(kwargs['topic'], qos=0)
@@ -56,8 +55,8 @@ class Stream(object):
 
     @classmethod
     def on_connect(self, client, userdata, flags, rc):
-        self.connected = True
         print("on_connect called")
+        self.connected = True
 
     @classmethod
     def on_disconnect(self, client, userdata, rc):

@@ -8,11 +8,15 @@ class EventsTest(unittest2.TestCase):
     mailbox = {}
 
     def test_events_publish(self):
+        temp_sk = wia.secret_key
         wia.secret_key = wia.device_secret_key
         wia.Stream.connect()
         publish_return = wia.Events.publish(name='test_event_other', data=130)
         self.assertTrue(publish_return['id'])
         wia.Stream.disconnect()
+        while wia.Stream.connected:
+            pass
+        wia.secret_key = temp_sk
 
     def test_events_list(self):
         list_return = wia.Events.list(device=wia.device_id, limit=10, page=0)
