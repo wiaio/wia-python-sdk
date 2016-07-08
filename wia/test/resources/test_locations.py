@@ -11,7 +11,7 @@ class LocationsTest(unittest2.TestCase):
         wia.secret_key = wia.device_secret_key
         wia.Stream.connect()
         time.sleep(1)
-        publish_return = wia.Locations.publish(latitude=53.349805, longitude=-6.260310)
+        publish_return = wia.Locations.publish(latitude=50, longitude=60)
         self.assertTrue(publish_return['id'])
         wia.Stream.disconnect()
         while wia.Stream.connected:
@@ -62,7 +62,7 @@ class LocationsTest(unittest2.TestCase):
         while wia.Stream.subscribed is not True:
             pass
         wia.Locations.publish(longitude=60, latitude=50)
-        time.sleep(4)
+        time.sleep(1)
         self.assertEqual(self.__class__.mailbox['longitude'], 60)
         self.assertEqual(self.__class__.mailbox['latitude'], 50)
         wia.Locations.unsubscribe(device='dev_4sEIfy5QbtIdYO5k')
