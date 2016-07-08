@@ -70,7 +70,8 @@ class EventsTest(unittest2.TestCase):
         self.assertEqual(self.__class__.mailbox['data'], 99)
         wia.Events.unsubscribe(device='dev_4sEIfy5QbtIdYO5k', name='subscribe_test_event')
         wia.Events.unsubscribe(device='dev_4sEIfy5QbtIdYO5k')
-        time.sleep(1)
+        while wia.Stream.subscribed:
+            pass
         wia.Events.publish(name='subscribe_test_event', data=55)
         self.assertEqual(self.__class__.mailbox['data'], 99)
 
