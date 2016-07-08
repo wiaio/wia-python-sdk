@@ -72,12 +72,20 @@ class Stream(object):
         topic=re.split('/', msg.topic)
         # 1. Check for specific topic function. If exists, call
         if msg.topic in function_subscriptions:
-            function_subscriptions[msg.topic](json.loads(msg.payload))
+            payload = json.loads(msg.payload)
+            for key in payload:
+                if isinstance(payload[key], unicode):
+                    payload[key] = str(payload[key])
+            function_subscriptions[msg.topic](payload)
         # 2. Check for wildcard topic function. If exists, call
         wildcard_topic = topic[0] + "/" + topic[1] + "/" + topic[2] + "/+"
         if wildcard_topic in function_subscriptions:
             if hasattr(function_subscriptions[wildcard_topic], '__call__'):
-                function_subscriptions[wildcard_topic](json.loads(msg.payload))
+                payload = json.loads(msg.payload)
+                for key in payload:
+                    if isinstance(payload[key], unicode):
+                        payload[key] = str(payload[key])
+                function_subscriptions[wildcard_topic](payload)
 
     @classmethod
     def on_unsubscribe(self, client, userdata, mid):
