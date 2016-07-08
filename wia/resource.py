@@ -131,20 +131,21 @@ class Locations(object):
     def publish(self, **kwargs):
         path = 'locations'
         new_location = post(path, kwargs)
-        topic = 'devices/' + wia.device_id + '/' + path
-        Stream.publish(topic=topic, **kwargs)
+        if wia.Stream.connected:
+            topic = 'devices/' + wia.device_id + '/' + path
+            Stream.publish(topic=topic, **kwargs)
         return new_location
 
     @classmethod
     def subscribe(self, **kwargs):
         device = kwargs['device']
-        topic = 'devices/' + device + '/' + 'locations'
-        Stream.subscribe(topic=topic, **kwargs)
+        topic = 'devices/' + device + '/locations'
+        Stream.subscribe(topic=topic, func=kwargs['func'])
 
     @classmethod
     def unsubscribe(self, **kwargs):
         device = kwargs['device']
-        topic = 'devices/' + device + '/' + 'locations'
+        topic = 'devices/' + device + '/locations'
         Stream.unsubscribe(topic=topic)
 
     @classmethod

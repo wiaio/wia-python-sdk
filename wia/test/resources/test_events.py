@@ -8,11 +8,15 @@ class EventsTest(unittest2.TestCase):
     mailbox = {}
 
     def test_events_publish(self):
+        temp_sk = wia.secret_key
         wia.secret_key = wia.device_secret_key
         wia.Stream.connect()
         publish_return = wia.Events.publish(name='test_event_other', data=130)
         self.assertTrue(publish_return['id'])
         wia.Stream.disconnect()
+        while wia.Stream.connected:
+            pass
+        wia.secret_key = temp_sk
 
     def test_events_list(self):
         list_return = wia.Events.list(device=wia.device_id, limit=10, page=0)
@@ -70,9 +74,9 @@ class EventsTest(unittest2.TestCase):
         self.assertEqual(self.__class__.mailbox['data'], 99)
         wia.Events.unsubscribe(device='dev_4sEIfy5QbtIdYO5k', name='subscribe_test_event')
         wia.Events.unsubscribe(device='dev_4sEIfy5QbtIdYO5k')
-        time.sleep(1)
-        wia.Events.publish(name='subscribe_test_event', data=55)
-        self.assertEqual(self.__class__.mailbox['data'], 99)
+        while wia.Stream.subscribed:
+            pass
+        self.assertEqual(wia.Stream.subscribed, False)
 
 
 

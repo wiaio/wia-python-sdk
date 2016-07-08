@@ -4,13 +4,15 @@ import threading
 import resource
 import json
 import re
+import sys
 
 client = mqtt.Client()
 function_subscriptions = {}
 
 class Stream(object):
-    connected = None
+    connected = False
     subscribed = None
+    subscribed_count = 0
 
     @classmethod
     def connect(self):
@@ -39,7 +41,6 @@ class Stream(object):
 
     @classmethod
     def subscribe(self, **kwargs):
-        print("in Stream.subscribe")
         function_subscriptions[kwargs['topic']] = kwargs['func']
         def thread_proc():
             client.subscribe(kwargs['topic'], qos=0)
@@ -54,8 +55,8 @@ class Stream(object):
 
     @classmethod
     def on_connect(self, client, userdata, flags, rc):
-        self.connected = True
         print("on_connect called")
+        self.connected = True
 
     @classmethod
     def on_disconnect(self, client, userdata, rc):
@@ -65,6 +66,7 @@ class Stream(object):
     @classmethod
     def on_subscribe(self, client, userdata, msg, granted_qos):
         self.subscribed = True
+        self.subscribed_count += 1
         print("on_subscribe callback returned")
 
     @classmethod
@@ -72,14 +74,34 @@ class Stream(object):
         topic=re.split('/', msg.topic)
         # 1. Check for specific topic function. If exists, call
         if msg.topic in function_subscriptions:
-            function_subscriptions[msg.topic](json.loads(msg.payload))
+            payload = json.loads(msg.payload.decode())
+            payload = dict([(str(k), v) for k, v in payload.items()])
+            for k, v in payload.items():
+                if int(sys.version_info[0]) >=3:
+                    if isinstance(v, bytes):
+                        payload[k] = str(v)
+                else:
+                    if isinstance(v, unicode):
+                        payload[k] = str(v)
+            function_subscriptions[msg.topic](payload)
         # 2. Check for wildcard topic function. If exists, call
         wildcard_topic = topic[0] + "/" + topic[1] + "/" + topic[2] + "/+"
         if wildcard_topic in function_subscriptions:
             if hasattr(function_subscriptions[wildcard_topic], '__call__'):
-                function_subscriptions[wildcard_topic](json.loads(msg.payload))
+                payload = json.loads(msg.payload.decode())
+                payload = dict([(str(k), v) for k, v in payload.items()])
+                for k, v in payload.items():
+                    if int(sys.version_info[0]) >=3:
+                        if isinstance(v, bytes):
+                            payload[k] = str(v)
+                    else:
+                        if isinstance(v, unicode):
+                            payload[k] = str(v)
+                function_subscriptions[wildcard_topic](payload)
 
     @classmethod
     def on_unsubscribe(self, client, userdata, mid):
-        self.subscribed = False
+        self.subscribed_count -= 1
+        if self.subscribed_count == 0:
+            self.subscribed = False
         print("unsubscribe callback reached")
