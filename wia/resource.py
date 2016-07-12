@@ -107,7 +107,30 @@ class Sensors(object):
     def publish(self, **kwargs):
         path = 'sensors'
         new_sensor = post(path, kwargs)
+        if wia.Stream.connected:
+            topic = 'devices/' + wia.device_id + '/' + path + '/' + kwargs['name']
+            Stream.publish(topic=topic, **kwargs)
         return new_sensor
+
+    @classmethod
+    def subscribe(self, **kwargs):
+        device=kwargs['device']
+        topic='devices/' + device + '/sensors/'
+        if 'name' in kwargs:
+            topic += kwargs['name']
+        else:
+            topic += '+'
+        Stream.subscribe(topic=topic, func=kwargs['func'])
+
+    @classmethod
+    def unsubscribe(self, **kwargs):
+        device=kwargs['device']
+        topic='devices/' + device + '/sensors/'
+        if 'name' in kwargs:
+            topic += kwargs['name']
+        else:
+            topic += '+'
+        Stream.unsubscribe(topic=topic)
 
     @classmethod
     def list(self, **kwargs):
@@ -115,7 +138,7 @@ class Sensors(object):
         for sensor in list_sensors['sensors']:
             data = sensor
             logger.info("sensor: %s", data)
-        logger.info("count: %s", list_sensors['sensors'])
+        logger.info("count: %s", list_sensors['count'])
         return list_sensors
 
 class Locations(object):
@@ -168,7 +191,22 @@ class Logs(object):
     def publish(self, **kwargs):
         path = 'logs'
         new_log = post(path, kwargs)
+        if wia.Stream.connected:
+            topic = 'devices/' + wia.device_id + '/' + path
+            Stream.publish(topic=topic, **kwargs)
         return new_log
+
+    @classmethod
+    def subscribe(self, **kwargs):
+        device = kwargs['device']
+        topic = 'devices/' + device + '/logs'
+        Stream.subscribe(topic=topic, func=kwargs['func'])
+
+    @classmethod
+    def unsubscribe(self, **kwargs):
+        device = kwargs['device']
+        topic = 'devices/' + device + '/logs'
+        Stream.unsubscribe(topic=topic)
 
     @classmethod
     def list(self, **kwargs):
@@ -189,11 +227,30 @@ class Functions(object):
         self.createdAt = (kwargs['createdAt'] if 'createdAt' in kwargs else None)
         self.updatedAt = (kwargs['updatedAt'] if 'updatedAt' in kwargs else None)
 
+    @classmethod
     def create(self, **kwargs):
-        pass
+        path = 'functions'
+        data = {'name': kwargs['name']}
+        new_function = post(path, data)
+        print(new_function)
+        Stream.connect()
+        while not wia.Stream.connected:
+            pass
+        device = wia.device_id
+        topic = 'devices/' + device + '/functions/' + new_function['id'] + '/call'
+        Stream.subscribe(topic=topic, func=kwargs['function'])
+        return new_function
 
+    @classmethod
     def delete(self, id):
+        Stream.disconnect()
         pass
 
-    def call(self, name, id, **kwargs):
-        pass
+    @classmethod
+    def call(self, device_id, func_id, **kwargs):
+        if wia.Stream.connected:
+            print("calling function....")
+            topic = 'devices/' + device_id + '/functions/' + func_id + '/call'
+            Stream.publish(topic=topic, **kwargs)
+            # path = 'functions/' + func_id + '/call'
+            # post(path, kwargs)

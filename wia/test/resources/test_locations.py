@@ -69,6 +69,9 @@ class LocationsTest(unittest2.TestCase):
         while wia.Stream.subscribed:
             pass
         self.assertEqual(wia.Stream.subscribed, False)
+        wia.Stream.disconnect()
+        while wia.Stream.connected:
+            pass
 
 
 
