@@ -2,6 +2,7 @@ import wia
 from wia.rest_client import post, get, put, delete
 from wia.util import logger
 from wia.stream_client import Stream
+import time
 
 unsubscribe_flag = False
 
@@ -232,25 +233,43 @@ class Functions(object):
         path = 'functions'
         data = {'name': kwargs['name']}
         new_function = post(path, data)
-        print(new_function)
-        Stream.connect()
-        while not wia.Stream.connected:
-            pass
         device = wia.device_id
         topic = 'devices/' + device + '/functions/' + new_function['id'] + '/call'
-        Stream.subscribe(topic=topic, func=kwargs['function'])
+        attempts = 0
+        while attempts < 6:
+            Stream.subscribe(topic=topic, func=kwargs['function'])
+            time.sleep(0.5)
+            attempts += 1
+            if Stream.subscribed == True:
+                break
+        if not Stream.subscribed:
+            raise Exception("SUBSCRIPTION UNSUCCESSFUL")
+        print(new_function)
         return new_function
 
     @classmethod
-    def delete(self, id):
-        Stream.disconnect()
-        pass
+    def delete(self, func_id):
+        path = 'functions/' + func_id
+        if delete(path).status_code == 200:
+            return True
+        else:
+            return False
+            
+    @classmethod
+    def call(self, **kwargs):
+        if wia.Stream.connected:
+            topic = 'devices/' + kwargs['device'] + '/functions/' + kwargs['func'] + '/call'
+            Stream.publish(topic=topic, **kwargs['data'])
+        else:
+            path = 'functions/' + kwargs['func'] + '/call'
+            data = kwargs['data']
+            request_return = post(path, kwargs)
 
     @classmethod
-    def call(self, device_id, func_id, **kwargs):
-        if wia.Stream.connected:
-            print("calling function....")
-            topic = 'devices/' + device_id + '/functions/' + func_id + '/call'
-            Stream.publish(topic=topic, **kwargs)
-            # path = 'functions/' + func_id + '/call'
-            # post(path, kwargs)
+    def list(self, **kwargs):
+        list_functions = get('functions', **kwargs)
+        for function in list_functions['functions']:
+            data = function
+            logger.info("function: %s", data)
+        logger.info("count: %s", list_functions['count'])
+        return list_functions

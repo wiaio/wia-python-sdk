@@ -4,12 +4,29 @@ import time
 import os
 
 class SensorsTest(unittest2.TestCase):
+    timeout = 100000000
     mailbox = {}
 
     def test_sensors_publish(self):
         wia.secret_key = wia.device_secret_key
+        wia.Stream.connect()
+        count = 0
+        while count < self.timeout:
+            count += 1
+            if wia.Stream.connected:
+                break
+        if not wia.Stream.connected:
+            raise Exception("Unable to connect")
         publish_return = wia.Sensors.publish(name='test_sensor_1', data=99)
         self.assertTrue(publish_return['id'])
+        wia.Stream.disconnect()
+        count = 0
+        while count < self.timeout:
+            count += 1
+            if not wia.Stream.connected:
+                break
+        if wia.Stream.connected:
+            raise Exception("Unable to disconnect")
 
     def test_sensors_list(self):
         list_return = wia.Sensors.list(device=wia.device_id, limit=10, page=0)
@@ -55,22 +72,39 @@ class SensorsTest(unittest2.TestCase):
         def specific_function(payload):
             self.__class__.mailbox = payload
         wia.Stream.connect()
-        while wia.Stream.connected == False:
-            pass
-        print("HERE")
+        count = 0
+        while count < self.timeout:
+            count += 1
+            if wia.Stream.connected:
+                break
+        if not wia.Stream.connected:
+            raise Exception("Unable to connect")
         wia.Sensors.subscribe(device='dev_4sEIfy5QbtIdYO5k', func=wildcard_function)
         wia.Sensors.subscribe(device='dev_4sEIfy5QbtIdYO5k', func=specific_function, name='subscribe_test_sensor')
-        while wia.Stream.subscribed is not True:
-            pass
+        count = 0
+        while count < self.timeout:
+            count += 1
+            if wia.Stream.subscribed:
+                break
+        if not wia.Stream.subscribed:
+            raise Exception("Unable to subscribe")
+        temp_sk = wia.secret_key
+        wia.secret_key = wia.device_secret_key
         wia.Sensors.publish(name='subscribe_test_sensor', data=99)
+        wia.secret_key = temp_sk
         time.sleep(5)
         self.assertEqual(self.__class__.mailbox['name'], 'subscribe_test_sensor')
         self.assertEqual(self.__class__.mailbox['data'], 99)
         wia.Sensors.unsubscribe(device='dev_4sEIfy5QbtIdYO5k', name='subscribe_test_sensor')
         wia.Sensors.unsubscribe(device='dev_4sEIfy5QbtIdYO5k')
-        while wia.Stream.subscribed:
-            pass
-        self.assertEqual(wia.Stream.subscribed, False)
+        count = 0
+        initial_subscribe_count = wia.Stream.subscribed_count
+        while count < self.timeout:
+            count += 1
+            if wia.Stream.subscribed_count < initial_subscribe_count:
+                break
+        if wia.Stream.subscribed_count == initial_subscribe_count:
+            raise Exception("Unable to unsubscribe")
 
 if __name__ == '__main__':
     unittest2.main()

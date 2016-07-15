@@ -14,7 +14,11 @@ def post(path, kwargs, device=None):
     headers = {'Authorization': key}
     data = kwargs
     r = requests.post(url, json=data, headers=headers)
-    return r.json()
+    try:
+        r = r.json()
+    except ValueError:
+        pass
+    return r
 
 '''
 wia_put:
