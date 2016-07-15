@@ -2,6 +2,7 @@ import wia
 from wia.rest_client import post, get, put, delete
 from wia.util import logger
 from wia.stream_client import Stream
+import time
 
 unsubscribe_flag = False
 
@@ -107,7 +108,30 @@ class Sensors(object):
     def publish(self, **kwargs):
         path = 'sensors'
         new_sensor = post(path, kwargs)
+        if wia.Stream.connected:
+            topic = 'devices/' + wia.device_id + '/' + path + '/' + kwargs['name']
+            Stream.publish(topic=topic, **kwargs)
         return new_sensor
+
+    @classmethod
+    def subscribe(self, **kwargs):
+        device=kwargs['device']
+        topic='devices/' + device + '/sensors/'
+        if 'name' in kwargs:
+            topic += kwargs['name']
+        else:
+            topic += '+'
+        Stream.subscribe(topic=topic, func=kwargs['func'])
+
+    @classmethod
+    def unsubscribe(self, **kwargs):
+        device=kwargs['device']
+        topic='devices/' + device + '/sensors/'
+        if 'name' in kwargs:
+            topic += kwargs['name']
+        else:
+            topic += '+'
+        Stream.unsubscribe(topic=topic)
 
     @classmethod
     def list(self, **kwargs):
@@ -115,7 +139,7 @@ class Sensors(object):
         for sensor in list_sensors['sensors']:
             data = sensor
             logger.info("sensor: %s", data)
-        logger.info("count: %s", list_sensors['sensors'])
+        logger.info("count: %s", list_sensors['count'])
         return list_sensors
 
 class Locations(object):
@@ -168,7 +192,22 @@ class Logs(object):
     def publish(self, **kwargs):
         path = 'logs'
         new_log = post(path, kwargs)
+        if wia.Stream.connected:
+            topic = 'devices/' + wia.device_id + '/' + path
+            Stream.publish(topic=topic, **kwargs)
         return new_log
+
+    @classmethod
+    def subscribe(self, **kwargs):
+        device = kwargs['device']
+        topic = 'devices/' + device + '/logs'
+        Stream.subscribe(topic=topic, func=kwargs['func'])
+
+    @classmethod
+    def unsubscribe(self, **kwargs):
+        device = kwargs['device']
+        topic = 'devices/' + device + '/logs'
+        Stream.unsubscribe(topic=topic)
 
     @classmethod
     def list(self, **kwargs):
@@ -189,11 +228,48 @@ class Functions(object):
         self.createdAt = (kwargs['createdAt'] if 'createdAt' in kwargs else None)
         self.updatedAt = (kwargs['updatedAt'] if 'updatedAt' in kwargs else None)
 
+    @classmethod
     def create(self, **kwargs):
-        pass
+        path = 'functions'
+        data = {'name': kwargs['name']}
+        new_function = post(path, data)
+        device = wia.device_id
+        topic = 'devices/' + device + '/functions/' + new_function['id'] + '/call'
+        attempts = 0
+        while attempts < 6:
+            Stream.subscribe(topic=topic, func=kwargs['function'])
+            time.sleep(0.5)
+            attempts += 1
+            if Stream.subscribed == True:
+                break
+        if not Stream.subscribed:
+            raise Exception("SUBSCRIPTION UNSUCCESSFUL")
+        print(new_function)
+        return new_function
 
-    def delete(self, id):
-        pass
+    @classmethod
+    def delete(self, func_id):
+        path = 'functions/' + func_id
+        if delete(path).status_code == 200:
+            return True
+        else:
+            return False
+            
+    @classmethod
+    def call(self, **kwargs):
+        if wia.Stream.connected:
+            topic = 'devices/' + kwargs['device'] + '/functions/' + kwargs['func'] + '/call'
+            Stream.publish(topic=topic, **kwargs['data'])
+        else:
+            path = 'functions/' + kwargs['func'] + '/call'
+            data = kwargs['data']
+            request_return = post(path, kwargs)
 
-    def call(self, name, id, **kwargs):
-        pass
+    @classmethod
+    def list(self, **kwargs):
+        list_functions = get('functions', **kwargs)
+        for function in list_functions['functions']:
+            data = function
+            logger.info("function: %s", data)
+        logger.info("count: %s", list_functions['count'])
+        return list_functions

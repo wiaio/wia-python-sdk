@@ -21,7 +21,8 @@ from wia.resource import (
     Events,
     Sensors,
     Locations,
-    Logs
+    Logs,
+    Functions
 )
 
 from wia.stream_client import (

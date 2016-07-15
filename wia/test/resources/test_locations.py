@@ -4,18 +4,32 @@ import time
 import os
 
 class LocationsTest(unittest2.TestCase):
+    timeout = 100000000
     mailbox = {}
 
     def test_locations_publish(self):
         temp_sk = wia.secret_key
         wia.secret_key = wia.device_secret_key
         wia.Stream.connect()
-        time.sleep(1)
-        publish_return = wia.Locations.publish(latitude=53.349805, longitude=-6.260310)
+        count = 0
+        while(count < self.timeout):
+            count += 1
+            if wia.Stream.connected:
+                break
+        if not wia.Stream.connected:
+            raise Exception("unable to connect")
+        print("PUBLISHING LOCATION")
+        publish_return = wia.Locations.publish(latitude=50, longitude=60)
+        print("SHOULD HAVE PUBLISHED LOCATION")
         self.assertTrue(publish_return['id'])
         wia.Stream.disconnect()
-        while wia.Stream.connected:
-            pass
+        count = 0
+        while(count < self.timeout):
+            count += 1
+            if not wia.Stream.connected:
+                break
+        if wia.Stream.connected:
+            raise Exception("Unable to disconnect")
         wia.secret_key = temp_sk
 
     def test_locations_list(self):
@@ -55,21 +69,45 @@ class LocationsTest(unittest2.TestCase):
         def location_subscription_func(payload):
             self.__class__.mailbox = payload
         wia.Stream.connect()
-        while wia.Stream.connected == False:
-            pass
+        count = 0
+        while count < self.timeout:
+            count += 1
+            if wia.Stream.connected:
+                break
+        if not wia.Stream.connected:
+            raise Exception("Unable to connect")
         wia.Locations.subscribe(device='dev_4sEIfy5QbtIdYO5k', func=location_subscription_func)
-        time.sleep(1)
-        while wia.Stream.subscribed is not True:
-            pass
-        wia.Locations.publish(longitude=60, latitude=50)
+        count = 0
+        while count < self.timeout:
+            count += 1
+            if wia.Stream.subscribed:
+                break
+        if not wia.Stream.subscribed:
+            raise Exception("Unable to subscribe")
+        temp_sk = wia.secret_key
+        wia.secret_key = wia.device_secret_key
+        publish_return = wia.Locations.publish(longitude=60, latitude=50)
+        wia.secret_key = temp_sk
         time.sleep(1)
         self.assertEqual(self.__class__.mailbox['longitude'], 60)
         self.assertEqual(self.__class__.mailbox['latitude'], 50)
         wia.Locations.unsubscribe(device='dev_4sEIfy5QbtIdYO5k')
-        while wia.Stream.subscribed:
-            pass
-        self.assertEqual(wia.Stream.subscribed, False)
-
+        count = 0
+        initial_subscribe_count = wia.Stream.subscribed_count
+        while count < self.timeout:
+            count += 1
+            if wia.Stream.subscribed_count < initial_subscribe_count:
+                break
+        if wia.Stream.subscribed_count == initial_subscribe_count:
+            raise Exception("Unable to unsubscribe")
+        wia.Stream.disconnect()
+        count = 0
+        while count < self.timeout:
+            count += 1
+            if not wia.Stream.connected:
+                break
+        if wia.Stream.connected:
+            raise Exception("Unable to disconnect")
 
 
 if __name__ == '__main__':
