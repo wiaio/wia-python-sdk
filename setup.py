@@ -13,6 +13,7 @@ setup(
     version=VERSION,
     description='This client library is designed to support the Wia APIs',
     author='Wia',
+    author_email='team@wia.io',
     maintainer='Conall Laverty',
     maintainer_email='team@wia.io',
     url='https://github.com/wiaio/wia-python-sdk',
