@@ -54,7 +54,7 @@ class Device(object):
         logger.info("count: %s", list_devices['count'])
         return list_devices
 
-class Events(object):
+class Event(object):
     def __init__(self, **kwargs):
         self.name = (kwargs['name'] if 'name' in kwargs else None)
         self.data = (kwargs['data'] if 'data' in kwargs else None)
@@ -98,7 +98,7 @@ class Events(object):
         logger.info("count: %s", list_events['count'])
         return list_events
 
-class Sensors(object):
+class Sensor(object):
     def __init__(self, **kwargs):
         self.name = (kwargs['name'] if 'name' in kwargs else None)
         self.data = (kwargs['data'] if 'data' in kwargs else None)
@@ -142,7 +142,7 @@ class Sensors(object):
         logger.info("count: %s", list_sensors['count'])
         return list_sensors
 
-class Locations(object):
+class Location(object):
     def __init__(self, **kwargs):
         self.id = (kwargs['id'] if 'id' in kwargs else None)
         self.latitude = (kwargs['latitude'] if 'latitude' in kwargs else None)
@@ -181,7 +181,7 @@ class Locations(object):
         logger.info("count: %s", list_locations['count'])
         return list_locations
 
-class Logs(object):
+class Log(object):
     def __init__(self, **kwargs):
         self.level = (kwargs['level'] if 'level' in kwargs else None)
         self.message = (kwargs['message'] if 'message' in kwargs else None)
@@ -218,7 +218,7 @@ class Logs(object):
         logger.info("count: %s", list_logs['count'])
         return list_logs
 
-class Functions(object):
+class Function(object):
     def __init__(self, **kwargs):
         self.id = (kwargs['id'] if 'id' in kwargs else None)
         self.name = (kwargs['name'] if 'name' in kwargs else None)
@@ -244,7 +244,6 @@ class Functions(object):
                 break
         if not Stream.subscribed:
             raise Exception("SUBSCRIPTION UNSUCCESSFUL")
-        print(new_function)
         return new_function
 
     @classmethod
@@ -254,7 +253,7 @@ class Functions(object):
             return True
         else:
             return False
-            
+
     @classmethod
     def call(self, **kwargs):
         if wia.Stream.connected:

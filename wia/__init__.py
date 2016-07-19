@@ -18,11 +18,11 @@ stream_port = 1883
 
 from wia.resource import (
     Device,
-    Events,
-    Sensors,
-    Locations,
-    Logs,
-    Functions
+    Event,
+    Sensor,
+    Location,
+    Log,
+    Function
 )
 
 from wia.stream_client import (

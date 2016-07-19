@@ -13,14 +13,14 @@ class FunctionsTest(unittest2.TestCase):
         wia.secret_key = wia.device_secret_key
         def test_function(argument):
             print(argument)
-        function_return = wia.Functions.create(name='test_function_create', function=test_function)
+        function_return = wia.Function.create(name='test_function_create', function=test_function)
         self.__class__.test_id = function_return['id']
         wia.secret_key = temp_sk
 
     def test_functions_delete(self):
         temp_sk = wia.secret_key
         wia.secret_key = wia.device_secret_key
-        delete_return = wia.Functions.delete(self.__class__.test_id)
+        delete_return = wia.Function.delete(self.__class__.test_id)
         self.assertTrue(delete_return)
         wia.secret_key = temp_sk
 
@@ -38,9 +38,9 @@ class FunctionsTest(unittest2.TestCase):
                 break
         if not wia.Stream.connected:
             raise Exception("Unable to connect")
-        function_return = wia.Functions.create(name='test_function_2', function=test_function_2)
+        function_return = wia.Function.create(name='test_function_2', function=test_function_2)
         wia.secret_key = temp_sk
-        wia.Functions.call(device=wia.device_id, func=function_return['id'], data={'arg1': 'Hello World!', 'arg2': 1000})
+        wia.Function.call(device=wia.device_id, func=function_return['id'], data={'arg1': 'Hello World!', 'arg2': 1000})
         time.sleep(5)
         wia.Stream.disconnect()
         count = 0
@@ -50,10 +50,10 @@ class FunctionsTest(unittest2.TestCase):
                 break
         if wia.Stream.connected:
             raise Exception("Unable to disconnect")
-        wia.Functions.call(device=wia.device_id, func=function_return['id'], data='Hello World!')
+        wia.Function.call(device=wia.device_id, func=function_return['id'], data='Hello World!')
 
     def test_functions_list(self):
-        list_return = wia.Functions.list(device=wia.device_id, limit=10, page=0)
+        list_return = wia.Function.list(device=wia.device_id, limit=10, page=0)
         self.assertTrue(list_return['functions'])
         self.assertTrue(type(list_return['functions']) == list)
         self.assertTrue(list_return['count'])

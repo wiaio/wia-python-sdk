@@ -16,7 +16,6 @@ class Stream(object):
 
     @classmethod
     def connect(self):
-        print("Called stream connect");
         global client
         client.username_pw_set(wia.secret_key, ' ')
         client.on_connect = Stream.on_connect
@@ -55,19 +54,19 @@ class Stream(object):
 
     @classmethod
     def on_connect(self, client, userdata, flags, rc):
-        print("on_connect called")
         self.connected = True
+        print("Connect success")
 
     @classmethod
     def on_disconnect(self, client, userdata, rc):
         self.connected = False
-        print("Disconnected")
+        print("Disconnect success")
 
     @classmethod
     def on_subscribe(self, client, userdata, msg, granted_qos):
         self.subscribed = True
         self.subscribed_count += 1
-        print("on_subscribe callback returned")
+        print("Subscribe success")
 
     @classmethod
     def on_message(self, client, userdata, msg):
@@ -104,4 +103,4 @@ class Stream(object):
         self.subscribed_count -= 1
         if self.subscribed_count == 0:
             self.subscribed = False
-        print("unsubscribe callback reached")
+        print("Unsubscribe success")

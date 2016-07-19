@@ -19,7 +19,7 @@ class LogsTest(unittest2.TestCase):
                 break
         if not wia.Stream.connected:
             raise Exception("Unable to connect")
-        publish_return = wia.Logs.publish(level='info', message='test')
+        publish_return = wia.Log.publish(level='info', message='test')
         self.assertTrue(publish_return['id'])
         wia.Stream.disconnect()
         count = 0
@@ -32,21 +32,21 @@ class LogsTest(unittest2.TestCase):
         wia.secret_key = temp_sk
 
     def test_logs_list(self):
-        list_return = wia.Logs.list(device=wia.device_id, limit=10, page=0)
+        list_return = wia.Log.list(device=wia.device_id, limit=10, page=0)
         self.assertTrue(list_return['logs'])
         self.assertTrue(type(list_return['logs']) == list)
         self.assertTrue(list_return['count'])
         self.assertTrue(type(list_return['count']) == int)
 
     def test_logs_list_order_sort(self):
-        list_return = wia.Logs.list(device=wia.device_id, limit=10, page=0, order='timestamp', sort='desc')
+        list_return = wia.Log.list(device=wia.device_id, limit=10, page=0, order='timestamp', sort='desc')
         timestamp_list = []
         for log in list_return['logs']:
             timestamp_list.append(log['timestamp'])
         descending = timestamp_list[:]
         descending.sort(reverse=True)
         self.assertEqual(descending, timestamp_list)
-        list_return = wia.Logs.list(device=wia.device_id, limit=10, page=0, order='timestamp', sort='asc')
+        list_return = wia.Log.list(device=wia.device_id, limit=10, page=0, order='timestamp', sort='asc')
         timestamp_list = []
         for log in list_return['logs']:
             timestamp_list.append(log['timestamp'])
@@ -66,7 +66,7 @@ class LogsTest(unittest2.TestCase):
                 break
         if not wia.Stream.connected:
             raise Exception("Unable to connect")
-        wia.Logs.subscribe(device='dev_4sEIfy5QbtIdYO5k', func=logs_subscription_func)
+        wia.Log.subscribe(device=wia.device_id, func=logs_subscription_func)
         count = 0
         while count < self.timeout:
             count += 1
@@ -76,12 +76,12 @@ class LogsTest(unittest2.TestCase):
             raise Exception("Unable to subscribe")
         temp_sk = wia.secret_key
         wia.secret_key = wia.device_secret_key
-        wia.Logs.publish(level='info', message='test')
+        wia.Log.publish(level='info', message='test')
         wia.secret_key = temp_sk
         time.sleep(1)
         self.assertEqual(self.__class__.mailbox['message'], 'test')
         self.assertEqual(self.__class__.mailbox['level'], 'info')
-        wia.Logs.unsubscribe(device='dev_4sEIfy5QbtIdYO5k')
+        wia.Log.unsubscribe(device=wia.device_id)
         count = 0
         initial_subscribe_count = wia.Stream.subscribed_count
         while count < self.timeout:
