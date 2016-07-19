@@ -19,7 +19,7 @@ class EventsTest(unittest2.TestCase):
                 break
         if not wia.Stream.connected:
             raise Exception("Unable to connect")
-        publish_return = wia.Events.publish(name='test_event_other', data=130)
+        publish_return = wia.Event.publish(name='test_event_other', data=130)
         self.assertTrue(publish_return['id'])
         wia.Stream.disconnect()
         count = 0
@@ -32,7 +32,7 @@ class EventsTest(unittest2.TestCase):
         wia.secret_key = temp_sk
 
     def test_events_list(self):
-        list_return = wia.Events.list(device=wia.device_id, limit=10, page=0)
+        list_return = wia.Event.list(device=wia.device_id, limit=10, page=0)
         self.__class__.event_count = list_return['count']
         self.assertTrue(list_return['events'])
         self.assertTrue(type(list_return['events']) == list)
@@ -40,14 +40,14 @@ class EventsTest(unittest2.TestCase):
         self.assertTrue(type(list_return['count']) == int)
 
     def test_events_list_order_sort(self):
-        list_return = wia.Events.list(device=wia.device_id, limit=10, page=0, order='timestamp', sort='desc')
+        list_return = wia.Event.list(device=wia.device_id, limit=10, page=0, order='timestamp', sort='desc')
         timestamp_list = []
         for event in list_return['events']:
             timestamp_list.append(event['timestamp'])
         descending = timestamp_list[:]
         descending.sort(reverse=True)
         self.assertEqual(descending, timestamp_list)
-        list_return = wia.Events.list(device=wia.device_id, limit=10, page=0, order='timestamp', sort='asc')
+        list_return = wia.Event.list(device=wia.device_id, limit=10, page=0, order='timestamp', sort='asc')
         timestamp_list = []
         for event in list_return['events']:
             timestamp_list.append(event['timestamp'])
@@ -56,16 +56,16 @@ class EventsTest(unittest2.TestCase):
         self.assertEqual(ascending, timestamp_list)
 
     def test_events_list_name(self):
-        list_return = wia.Events.list(device = wia.device_id, name='test_event')
+        list_return = wia.Event.list(device = wia.device_id, name='test_event')
         for event in list_return['events']:
             self.assertEqual('test_event', event['name'])
 
     def test_events_list_since_until(self):
         hour_ago = int((time.time())*1000 - 3600000)
-        list_return = wia.Events.list(device=wia.device_id, order='timestamp', sort='desc', since=hour_ago)
+        list_return = wia.Event.list(device=wia.device_id, order='timestamp', sort='desc', since=hour_ago)
         self.assertTrue(list_return['count'] <= self.__class__.event_count)
         list_return = {}
-        list_return = wia.Events.list(device=wia.device_id, order='timestamp', sort='desc', until=hour_ago)
+        list_return = wia.Event.list(device=wia.device_id, order='timestamp', sort='desc', until=hour_ago)
         self.assertTrue(list_return['count'] <= self.__class__.event_count)
 
     def test_events_subscribe(self):
@@ -82,8 +82,8 @@ class EventsTest(unittest2.TestCase):
                 break
         if not wia.Stream.connected:
             raise Exception("Unable to connect")
-        wia.Events.subscribe(device='dev_4sEIfy5QbtIdYO5k', func=wildcard_function)
-        wia.Events.subscribe(device='dev_4sEIfy5QbtIdYO5k', func=specific_function, name='subscribe_test_event')
+        wia.Event.subscribe(device='dev_4sEIfy5QbtIdYO5k', func=wildcard_function)
+        wia.Event.subscribe(device='dev_4sEIfy5QbtIdYO5k', func=specific_function, name='subscribe_test_event')
         count = 0
         while count < self.timeout:
             count += 1
@@ -93,13 +93,13 @@ class EventsTest(unittest2.TestCase):
             raise Exception("Unable to subscribe")
         temp_sk = wia.secret_key
         wia.secret_key = wia.device_secret_key
-        wia.Events.publish(name='subscribe_test_event', data=99)
+        wia.Event.publish(name='subscribe_test_event', data=99)
         wia.secret_key = temp_sk
         time.sleep(5)
         self.assertEqual(self.__class__.mailbox['name'], 'subscribe_test_event')
         self.assertEqual(self.__class__.mailbox['data'], 99)
-        wia.Events.unsubscribe(device='dev_4sEIfy5QbtIdYO5k', name='subscribe_test_event')
-        wia.Events.unsubscribe(device='dev_4sEIfy5QbtIdYO5k')
+        wia.Event.unsubscribe(device='dev_4sEIfy5QbtIdYO5k', name='subscribe_test_event')
+        wia.Event.unsubscribe(device='dev_4sEIfy5QbtIdYO5k')
         count = 0
         initial_subscribe_count = wia.Stream.subscribed_count
         while count < self.timeout:
