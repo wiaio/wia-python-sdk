@@ -66,7 +66,7 @@ class LogsTest(unittest2.TestCase):
                 break
         if not wia.Stream.connected:
             raise Exception("Unable to connect")
-        wia.Log.subscribe(device='dev_4sEIfy5QbtIdYO5k', func=logs_subscription_func)
+        wia.Log.subscribe(device=wia.device_id, func=logs_subscription_func)
         count = 0
         while count < self.timeout:
             count += 1
@@ -81,7 +81,7 @@ class LogsTest(unittest2.TestCase):
         time.sleep(1)
         self.assertEqual(self.__class__.mailbox['message'], 'test')
         self.assertEqual(self.__class__.mailbox['level'], 'info')
-        wia.Log.unsubscribe(device='dev_4sEIfy5QbtIdYO5k')
+        wia.Log.unsubscribe(device=wia.device_id)
         count = 0
         initial_subscribe_count = wia.Stream.subscribed_count
         while count < self.timeout:

@@ -82,8 +82,8 @@ class EventsTest(unittest2.TestCase):
                 break
         if not wia.Stream.connected:
             raise Exception("Unable to connect")
-        wia.Event.subscribe(device='dev_4sEIfy5QbtIdYO5k', func=wildcard_function)
-        wia.Event.subscribe(device='dev_4sEIfy5QbtIdYO5k', func=specific_function, name='subscribe_test_event')
+        wia.Event.subscribe(device=wia.device_id, func=wildcard_function)
+        wia.Event.subscribe(device=wia.device_id, func=specific_function, name='subscribe_test_event')
         count = 0
         while count < self.timeout:
             count += 1
@@ -98,8 +98,8 @@ class EventsTest(unittest2.TestCase):
         time.sleep(5)
         self.assertEqual(self.__class__.mailbox['name'], 'subscribe_test_event')
         self.assertEqual(self.__class__.mailbox['data'], 99)
-        wia.Event.unsubscribe(device='dev_4sEIfy5QbtIdYO5k', name='subscribe_test_event')
-        wia.Event.unsubscribe(device='dev_4sEIfy5QbtIdYO5k')
+        wia.Event.unsubscribe(device=wia.device_id, name='subscribe_test_event')
+        wia.Event.unsubscribe(device=wia.device_id)
         count = 0
         initial_subscribe_count = wia.Stream.subscribed_count
         while count < self.timeout:
