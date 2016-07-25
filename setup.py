@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 from setuptools import setup
 
+with open('LONG_DESCRIPTION.rst') as f:
+    long_description = f.read()
+
 exec(open("wia/version.py").read())
 
 install_requires = [
@@ -21,7 +24,7 @@ setup(
     test_suite='wia.test.all',
     tests_require=['unittest2', 'mock'],
     packages=['wia', 'wia.test', 'wia.test.resources'],
-    long_description=open("README.md").read(),
+    long_description=long_description,
     classifiers=[
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python',
