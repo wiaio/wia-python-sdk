@@ -32,14 +32,12 @@ class Device(object):
             retrieved_device = get(path)
         return Device(**retrieved_device)
 
-    @classmethod
-    def update(self, id, **kwargs):
-        path = 'devices/' + id
-        return put(path, **kwargs)
+    def save(self):
+        path = 'devices/' + self.id
+        return put(path, name=self.name)
 
-    @classmethod
-    def delete(self, id):
-        path = 'devices/' + id
+    def delete(self):
+        path = 'devices/' + self.id
         if delete(path).status_code == 200:
             return True
         else:

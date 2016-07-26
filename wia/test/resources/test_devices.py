@@ -12,21 +12,30 @@ class DeviceTest(unittest2.TestCase):
         self.assertEqual(device['name'], 'johnDoe')
 
     def test_retrieve(self):
-        self.assertEqual(wia.Device.retrieve(self.__class__.test_id).name, 'johnDoe')
-        wia.Device.delete(self.__class__.test_id)
+        device = wia.Device.retrieve(self.__class__.test_id)
+        self.assertEqual(device.name, 'johnDoe')
+        self.assertTrue(device.delete())
 
     def test_update(self):
         test_device = wia.Device.create(name='johnDoe')
-        self.assertEqual(test_device['name'], 'johnDoe')
-        test_device['name'] = 'janeDoe'
-        self.assertEqual(test_device['name'], 'janeDoe')
-        wia.Device.update(test_device['id'], name=test_device['name'])
-        self.assertEqual(wia.Device.retrieve(test_device['id']).name, 'janeDoe')
-        wia.Device.delete(test_device['id'])
+        device = wia.Device.retrieve(test_device['id'])
+        self.assertEqual(device.name, 'johnDoe')
+        device.name = 'janeDoe'
+        device.save()
+        now_device = wia.Device.retrieve(device.id)
+        self.assertEqual(now_device.name, 'janeDoe')
+        self.assertTrue(now_device.delete())
+        # self.assertEqual(test_device['name'], 'johnDoe')
+        # test_device['name'] = 'janeDoe'
+        # self.assertEqual(test_device['name'], 'janeDoe')
+        # wia.Device.update(test_device['id'], name=test_device['name'])
+        # self.assertEqual(wia.Device.retrieve(test_device['id']).name, 'janeDoe')
+        # wia.Device.delete(test_device['id'])
 
     def test_delete(self):
         test_device = wia.Device.create(name='toBeDestroyed')
-        self.assertEqual(wia.Device.delete(test_device['id']), True)
+        test_device = wia.Device.retrieve(test_device['id'])
+        self.assertTrue(test_device.delete())
 
     def test_device_list(self):
         list_return = wia.Device.list(limit=20, page=0)
