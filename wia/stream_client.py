@@ -73,8 +73,6 @@ class Stream(object):
         topic=re.split('/', msg.topic)
         # 1. Check for specific topic function. If exists, call
         if msg.topic in function_subscriptions:
-            if type(msg.payload) is not str:
-                msg.payload = str(msg.payload)
             payload = json.loads(msg.payload.decode())
             payload = dict([(str(k), v) for k, v in payload.items()])
             for k, v in payload.items():
@@ -89,8 +87,6 @@ class Stream(object):
         wildcard_topic = topic[0] + "/" + topic[1] + "/" + topic[2] + "/+"
         if wildcard_topic in function_subscriptions:
             if hasattr(function_subscriptions[wildcard_topic], '__call__'):
-                if type(msg.payload) is not str:
-                    msg.payload = str(msg.payload)
                 payload = json.loads(msg.payload.decode())
                 payload = dict([(str(k), v) for k, v in payload.items()])
                 for k, v in payload.items():
