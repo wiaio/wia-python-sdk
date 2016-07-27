@@ -41,7 +41,13 @@ class FunctionsTest(unittest2.TestCase):
         function_return = wia.Function.create(name='test_function_2', function=test_function_2)
         wia.secret_key = temp_sk
         wia.Function.call(device=wia.device_id, func=function_return['id'], data={'arg1': 'Hello World!', 'arg2': 1000})
-        time.sleep(5)
+        time.sleep(2)
+        wia.Function.call(device=wia.device_id, func=function_return['id'])
+        time.sleep(2)
+        wia.Function.call(device=wia.device_id, func=function_return['id'], data="Hello")
+        time.sleep(2)
+        wia.Function.call(device=wia.device_id, func=function_return['id'], data=99)
+        time.sleep(2)
         wia.Stream.disconnect()
         count = 0
         while count < self.timeout:
@@ -50,7 +56,6 @@ class FunctionsTest(unittest2.TestCase):
                 break
         if wia.Stream.connected:
             raise Exception("Unable to disconnect")
-        wia.Function.call(device=wia.device_id, func=function_return['id'], data='Hello World!')
 
     def test_functions_list(self):
         list_return = wia.Function.list(device=wia.device_id, limit=10, page=0)

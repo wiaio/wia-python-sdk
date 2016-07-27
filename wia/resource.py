@@ -256,11 +256,17 @@ class Function(object):
     def call(self, **kwargs):
         if wia.Stream.connected:
             topic = 'devices/' + kwargs['device'] + '/functions/' + kwargs['func'] + '/call'
-            Stream.publish(topic=topic, **kwargs['data'])
+            if 'data' not in kwargs:
+                Stream.publish(topic=topic)
+            elif type(kwargs['data']) is dict:
+                Stream.publish(topic=topic, **kwargs['data'])
+            else:
+                data = kwargs['data']
+                kwargs.pop('data')
+                kwargs['data'] = {'arg': data}
+                Stream.publish(topic=topic, **kwargs['data'])
         else:
-            path = 'functions/' + kwargs['func'] + '/call'
-            data = kwargs['data']
-            request_return = post(path, kwargs)
+            raise Exception("Unable to call function, not connected to stream")
 
     @classmethod
     def list(self, **kwargs):
