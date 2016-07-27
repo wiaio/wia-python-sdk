@@ -72,21 +72,8 @@ class Stream(object):
     def on_message(self, client, userdata, msg):
         topic=re.split('/', msg.topic)
         # 1. Check for specific topic function. If exists, call
-        if msg.topic in function_subscriptions:
-            payload = json.loads(msg.payload.decode())
-            payload = dict([(str(k), v) for k, v in payload.items()])
-            for k, v in payload.items():
-                if int(sys.version_info[0]) >=3:
-                    if isinstance(v, bytes):
-                        payload[k] = str(v)
-                else:
-                    if isinstance(v, unicode):
-                        payload[k] = str(v)
-            function_subscriptions[msg.topic](payload)
-        # 2. Check for wildcard topic function. If exists, call
-        wildcard_topic = topic[0] + "/" + topic[1] + "/" + topic[2] + "/+"
-        if wildcard_topic in function_subscriptions:
-            if hasattr(function_subscriptions[wildcard_topic], '__call__'):
+        if msg.payload:
+            if msg.topic in function_subscriptions:
                 payload = json.loads(msg.payload.decode())
                 payload = dict([(str(k), v) for k, v in payload.items()])
                 for k, v in payload.items():
@@ -96,7 +83,28 @@ class Stream(object):
                     else:
                         if isinstance(v, unicode):
                             payload[k] = str(v)
-                function_subscriptions[wildcard_topic](payload)
+                function_subscriptions[msg.topic](payload)
+        else:
+            if msg.topic in function_subscriptions:
+                function_subscriptions[msg.topic](None)
+        # 2. Check for wildcard topic function. If exists, call
+        wildcard_topic = topic[0] + "/" + topic[1] + "/" + topic[2] + "/+"
+        if msg.payload:
+            if wildcard_topic in function_subscriptions:
+                if hasattr(function_subscriptions[wildcard_topic], '__call__'):
+                    payload = json.loads(msg.payload.decode())
+                    payload = dict([(str(k), v) for k, v in payload.items()])
+                    for k, v in payload.items():
+                        if int(sys.version_info[0]) >=3:
+                            if isinstance(v, bytes):
+                                payload[k] = str(v)
+                        else:
+                            if isinstance(v, unicode):
+                                payload[k] = str(v)
+                    function_subscriptions[wildcard_topic](payload)
+        else:
+            if wildcard_topic in function_subscriptions:
+                function_subscriptions[wildcard_topic](None)
 
     @classmethod
     def on_unsubscribe(self, client, userdata, mid):
