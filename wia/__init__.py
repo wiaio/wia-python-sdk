@@ -8,8 +8,9 @@ __version__ = VERSION
 
 secret_key = os.environ['secret_key']
 device_secret_key = os.environ['device_secret_key']
-api_version = None
+app_key = os.environ['app_key']
 device_id = os.environ['device_id']
+api_version = None
 
 rest_api_base = 'https://api.wia.io/v1'
 stream_protocol = 'mqtt'
