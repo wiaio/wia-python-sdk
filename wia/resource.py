@@ -28,7 +28,7 @@ class Device(object):
     def retrieve(self, id):
         path = 'devices/' + id
         if (id == 'me'):
-            retrieved_device = get(path, sk=wia.secret_key)
+            retrieved_device = get(path)
         else:
             retrieved_device = get(path)
         return Device(**retrieved_device)
