@@ -29,14 +29,19 @@ class SensorsTest(unittest2.TestCase):
             raise Exception("Unable to disconnect")
 
     def test_sensors_list(self):
+        temp_sk = wia.secret_key
+        wia.secret_key = wia.org_key
         list_return = wia.Sensor.list(device=wia.device_id, limit=10, page=0)
         self.__class__.sensor_count = list_return['count']
         self.assertTrue(list_return['sensors'])
         self.assertTrue(type(list_return['sensors']) == list)
         self.assertTrue(list_return['count'])
         self.assertTrue(type(list_return['count']) == int)
+        wia.secret_key = temp_sk
 
     def test_sensors_list_order_sort(self):
+        temp_sk = wia.secret_key
+        wia.secret_key = wia.org_key
         list_return = wia.Sensor.list(device=wia.device_id, limit=10, page=0, order='timestamp', sort='desc')
         timestamp_list = []
         for sensor in list_return['sensors']:
@@ -51,21 +56,30 @@ class SensorsTest(unittest2.TestCase):
         ascending = timestamp_list[:]
         ascending.sort()
         self.assertEqual(ascending, timestamp_list)
+        wia.secret_key = temp_sk
 
     def test_sensors_list_name(self):
+        temp_sk = wia.secret_key
+        wia.secret_key = wia.org_key
         list_return = wia.Sensor.list(device = wia.device_id, name='test_sensor_1')
         for sensor in list_return['sensors']:
             self.assertEqual('test_sensor_1', sensor['name'])
+        wia.secret_key = temp_sk
 
     def test_sensors_list_since_until(self):
+        temp_sk = wia.secret_key
+        wia.secret_key = wia.org_key
         hour_ago = int((time.time())*1000 - 3600000)
         list_return = wia.Sensor.list(device=wia.device_id, order='timestamp', sort='desc', since=hour_ago)
         self.assertTrue(list_return['count'] <= self.__class__.sensor_count)
         list_return = {}
         list_return = wia.Sensor.list(device=wia.device_id, order='timestamp', sort='desc', until=hour_ago)
         self.assertTrue(list_return['count'] <= self.__class__.sensor_count)
+        wia.secret_key = temp_sk
 
     def test_sensors_subscribe(self):
+        temp_sk = wia.secret_key
+        wia.secret_key = wia.org_key
         self.__class__.mailbox = {}
         def wildcard_function(payload):
             pass
@@ -105,6 +119,7 @@ class SensorsTest(unittest2.TestCase):
                 break
         if wia.Stream.subscribed_count == initial_subscribe_count:
             raise Exception("Unable to unsubscribe")
+        wia.secret_key = temp_sk
 
 if __name__ == '__main__':
     unittest2.main()

@@ -6,10 +6,12 @@ logging.basicConfig(level=logging.DEBUG)
 
 __version__ = VERSION
 
-secret_key = os.environ['secret_key']
-device_secret_key = os.environ['device_secret_key']
-app_key = os.environ['app_key']
-device_id = os.environ['device_id']
+secret_key = ''
+device_secret_key = ''
+app_key = ''
+device_id = ''
+org_key = ''
+
 api_version = None
 
 rest_api_base = 'https://api.wia.io/v1'
@@ -23,7 +25,8 @@ from wia.resource import (
     Sensor,
     Location,
     Log,
-    Function
+    Function,
+    Customer
 )
 
 from wia.stream_client import (

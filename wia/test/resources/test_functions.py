@@ -58,11 +58,14 @@ class FunctionsTest(unittest2.TestCase):
             raise Exception("Unable to disconnect")
 
     def test_functions_list(self):
+        temp_sk = wia.secret_key
+        wia.secret_key = wia.org_key
         list_return = wia.Function.list(device=wia.device_id, limit=10, page=0)
         self.assertTrue(list_return['functions'])
         self.assertTrue(type(list_return['functions']) == list)
         self.assertTrue(list_return['count'])
         self.assertTrue(type(list_return['count']) == int)
+        wia.secret_key = temp_sk
 
 
 if __name__ == '__main__':

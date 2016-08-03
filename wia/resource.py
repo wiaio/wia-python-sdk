@@ -10,7 +10,10 @@ class Device(object):
     def __init__(self, **kwargs):
         self.id = (kwargs['id'] if 'id' in kwargs else None)
         self.name = (kwargs['name'] if 'name' in kwargs else None)
+        self.sensors = (kwargs['sensors'] if 'sensors' in kwargs else None)
         self.events = (kwargs['events'] if 'events' in kwargs else None)
+        self.location = (kwargs['location'] if 'location' in kwargs else None)
+        self.public = (kwargs['public'] if 'public' in kwargs else None)
         self.isOnline = (kwargs['isOnline'] if 'isOnline' in kwargs else None)
         self.createdAt = (kwargs['createdAt'] if 'createdAt' in kwargs else None)
         self.updatedAt = (kwargs['updatedAt'] if 'updatedAt' in kwargs else None)
@@ -22,12 +25,10 @@ class Device(object):
         return created_device
 
     @classmethod
-    def retrieve(self, id, sk=None):
+    def retrieve(self, id):
         path = 'devices/' + id
-        if (id == 'me') and sk:
-            retrieved_device = get(path, sk=sk)
-        elif (id == 'me') and not sk:
-            raise SyntaxError('Must provide device secret key if retrieving self')
+        if (id == 'me'):
+            retrieved_device = get(path, sk=wia.secret_key)
         else:
             retrieved_device = get(path)
         return Device(**retrieved_device)
@@ -60,10 +61,11 @@ class Event(object):
 
     @classmethod
     def publish(self, **kwargs):
+        current_device = wia.Device.retrieve('me')
         path = 'events'
         new_event = post(path, kwargs)
-        if wia.Stream.connected:
-            topic = 'devices/' + wia.device_id + '/' + path + '/' + kwargs['name']
+        if wia.Stream.connected and current_device.id:
+            topic = 'devices/' + current_device.id + '/' + path + '/' + kwargs['name']
             Stream.publish(topic=topic, **kwargs)
         return new_event
 
@@ -104,10 +106,11 @@ class Sensor(object):
 
     @classmethod
     def publish(self, **kwargs):
+        current_device = wia.Device.retrieve('me')
         path = 'sensors'
         new_sensor = post(path, kwargs)
-        if wia.Stream.connected:
-            topic = 'devices/' + wia.device_id + '/' + path + '/' + kwargs['name']
+        if wia.Stream.connected and current_device.id:
+            topic = 'devices/' + current_device.id + '/' + path + '/' + kwargs['name']
             Stream.publish(topic=topic, **kwargs)
         return new_sensor
 
@@ -151,10 +154,11 @@ class Location(object):
 
     @classmethod
     def publish(self, **kwargs):
+        current_device = wia.Device.retrieve('me')
         path = 'locations'
         new_location = post(path, kwargs)
-        if wia.Stream.connected:
-            topic = 'devices/' + wia.device_id + '/' + path
+        if wia.Stream.connected and current_device.id:
+            topic = 'devices/' + current_device.id + '/' + path
             Stream.publish(topic=topic, **kwargs)
         return new_location
 
@@ -188,10 +192,11 @@ class Log(object):
 
     @classmethod
     def publish(self, **kwargs):
+        current_device = wia.Device.retrieve('me')
         path = 'logs'
         new_log = post(path, kwargs)
-        if wia.Stream.connected:
-            topic = 'devices/' + wia.device_id + '/' + path
+        if wia.Stream.connected and current_device.id:
+            topic = 'devices/' + current_device.id + '/' + path
             Stream.publish(topic=topic, **kwargs)
         return new_log
 
@@ -276,3 +281,19 @@ class Function(object):
             logger.info("function: %s", data)
         logger.info("count: %s", list_functions['count'])
         return list_functions
+
+class Customer(object):
+    @classmethod
+    def signup(self, fullName, email, password):
+        data={'fullName': fullName,
+                'email': email,
+                'password':password}
+        return post('customers/signup', data)
+
+    @classmethod
+    def login(self, username, password):
+        data={'username':username,
+                'password':password,
+                'scope':'customer',
+                'grantType':'password'}
+        return post('auth/token', data)
