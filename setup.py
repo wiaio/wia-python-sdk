@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 from setuptools import setup
 
+with open('LONG_DESCRIPTION.rst') as f:
+    long_description = f.read()
+
 exec(open("wia/version.py").read())
 
 install_requires = [
@@ -13,6 +16,7 @@ setup(
     version=VERSION,
     description='This client library is designed to support the Wia APIs',
     author='Wia',
+    author_email='team@wia.io',
     maintainer='Conall Laverty',
     maintainer_email='team@wia.io',
     url='https://github.com/wiaio/wia-python-sdk',
@@ -20,7 +24,7 @@ setup(
     test_suite='wia.test.all',
     tests_require=['unittest2', 'mock'],
     packages=['wia', 'wia.test', 'wia.test.resources'],
-    long_description=open("README.md").read(),
+    long_description=long_description,
     classifiers=[
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python',
