@@ -9,24 +9,21 @@ class FunctionsTest(unittest2.TestCase):
     function_id = None
 
     def test_functions_create(self):
-        temp_sk = wia.secret_key
-        wia.secret_key = wia.device_secret_key
+        wia.secret_key = os.environ['device_secret_key']
         def test_function(argument):
             print(argument)
         function_return = wia.Function.create(name='test_function_create', function=test_function)
         self.__class__.test_id = function_return['id']
-        wia.secret_key = temp_sk
+        wia.secret_key = None
 
     def test_functions_delete(self):
-        temp_sk = wia.secret_key
-        wia.secret_key = wia.device_secret_key
+        wia.secret_key = os.environ['device_secret_key']
         delete_return = wia.Function.delete(self.__class__.test_id)
         self.assertTrue(delete_return)
-        wia.secret_key = temp_sk
+        wia.secret_key = None
 
     def test_functions_call(self):
-        temp_sk = wia.secret_key
-        wia.secret_key = wia.device_secret_key
+        wia.secret_key = os.environ['device_secret_key']
         def test_function_2(payload):
             print("IN TEST FUNCTION 2")
             print(payload)
@@ -39,9 +36,15 @@ class FunctionsTest(unittest2.TestCase):
         if not wia.Stream.connected:
             raise Exception("Unable to connect")
         function_return = wia.Function.create(name='test_function_2', function=test_function_2)
-        wia.secret_key = temp_sk
+        wia.secret_key = os.environ['user_secret_key']
         wia.Function.call(device=wia.device_id, func=function_return['id'], data={'arg1': 'Hello World!', 'arg2': 1000})
-        time.sleep(5)
+        time.sleep(2)
+        wia.Function.call(device=wia.device_id, func=function_return['id'])
+        time.sleep(2)
+        wia.Function.call(device=wia.device_id, func=function_return['id'], data="Hello")
+        time.sleep(2)
+        wia.Function.call(device=wia.device_id, func=function_return['id'], data=99)
+        time.sleep(2)
         wia.Stream.disconnect()
         count = 0
         while count < self.timeout:
@@ -50,14 +53,16 @@ class FunctionsTest(unittest2.TestCase):
                 break
         if wia.Stream.connected:
             raise Exception("Unable to disconnect")
-        wia.Function.call(device=wia.device_id, func=function_return['id'], data='Hello World!')
+        wia.secret_key = None
 
     def test_functions_list(self):
+        wia.secret_key = os.environ['org_secret_key']
         list_return = wia.Function.list(device=wia.device_id, limit=10, page=0)
         self.assertTrue(list_return['functions'])
         self.assertTrue(type(list_return['functions']) == list)
         self.assertTrue(list_return['count'])
         self.assertTrue(type(list_return['count']) == int)
+        wia.secret_key = None
 
 
 if __name__ == '__main__':

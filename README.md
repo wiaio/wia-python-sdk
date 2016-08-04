@@ -6,7 +6,7 @@ For full documentation visit [http://docs.wia.io/](http://docs.wia.io/)
 ## License
 This SDK is distributed under the the MIT License
 
-Copyright (c) 2010-2015 Wia Limited. http://wia.io
+Copyright (c) 2010-2016 Wia Technologies Limited. https://wia.io
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
