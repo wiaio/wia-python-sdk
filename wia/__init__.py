@@ -6,10 +6,14 @@ logging.basicConfig(level=logging.DEBUG)
 
 __version__ = VERSION
 
-secret_key = os.environ['secret_key']
-device_secret_key = os.environ['device_secret_key']
+secret_key = ''
+user_secret_key = ''
+device_secret_key = ''
+device_id = ''
+app_key = ''
+org_secret_key = ''
+
 api_version = None
-device_id = os.environ['device_id']
 
 rest_api_base = 'https://api.wia.io/v1'
 stream_protocol = 'mqtt'
@@ -22,7 +26,8 @@ from wia.resource import (
     Sensor,
     Location,
     Log,
-    Function
+    Function,
+    Customer
 )
 
 from wia.stream_client import (
