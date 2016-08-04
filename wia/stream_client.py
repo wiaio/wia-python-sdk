@@ -41,6 +41,8 @@ class Stream(object):
     @classmethod
     def subscribe(self, **kwargs):
         function_subscriptions[kwargs['topic']] = kwargs['func']
+        print("TOPIC FROM STREAM CLIENT")
+        print(kwargs['topic'])
         def thread_proc():
             client.subscribe(kwargs['topic'], qos=0)
             subscribing_event = threading.Event()
@@ -50,7 +52,10 @@ class Stream(object):
     @classmethod
     def unsubscribe(self, **kwargs):
         function_subscriptions.pop(kwargs['topic'])
-        client.unsubscribe(kwargs['topic'])
+        topic = kwargs['topic']
+        print("IN UNSUBSCRIBE IN STREAM CLIENT")
+        print(topic)
+        client.unsubscribe(topic)
 
     @classmethod
     def on_connect(self, client, userdata, flags, rc):

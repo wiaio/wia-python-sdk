@@ -7,10 +7,11 @@ logging.basicConfig(level=logging.DEBUG)
 __version__ = VERSION
 
 secret_key = ''
+user_secret_key = ''
 device_secret_key = ''
-app_key = ''
 device_id = ''
-org_key = ''
+app_key = ''
+org_secret_key = ''
 
 api_version = None
 

@@ -87,6 +87,8 @@ class Event(object):
             topic += kwargs['name']
         else:
             topic += '+'
+        print("UNSUBSCRIBE TOPIC:")
+        print(topic)
         Stream.unsubscribe(topic=topic)
 
     @classmethod

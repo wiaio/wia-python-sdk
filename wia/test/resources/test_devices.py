@@ -6,25 +6,28 @@ import os
 class DeviceTest(unittest2.TestCase):
     test_id = ''
 
-    def test_create(self):
-        temp_sk = wia.secret_key
-        wia.secret_key = wia.org_key
+    def test_public_org_create(self):
+        wia.secret_key = os.environ['org_secret_key']
         device = wia.Device.create(name='johnDoe',serialNumber='test', public=True)
         self.__class__.test_id = device['id']
         self.assertEqual(device['name'], 'johnDoe')
-        wia.secret_key = temp_sk
+        wia.secret_key = None
+
+    def test_user_create(self):
+        wia.secret_key = os.environ['user_secret_key']
+        device = wia.Device.create(name='janeDoe')
+        self.assertEqual(device['name'], 'janeDoe')
+        wia.secret_key = None
 
     def test_retrieve(self):
-        temp_sk = wia.secret_key
-        wia.secret_key = wia.org_key
+        wia.secret_key = os.environ['org_secret_key']
         device = wia.Device.retrieve(self.__class__.test_id)
         self.assertEqual(device.name, 'johnDoe')
         self.assertTrue(device.delete())
-        wia.secret_key = temp_sk
+        wia.secret_key = None
 
     def test_update(self):
-        temp_sk = wia.secret_key
-        wia.secret_key = wia.org_key
+        wia.secret_key = os.environ['org_secret_key']
         test_device = wia.Device.create(name='johnDoe', public=True)
         device = wia.Device.retrieve(test_device['id'])
         self.assertEqual(device.name, 'johnDoe')
@@ -33,7 +36,7 @@ class DeviceTest(unittest2.TestCase):
         now_device = wia.Device.retrieve(device.id)
         self.assertEqual(now_device.name, 'janeDoe')
         self.assertTrue(now_device.delete())
-        wia.secret_key = temp_sk
+        wia.secret_key = None
         # self.assertEqual(test_device['name'], 'johnDoe')
         # test_device['name'] = 'janeDoe'
         # self.assertEqual(test_device['name'], 'janeDoe')
@@ -42,23 +45,24 @@ class DeviceTest(unittest2.TestCase):
         # wia.Device.delete(test_device['id'])
 
     def test_delete(self):
-        temp_sk = wia.secret_key
-        wia.secret_key = wia.org_key
+        wia.secret_key = os.environ['org_secret_key']
         test_device = wia.Device.create(name='toBeDestroyed', public=True)
         test_device = wia.Device.retrieve(test_device['id'])
         self.assertTrue(test_device.delete())
-        wia.secret_key = temp_sk
+        wia.secret_key = None
 
     def test_device_list(self):
+        wia.secret_key = os.environ['user_secret_key']
         list_return = wia.Device.list(limit=20, page=0)
         self.assertTrue(list_return['devices'])
         self.assertTrue(type(list_return['devices']) == list)
         self.assertTrue(list_return['count'])
         self.assertTrue(type(list_return['count']) == int)
-        print(len(list_return['devices']))
+        wia.secret_key = None
         # self.assertTrue(len(list_return['devices']) == 20)
 
     def test_device_list_order_sort(self):
+        wia.secret_key = os.environ['user_secret_key']
         list_return = wia.Device.list(order='createdAt', sort='desc')
         timestamp_list = []
         for device in list_return['devices']:
@@ -73,6 +77,7 @@ class DeviceTest(unittest2.TestCase):
         ascending = timestamp_list[:]
         ascending.sort()
         self.assertTrue(ascending == timestamp_list)
+        wia.secret_key = None
 
     # def test_device_list_public(self):
     #     temp_sk = wia.secret_key
