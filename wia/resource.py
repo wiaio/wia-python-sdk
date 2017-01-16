@@ -57,17 +57,21 @@ class Event(object):
     def __init__(self, **kwargs):
         self.name = (kwargs['name'] if 'name' in kwargs else None)
         self.data = (kwargs['data'] if 'data' in kwargs else None)
+        self.file = (kwargs['file'] if 'file' in kwargs else None)
         self.timestamp = (kwargs['timestamp'] if 'timestamp' in kwargs else None)
 
     @classmethod
     def publish(self, **kwargs):
         current_device = wia.Device.retrieve('me')
         path = 'events'
-        new_event = post(path, kwargs)
+
+        #data = kwargs
+
         if wia.Stream.connected and current_device.id:
             topic = 'devices/' + current_device.id + '/' + path + '/' + kwargs['name']
             Stream.publish(topic=topic, **kwargs)
-        return new_event
+        else:
+            return post(path, kwargs)
 
     @classmethod
     def subscribe(self, **kwargs):
@@ -87,8 +91,6 @@ class Event(object):
             topic += kwargs['name']
         else:
             topic += '+'
-        print("UNSUBSCRIBE TOPIC:")
-        print(topic)
         Stream.unsubscribe(topic=topic)
 
     @classmethod

@@ -19,7 +19,7 @@ class EventsTest(unittest2.TestCase):
         if not wia.Stream.connected:
             raise Exception("Unable to connect")
         publish_return = wia.Event.publish(name='test_event_other', data=130)
-        self.assertTrue(publish_return['id'])
+        #self.assertTrue(publish_return['id'])
         wia.Stream.disconnect()
         count = 0
         while count < self.timeout:
@@ -28,6 +28,12 @@ class EventsTest(unittest2.TestCase):
                 break
         if wia.Stream.connected:
             raise Exception("Unable to disconnect")
+        wia.secret_key = None
+
+    def test_events_publish_file(self):
+        wia.secret_key = os.environ['device_secret_key']
+        publish_return = wia.Event.publish(name='test_event_other_filesud', data=130, file=open('test-file.txt', 'rb'))
+        #self.assertTrue(publish_return['id'])
         wia.secret_key = None
 
     def test_device_org_retrieve(self):

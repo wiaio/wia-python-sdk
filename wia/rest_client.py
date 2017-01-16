@@ -8,13 +8,15 @@ wia_post:
         kwargs: variable-length dict which can
                 contain data for post request
 '''
-def post(path, kwargs, device=None):
+def post(path, kwargs):
     key = 'Bearer ' + wia.secret_key
     url = wia.rest_api_base + '/' + path
     headers = {'Authorization': key,
                 'x-app-key': wia.app_key}
-    data = kwargs
-    r = requests.post(url, json=data, headers=headers)
+    if kwargs['file']:
+        r = requests.post(url, data={'name': kwargs['name'], 'data': kwargs['data']}, headers=headers, files={'file': kwargs['file']})
+    else:
+        r = requests.post(url, json={'name': kwargs['name'], 'data': kwargs['data']}, headers=headers)
     try:
         r = r.json()
     except ValueError:
@@ -41,7 +43,6 @@ def put(path, **kwargs):
 wia_get:
     args:
         path:   string specifying url path
-        sk: secret_key IFF device is retrieving itself
         kwargs: variable-length dict which can
                 contain query params
 '''
