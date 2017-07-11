@@ -13,7 +13,7 @@ def post(path, kwargs):
     url = wia.rest_api_base + '/' + path
     headers = {'Authorization': key,
                 'x-app-key': wia.app_key}
-    if kwargs['file']:
+    if 'file' in kwargs:
         r = requests.post(url, data={'name': kwargs['name'], 'data': kwargs['data']}, headers=headers, files={'file': kwargs['file']})
     else:
         r = requests.post(url, json={'name': kwargs['name'], 'data': kwargs['data']}, headers=headers)

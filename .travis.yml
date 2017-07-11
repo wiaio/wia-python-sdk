@@ -17,10 +17,5 @@ notifications:
   slack:
     secure: LOJ5Om++3aQqHzKmEUeZL4TNvBlZ/v8MvSMcq7npfCV9hSb3IvmoNhBhAR9xYvNjEQb/okCMLLtxQe2m/QNMH84EM6wxq0+suZedwMY10zRkNV90d/nfHQPgZFvJJuD3Wm3kr0JB45lt8ClxN2njFYf7JDhGeyu8XeXti+9QZixrhhJfuxoZEmgUXLCfKMVUgvM4kfAduV2wvedXHx5RIz1dMrOK0JPUsbzPQZwt6Pb1hCPcVuhlOgo/F4Rer0jkdJ3tXrK5Xki2rRtax0LLqHgh+JFB+IpJovMPIMoAJ5/tZDMigQLqQvOWcS2zBXSv+mENXj7ZUknrna4aVQ8DGnUjk6bPPUjdRZIWGQNqI1LMUsf/SPB3OWUol2VaApdGH93D5L9BGN9mA3fH+4LijFs4ttbKt9DBMUlug6WOr7teuYlnq0v2O9XJpUh+vpeQCerho2j9fLGyoEj31S89SF/v/PsJtuVkETR8eu2qMJK5T3FL7jzqaYIXQFemtaOqqfsqm+Ju+tKIZN9aCsOAcnORggnMTebe5AzYfxkN4F0O746/nFLFDNeu6fNUYx2cXRDFB1pADYBZygbQ0yfDRq80W9CYuSPzqbbcvy1EJoRysc5lORFvK0xBqiOPR253WIP6hoRcBqLdK/k9tqyUAcMASJqpSJMk4yGmzCp0tiU=
 
-#HOW TO FIX TRAVIS PROBLEM
-# env:
-#   global:
-#     secure: #LONG ENCRYPTED STRING
-
 script:
   - python -W always setup.py test

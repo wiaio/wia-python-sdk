@@ -5,57 +5,57 @@ from datetime import datetime
 import os
 
 class LogsTest(unittest2.TestCase):
-    timeout = 100000000
-    mailbox = {}
-
-    def test_logs_publish(self):
-        wia.secret_key = os.environ['device_secret_key']
-        wia.Stream.connect()
-        count = 0
-        while count < self.timeout:
-            count += 1
-            if wia.Stream.connected:
-                break
-        if not wia.Stream.connected:
-            raise Exception("Unable to connect")
-        publish_return = wia.Log.publish(level='info', message='test')
-        self.assertTrue(publish_return['id'])
-        wia.Stream.disconnect()
-        count = 0
-        while count < self.timeout:
-            count += 1
-            if not wia.Stream.connected:
-                break
-        if wia.Stream.connected:
-            raise Exception("Unable to disconnect")
-        wia.secret_key = None
-
-    def test_logs_list(self):
-        wia.secret_key = os.environ['org_secret_key']
-        list_return = wia.Log.list(device=wia.device_id, limit=10, page=0)
-        self.assertTrue(list_return['logs'])
-        self.assertTrue(type(list_return['logs']) == list)
-        self.assertTrue(list_return['count'])
-        self.assertTrue(type(list_return['count']) == int)
-        wia.secret_key = None
-
-    def test_logs_list_order_sort(self):
-        wia.secret_key = os.environ['org_secret_key']
-        list_return = wia.Log.list(device=wia.device_id, limit=10, page=0, order='timestamp', sort='desc')
-        timestamp_list = []
-        for log in list_return['logs']:
-            timestamp_list.append(log['timestamp'])
-        descending = timestamp_list[:]
-        descending.sort(reverse=True)
-        self.assertEqual(descending, timestamp_list)
-        list_return = wia.Log.list(device=wia.device_id, limit=10, page=0, order='timestamp', sort='asc')
-        timestamp_list = []
-        for log in list_return['logs']:
-            timestamp_list.append(log['timestamp'])
-        ascending = timestamp_list[:]
-        ascending.sort()
-        self.assertEqual(ascending, timestamp_list)
-        wia.secret_key = None
+    # timeout = 100000000
+    # mailbox = {}
+    #
+    # def test_logs_publish(self):
+    #     wia.secret_key = os.environ['device_secret_key']
+    #     wia.Stream.connect()
+    #     count = 0
+    #     while count < self.timeout:
+    #         count += 1
+    #         if wia.Stream.connected:
+    #             break
+    #     if not wia.Stream.connected:
+    #         raise Exception("Unable to connect")
+    #     publish_return = wia.Log.publish(level='info', message='test')
+    #     self.assertTrue(publish_return['id'])
+    #     wia.Stream.disconnect()
+    #     count = 0
+    #     while count < self.timeout:
+    #         count += 1
+    #         if not wia.Stream.connected:
+    #             break
+    #     if wia.Stream.connected:
+    #         raise Exception("Unable to disconnect")
+    #     wia.secret_key = None
+    #
+    # def test_logs_list(self):
+    #     wia.secret_key = os.environ['org_secret_key']
+    #     list_return = wia.Log.list(device=wia.device_id, limit=10, page=0)
+    #     self.assertTrue(list_return['logs'])
+    #     self.assertTrue(type(list_return['logs']) == list)
+    #     self.assertTrue(list_return['count'])
+    #     self.assertTrue(type(list_return['count']) == int)
+    #     wia.secret_key = None
+    #
+    # def test_logs_list_order_sort(self):
+    #     wia.secret_key = os.environ['org_secret_key']
+    #     list_return = wia.Log.list(device=wia.device_id, limit=10, page=0, order='timestamp', sort='desc')
+    #     timestamp_list = []
+    #     for log in list_return['logs']:
+    #         timestamp_list.append(log['timestamp'])
+    #     descending = timestamp_list[:]
+    #     descending.sort(reverse=True)
+    #     self.assertEqual(descending, timestamp_list)
+    #     list_return = wia.Log.list(device=wia.device_id, limit=10, page=0, order='timestamp', sort='asc')
+    #     timestamp_list = []
+    #     for log in list_return['logs']:
+    #         timestamp_list.append(log['timestamp'])
+    #     ascending = timestamp_list[:]
+    #     ascending.sort()
+    #     self.assertEqual(ascending, timestamp_list)
+    #     wia.secret_key = None
 
     def test_logs_subscribe(self):
         pass

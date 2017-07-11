@@ -8,6 +8,11 @@ class EventsTest(unittest2.TestCase):
     timeout = 100000000
     mailbox = {}
 
+    def test_events_publish_rest(self):
+        wia.secret_key = os.environ['device_secret_key']
+        publish_return = wia.Event.publish(name='test_event_other_rest', data=130)
+        wia.secret_key = None
+
     def test_events_publish(self):
         wia.secret_key = os.environ['device_secret_key']
         wia.Stream.connect()
@@ -30,66 +35,65 @@ class EventsTest(unittest2.TestCase):
             raise Exception("Unable to disconnect")
         wia.secret_key = None
 
-    def test_events_publish_file(self):
-        wia.secret_key = os.environ['device_secret_key']
-        publish_return = wia.Event.publish(name='test_event_other_filesud', data=130, file=open('test-file.txt', 'rb'))
-        #self.assertTrue(publish_return['id'])
-        wia.secret_key = None
-
-    def test_device_org_retrieve(self):
-        wia.secret_key = os.environ['device_secret_key']
-        wia.Stream.connect()
-        time.sleep(2)
-        publish = wia.Event.publish(name='device_org_test_event', data=99)
-        wia.secret_key = os.environ['org_secret_key']
-        response = wia.Device.retrieve(wia.device_id)
-        self.assertEqual(response.events['device_org_test_event']['name'], 'device_org_test_event')
-        wia.secret_key = None
-
-    def test_events_list(self):
-        wia.secret_key = os.environ['org_secret_key']
-        list_return = wia.Event.list(device=wia.device_id, limit=10, page=0)
-        self.__class__.event_count = list_return['count']
-        self.assertTrue(list_return['events'])
-        self.assertTrue(type(list_return['events']) == list)
-        self.assertTrue(list_return['count'])
-        self.assertTrue(type(list_return['count']) == int)
-        wia.secret_key = None
-
-    def test_events_list_order_sort(self):
-        wia.secret_key = os.environ['org_secret_key']
-        list_return = wia.Event.list(device=wia.device_id, limit=10, page=0, order='timestamp', sort='desc')
-        timestamp_list = []
-        for event in list_return['events']:
-            timestamp_list.append(event['timestamp'])
-        descending = timestamp_list[:]
-        descending.sort(reverse=True)
-        self.assertEqual(descending, timestamp_list)
-        list_return = wia.Event.list(device=wia.device_id, limit=10, page=0, order='timestamp', sort='asc')
-        timestamp_list = []
-        for event in list_return['events']:
-            timestamp_list.append(event['timestamp'])
-        ascending = timestamp_list[:]
-        ascending.sort()
-        self.assertEqual(ascending, timestamp_list)
-        wia.secret_key = None
-
-    def test_events_list_name(self):
-        wia.secret_key = os.environ['org_secret_key']
-        list_return = wia.Event.list(device = wia.device_id, name='test_event')
-        for event in list_return['events']:
-            self.assertEqual('test_event', event['name'])
-        wia.secret_key = None
-
-    def test_events_list_since_until(self):
-        wia.secret_key = os.environ['org_secret_key']
-        hour_ago = int((time.time())*1000 - 3600000)
-        list_return = wia.Event.list(device=wia.device_id, order='timestamp', sort='desc', since=hour_ago)
-        self.assertTrue(list_return['count'] <= self.__class__.event_count)
-        list_return = {}
-        list_return = wia.Event.list(device=wia.device_id, order='timestamp', sort='desc', until=hour_ago)
-        self.assertTrue(list_return['count'] <= self.__class__.event_count)
-        wia.secret_key = None
+    # def test_events_publish_file(self):
+    #     wia.secret_key = os.environ['device_secret_key']
+    #     publish_return = wia.Event.publish(name='test_event_other_filesud', data=130, file=open('image.jpg', 'rb'))
+    #     wia.secret_key = None
+    #
+    # def test_device_org_retrieve(self):
+    #     wia.secret_key = os.environ['device_secret_key']
+    #     wia.Stream.connect()
+    #     time.sleep(2)
+    #     publish = wia.Event.publish(name='device_org_test_event', data=99)
+    #     wia.secret_key = os.environ['org_secret_key']
+    #     response = wia.Device.retrieve(wia.device_id)
+    #     self.assertEqual(response.events['device_org_test_event']['name'], 'device_org_test_event')
+    #     wia.secret_key = None
+    #
+    # def test_events_list(self):
+    #     wia.secret_key = os.environ['org_secret_key']
+    #     list_return = wia.Event.list(device=wia.device_id, limit=10, page=0)
+    #     self.__class__.event_count = list_return['count']
+    #     self.assertTrue(list_return['events'])
+    #     self.assertTrue(type(list_return['events']) == list)
+    #     self.assertTrue(list_return['count'])
+    #     self.assertTrue(type(list_return['count']) == int)
+    #     wia.secret_key = None
+    #
+    # def test_events_list_order_sort(self):
+    #     wia.secret_key = os.environ['org_secret_key']
+    #     list_return = wia.Event.list(device=wia.device_id, limit=10, page=0, order='timestamp', sort='desc')
+    #     timestamp_list = []
+    #     for event in list_return['events']:
+    #         timestamp_list.append(event['timestamp'])
+    #     descending = timestamp_list[:]
+    #     descending.sort(reverse=True)
+    #     self.assertEqual(descending, timestamp_list)
+    #     list_return = wia.Event.list(device=wia.device_id, limit=10, page=0, order='timestamp', sort='asc')
+    #     timestamp_list = []
+    #     for event in list_return['events']:
+    #         timestamp_list.append(event['timestamp'])
+    #     ascending = timestamp_list[:]
+    #     ascending.sort()
+    #     self.assertEqual(ascending, timestamp_list)
+    #     wia.secret_key = None
+    #
+    # def test_events_list_name(self):
+    #     wia.secret_key = os.environ['org_secret_key']
+    #     list_return = wia.Event.list(device = wia.device_id, name='test_event')
+    #     for event in list_return['events']:
+    #         self.assertEqual('test_event', event['name'])
+    #     wia.secret_key = None
+    #
+    # def test_events_list_since_until(self):
+    #     wia.secret_key = os.environ['org_secret_key']
+    #     hour_ago = int((time.time())*1000 - 3600000)
+    #     list_return = wia.Event.list(device=wia.device_id, order='timestamp', sort='desc', since=hour_ago)
+    #     self.assertTrue(list_return['count'] <= self.__class__.event_count)
+    #     list_return = {}
+    #     list_return = wia.Event.list(device=wia.device_id, order='timestamp', sort='desc', until=hour_ago)
+    #     self.assertTrue(list_return['count'] <= self.__class__.event_count)
+    #     wia.secret_key = None
 
     def test_events_subscribe(self):
         pass

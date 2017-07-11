@@ -7,6 +7,11 @@ class SensorsTest(unittest2.TestCase):
     timeout = 100000000
     mailbox = {}
 
+    def test_sensors_publish_rest(self):
+        wia.secret_key = os.environ['device_secret_key']
+        publish_return = wia.Sensor.publish(name='test_sensor_rest_1', data=99)
+        wia.secret_key = None
+
     def test_sensors_publish(self):
         wia.secret_key = os.environ['device_secret_key']
         wia.Stream.connect()
@@ -29,51 +34,51 @@ class SensorsTest(unittest2.TestCase):
             raise Exception("Unable to disconnect")
         wia.secret_key = None
 
-    def test_sensors_list(self):
-        wia.secret_key = os.environ['org_secret_key']
-        list_return = wia.Sensor.list(device=wia.device_id, limit=10, page=0)
-        self.__class__.sensor_count = list_return['count']
-        self.assertTrue(list_return['sensors'])
-        self.assertTrue(type(list_return['sensors']) == list)
-        self.assertTrue(list_return['count'])
-        self.assertTrue(type(list_return['count']) == int)
-        wia.secret_key = None
-
-    def test_sensors_list_order_sort(self):
-        wia.secret_key = os.environ['org_secret_key']
-        list_return = wia.Sensor.list(device=wia.device_id, limit=10, page=0, order='timestamp', sort='desc')
-        timestamp_list = []
-        for sensor in list_return['sensors']:
-            timestamp_list.append(sensor['timestamp'])
-        descending = timestamp_list[:]
-        descending.sort(reverse=True)
-        self.assertEqual(descending, timestamp_list)
-        list_return = wia.Sensor.list(device=wia.device_id, limit=10, page=0, order='timestamp', sort='asc')
-        timestamp_list = []
-        for sensor in list_return['sensors']:
-            timestamp_list.append(sensor['timestamp'])
-        ascending = timestamp_list[:]
-        ascending.sort()
-        self.assertEqual(ascending, timestamp_list)
-        wia.secret_key = None
-
-    def test_sensors_list_name(self):
-        wia.secret_key = os.environ['org_secret_key']
-        list_return = wia.Sensor.list(device = wia.device_id, name='test_sensor_1')
-        for sensor in list_return['sensors']:
-            self.assertEqual('test_sensor_1', sensor['name'])
-        wia.secret_key = None
-
-    def test_sensors_list_since_until(self):
-        wia.secret_key = os.environ['org_secret_key']
-        hour_ago = int((time.time())*1000 - 3600000)
-        list_return = wia.Sensor.list(device=wia.device_id, order='timestamp', sort='desc', since=hour_ago)
-        self.assertTrue(list_return['count'] <= self.__class__.sensor_count)
-        list_return = {}
-        list_return = wia.Sensor.list(device=wia.device_id, order='timestamp', sort='desc', until=hour_ago)
-        self.assertTrue(list_return['count'] <= self.__class__.sensor_count)
-        wia.secret_key = None
-
+    # def test_sensors_list(self):
+    #     wia.secret_key = os.environ['org_secret_key']
+    #     list_return = wia.Sensor.list(device=wia.device_id, limit=10, page=0)
+    #     self.__class__.sensor_count = list_return['count']
+    #     self.assertTrue(list_return['sensors'])
+    #     self.assertTrue(type(list_return['sensors']) == list)
+    #     self.assertTrue(list_return['count'])
+    #     self.assertTrue(type(list_return['count']) == int)
+    #     wia.secret_key = None
+    #
+    # def test_sensors_list_order_sort(self):
+    #     wia.secret_key = os.environ['org_secret_key']
+    #     list_return = wia.Sensor.list(device=wia.device_id, limit=10, page=0, order='timestamp', sort='desc')
+    #     timestamp_list = []
+    #     for sensor in list_return['sensors']:
+    #         timestamp_list.append(sensor['timestamp'])
+    #     descending = timestamp_list[:]
+    #     descending.sort(reverse=True)
+    #     self.assertEqual(descending, timestamp_list)
+    #     list_return = wia.Sensor.list(device=wia.device_id, limit=10, page=0, order='timestamp', sort='asc')
+    #     timestamp_list = []
+    #     for sensor in list_return['sensors']:
+    #         timestamp_list.append(sensor['timestamp'])
+    #     ascending = timestamp_list[:]
+    #     ascending.sort()
+    #     self.assertEqual(ascending, timestamp_list)
+    #     wia.secret_key = None
+    #
+    # def test_sensors_list_name(self):
+    #     wia.secret_key = os.environ['org_secret_key']
+    #     list_return = wia.Sensor.list(device = wia.device_id, name='test_sensor_1')
+    #     for sensor in list_return['sensors']:
+    #         self.assertEqual('test_sensor_1', sensor['name'])
+    #     wia.secret_key = None
+    #
+    # def test_sensors_list_since_until(self):
+    #     wia.secret_key = os.environ['org_secret_key']
+    #     hour_ago = int((time.time())*1000 - 3600000)
+    #     list_return = wia.Sensor.list(device=wia.device_id, order='timestamp', sort='desc', since=hour_ago)
+    #     self.assertTrue(list_return['count'] <= self.__class__.sensor_count)
+    #     list_return = {}
+    #     list_return = wia.Sensor.list(device=wia.device_id, order='timestamp', sort='desc', until=hour_ago)
+    #     self.assertTrue(list_return['count'] <= self.__class__.sensor_count)
+    #     wia.secret_key = None
+    #
     def test_sensors_subscribe(self):
         pass
         # wia.secret_key = os.environ['org_secret_key']
