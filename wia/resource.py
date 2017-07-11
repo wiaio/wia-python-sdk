@@ -140,12 +140,7 @@ class Sensor(object):
 
     @classmethod
     def list(self, **kwargs):
-        list_sensors = get('sensors', **kwargs)
-        for sensor in list_sensors['sensors']:
-            data = sensor
-            logger.info("sensor: %s", data)
-        logger.info("count: %s", list_sensors['count'])
-        return list_sensors
+        return get('sensors', **kwargs)
 
 class Location(object):
     def __init__(self, **kwargs):
