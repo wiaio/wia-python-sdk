@@ -14,14 +14,16 @@ def post(path, kwargs):
     headers = {'Authorization': key,
                 'x-app-key': wia.app_key}
     if 'file' in kwargs:
-        r = requests.post(url, data={'name': kwargs['name'], 'data': kwargs['data']}, headers=headers, files={'file': kwargs['file']})
+        kwargsCopy = dict(kwargs)
+        del kwargsCopy['file']
+        r = requests.post(url, data=kwargsCopy, headers=headers, files={'file': kwargs['file']})
     else:
-        r = requests.post(url, json={'name': kwargs['name'], 'data': kwargs['data']}, headers=headers)
+        r = requests.post(url, json=kwargs, headers=headers)
     try:
-        r = r.json()
+        jsonResponse = r.json()
     except ValueError:
         pass
-    return r
+    return jsonResponse
 
 '''
 wia_put:
