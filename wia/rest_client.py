@@ -11,8 +11,13 @@ wia_post:
 def post(path, kwargs):
     key = 'Bearer ' + wia.secret_key
     url = wia.rest_api_base + '/' + path
-    headers = {'Authorization': key,
-                'x-app-key': wia.app_key}
+    headers = {}
+    if wia.secret_key is not None:
+        headers['Authorization'] = key,
+
+    if wia.app_key is not None:
+        headers['x-app-key'] = wia.app_key
+
     if 'file' in kwargs:
         kwargsCopy = dict(kwargs)
         del kwargsCopy['file']

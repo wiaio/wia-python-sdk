@@ -283,16 +283,11 @@ class Function(object):
 
 class Customer(object):
     @classmethod
-    def signup(self, fullName, email, password):
-        data={'fullName': fullName,
-                'email': email,
-                'password':password}
-        return post('customers/signup', data)
+    def signup(self, **kwargs):
+        return post('customers/signup', kwargs)
 
     @classmethod
-    def login(self, username, password):
-        data={'username':username,
-                'password':password,
-                'scope':'customer',
-                'grantType':'password'}
-        return post('auth/token', data)
+    def login(self, **kwargs):
+        kwargs['scope'] = 'customer'
+        kwargs['grantType'] = 'password'
+        return post('auth/token', kwargs)
