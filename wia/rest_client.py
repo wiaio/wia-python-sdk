@@ -13,7 +13,7 @@ def post(path, kwargs):
     url = wia.rest_api_base + '/' + path
     headers = {}
     if wia.secret_key is not None:
-        headers['Authorization'] = key,
+        headers['Authorization'] = key
 
     if wia.app_key is not None:
         headers['x-app-key'] = wia.app_key
