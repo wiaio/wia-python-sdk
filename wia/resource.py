@@ -70,6 +70,7 @@ class Event(object):
         if wia.Stream.connected and current_device.id:
             topic = 'devices/' + current_device.id + '/' + path + '/' + kwargs['name']
             Stream.publish(topic=topic, **kwargs)
+            return {}
         else:
             return post(path, kwargs)
 
@@ -112,11 +113,12 @@ class Sensor(object):
     def publish(self, **kwargs):
         current_device = wia.Device.retrieve('me')
         path = 'sensors'
-        new_sensor = post(path, kwargs)
         if wia.Stream.connected and current_device.id:
             topic = 'devices/' + current_device.id + '/' + path + '/' + kwargs['name']
             Stream.publish(topic=topic, **kwargs)
-        return new_sensor
+            return {}
+        else:
+            return post(path, kwargs)
 
     @classmethod
     def subscribe(self, **kwargs):
@@ -155,11 +157,13 @@ class Location(object):
     def publish(self, **kwargs):
         current_device = wia.Device.retrieve('me')
         path = 'locations'
-        new_location = post(path, kwargs)
+        # new_location = post(path, kwargs)
         if wia.Stream.connected and current_device.id:
             topic = 'devices/' + current_device.id + '/' + path
             Stream.publish(topic=topic, **kwargs)
-        return new_location
+            return {}
+        else:
+            return post(path, kwargs)
 
     @classmethod
     def subscribe(self, **kwargs):
@@ -193,11 +197,13 @@ class Log(object):
     def publish(self, **kwargs):
         current_device = wia.Device.retrieve('me')
         path = 'logs'
-        new_log = post(path, kwargs)
+        # new_log = post(path, kwargs)
         if wia.Stream.connected and current_device.id:
-            topic = 'devices/' + current_device.id + '/' + path
+            topic = 'devices/' + current_device.id + '/' + path + '/' + kwargs['level']
             Stream.publish(topic=topic, **kwargs)
-        return new_log
+            return {}
+        else:
+            return post(path, kwargs)
 
     @classmethod
     def subscribe(self, **kwargs):
