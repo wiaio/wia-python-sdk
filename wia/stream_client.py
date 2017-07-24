@@ -1,10 +1,11 @@
 import paho.mqtt.client as mqtt
-import wia
 import threading
 import resource
 import json
 import re
 import sys
+
+from wia import Wia
 
 client = mqtt.Client()
 function_subscriptions = {}
@@ -17,13 +18,13 @@ class Stream(object):
     @classmethod
     def connect(self):
         global client
-        client.username_pw_set(wia.secret_key, ' ')
+        client.username_pw_set(Wia().secret_key, ' ')
         client.on_connect = Stream.on_connect
         client.on_disconnect = Stream.on_disconnect
         client.on_subscribe = Stream.on_subscribe
         client.on_unsubscribe = Stream.on_unsubscribe
         client.on_message = Stream.on_message
-        client.connect(wia.stream_host, wia.stream_port, 60)
+        client.connect(Wia().stream_config['host'], Wia().stream_config['port'], 60)
         client.loop_start()
 
     @classmethod

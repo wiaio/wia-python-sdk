@@ -90,10 +90,11 @@ class Event(object):
     @classmethod
     def list(self, **kwargs):
         response = get('events', **kwargs)
+        responseJson = response.json()
         events = []
-        for event in response['events']:
-            events = Event(event)
-        return {'event':events,'count':response['count']}
+        for event in responseJson['events']:
+            events.append(Event(**event))
+        return {'events':events,'count': responseJson['count']}
 
 class Sensor(object):
     def __init__(self, **kwargs):
