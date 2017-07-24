@@ -140,7 +140,7 @@ class Sensor(object):
         sensors = []
         for sensor in responseJson['sensors']:
             sensors.append(Sensor(**sensor))
-        return {'sensors':events,'count': responseJson['count']}
+        return {'sensors':sensors,'count': responseJson['count']}
 
 class Location(object):
     def __init__(self, **kwargs):
@@ -175,12 +175,12 @@ class Location(object):
 
     @classmethod
     def list(self, **kwargs):
-        list_locations = get('locations', **kwargs)
-        for location in list_locations['locations']:
-            data = location
-            logging.debug("Location: %s", data)
-        logging.debug("Count: %s", list_locations['count'])
-        return list_locations
+        response = get('locations', **kwargs)
+        responseJson = response.json()
+        locations = []
+        for location in responseJson['locations']:
+            locations.append(Location(**location))
+        return {'locations':locations,'count': responseJson['count']}
 
 class Log(object):
     def __init__(self, **kwargs):
@@ -213,12 +213,12 @@ class Log(object):
 
     @classmethod
     def list(self, **kwargs):
-        list_logs = get('logs', **kwargs)
-        for log in list_logs['logs']:
-            data = log
-            logging.info("Log: %s", data)
-        logging.info("Count: %s", list_logs['count'])
-        return list_logs
+        response = get('logs', **kwargs)
+        responseJson = response.json()
+        logs = []
+        for log in responseJson['logs']:
+            logs.append(Log(**log))
+        return {'logs':logs,'count': responseJson['count']}
 
 class Function(object):
     def __init__(self, **kwargs):
