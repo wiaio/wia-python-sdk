@@ -59,7 +59,7 @@ class Event(object):
     @classmethod
     def publish(self, **kwargs):
         path = 'events'
-        if kwargs['file'] is None and wia.Stream.connected and Wia().client_id is not None:
+        if 'file' in kwargs and wia.Stream.connected and Wia().client_id is not None:
             topic = 'devices/' + Wia().client_id + '/' + path + '/' + kwargs['name']
             Stream.publish(topic=topic, **kwargs)
             return Event()
