@@ -135,7 +135,12 @@ class Sensor(object):
 
     @classmethod
     def list(self, **kwargs):
-        return get('sensors', **kwargs)
+        response = get('sensors', **kwargs)
+        responseJson = response.json()
+        sensors = []
+        for sensor in responseJson['sensors']:
+            sensors.append(Sensor(**sensor))
+        return {'sensors':events,'count': responseJson['count']}
 
 class Location(object):
     def __init__(self, **kwargs):
