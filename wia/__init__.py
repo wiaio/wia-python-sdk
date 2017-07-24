@@ -88,6 +88,14 @@ class Wia(_Singleton('SingletonMeta', (object,), {})):
         self.__rest_config = value
 
     @property
+    def stream_config(self):
+        return self.__stream_config
+
+    @stream_config.setter
+    def stream_config(self, value):
+        self.__stream_config = value
+
+    @property
     def client_id(self):
         return self.__client_id
 
