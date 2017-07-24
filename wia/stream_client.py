@@ -18,7 +18,7 @@ class Stream(object):
     @classmethod
     def connect(self):
         global client
-        client.username_pw_set(Wia().secret_key, ' ')
+        client.username_pw_set(Wia().access_token, ' ')
         client.on_connect = Stream.on_connect
         client.on_disconnect = Stream.on_disconnect
         client.on_subscribe = Stream.on_subscribe
