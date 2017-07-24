@@ -13,7 +13,6 @@ wia_post:
                 contain data for post request
 '''
 def post(path, kwargs):
-    logging.debug('In post request')
     url = generate_url(path)
     headers = generate_headers()
 
