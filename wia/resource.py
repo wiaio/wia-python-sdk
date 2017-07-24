@@ -25,7 +25,8 @@ class Device(object):
     @classmethod
     def retrieve(self, id):
         path = 'devices/' + id
-        return Device(**retrieved_device)
+        response = get(path)
+        return Device(**response.json())
 
     def save(self):
         path = 'devices/' + self.id
