@@ -1,9 +1,8 @@
-import wia
-from wia.rest_client import post, get, put, delete
-from wia.util import logger
-from wia.stream_client import Stream
 import time
 import logging
+
+from wia import Wia
+from wia.rest_client import post, get, put, delete
 
 class Device(object):
     def __init__(self, **kwargs):
@@ -44,8 +43,8 @@ class Device(object):
         list_devices = get('devices', **kwargs)
         for device in list_devices['devices']:
             data = device
-            logger.info("device: %s", data)
-        logger.info("count: %s", list_devices['count'])
+            logging.debug("Device: %s", data)
+        logging.debug("Count: %s", list_devices['count'])
         return list_devices
 
 class Event(object):
@@ -59,13 +58,14 @@ class Event(object):
     @classmethod
     def publish(self, **kwargs):
         path = 'events'
-        if 'file' in kwargs and wia.Stream.connected and Wia().client_id is not None:
+        if not ('file' in kwargs) and Wia().Stream.connected and Wia().client_id is not None:
             topic = 'devices/' + Wia().client_id + '/' + path + '/' + kwargs['name']
-            Stream.publish(topic=topic, **kwargs)
+            Wia().Stream.publish(topic=topic, **kwargs)
             return Event()
         else:
-            response = post(path, **kwargs)
-            return Event(response)
+            response = post(path, kwargs)
+            logging.debug('Response: %s', response)
+            return Event(**response.json())
 
     @classmethod
     def subscribe(self, **kwargs):
@@ -75,7 +75,7 @@ class Event(object):
             topic += kwargs['name']
         else:
             topic += '+'
-        Stream.subscribe(topic=topic, func=kwargs['func'])
+        Wia().Stream.subscribe(topic=topic, func=kwargs['func'])
 
     @classmethod
     def unsubscribe(self, **kwargs):
@@ -85,7 +85,7 @@ class Event(object):
             topic += kwargs['name']
         else:
             topic += '+'
-        Stream.unsubscribe(topic=topic)
+        Wia().Stream.unsubscribe(topic=topic)
 
     @classmethod
     def list(self, **kwargs):
@@ -104,9 +104,9 @@ class Sensor(object):
     @classmethod
     def publish(self, **kwargs):
         path = 'sensors'
-        if wia.Stream.connected and Wia().client_id is not None:
+        if Wia().Stream.connected and Wia().client_id is not None:
             topic = 'devices/' + Wia().client_id + '/' + path + '/' + kwargs['name']
-            Stream.publish(topic=topic, **kwargs)
+            Wia().Stream.publish(topic=topic, **kwargs)
             return {}
         else:
             return post(path, kwargs)
@@ -119,7 +119,7 @@ class Sensor(object):
             topic += kwargs['name']
         else:
             topic += '+'
-        Stream.subscribe(topic=topic, func=kwargs['func'])
+        Wia().Stream.subscribe(topic=topic, func=kwargs['func'])
 
     @classmethod
     def unsubscribe(self, **kwargs):
@@ -129,7 +129,7 @@ class Sensor(object):
             topic += kwargs['name']
         else:
             topic += '+'
-        Stream.unsubscribe(topic=topic)
+        Wia().Stream.unsubscribe(topic=topic)
 
     @classmethod
     def list(self, **kwargs):
@@ -147,9 +147,9 @@ class Location(object):
     @classmethod
     def publish(self, **kwargs):
         path = 'locations'
-        if wia.Stream.connected and Wia().client_id is not None:
+        if Wia().Stream.connected and Wia().client_id is not None:
             topic = 'devices/' + Wia().client_id + '/' + path
-            Stream.publish(topic=topic, **kwargs)
+            Wia().Stream.publish(topic=topic, **kwargs)
             return {}
         else:
             return post(path, kwargs)
@@ -158,21 +158,21 @@ class Location(object):
     def subscribe(self, **kwargs):
         device = kwargs['device']
         topic = 'devices/' + device + '/locations'
-        Stream.subscribe(topic=topic, func=kwargs['func'])
+        Wia().Stream.subscribe(topic=topic, func=kwargs['func'])
 
     @classmethod
     def unsubscribe(self, **kwargs):
         device = kwargs['device']
         topic = 'devices/' + device + '/locations'
-        Stream.unsubscribe(topic=topic)
+        Wia().Stream.unsubscribe(topic=topic)
 
     @classmethod
     def list(self, **kwargs):
         list_locations = get('locations', **kwargs)
         for location in list_locations['locations']:
             data = location
-            logger.info("location: %s", data)
-        logger.info("count: %s", list_locations['count'])
+            logging.debug("Location: %s", data)
+        logging.debug("Count: %s", list_locations['count'])
         return list_locations
 
 class Log(object):
@@ -185,9 +185,9 @@ class Log(object):
     @classmethod
     def publish(self, **kwargs):
         path = 'logs'
-        if wia.Stream.connected and Wia().client_id is not None:
+        if Wia().Stream.connected and Wia().client_id is not None:
             topic = 'devices/' + Wia().client_id + '/' + path + '/' + kwargs['level']
-            Stream.publish(topic=topic, **kwargs)
+            Wia().Stream.publish(topic=topic, **kwargs)
             return {}
         else:
             return post(path, kwargs)
@@ -196,21 +196,21 @@ class Log(object):
     def subscribe(self, **kwargs):
         device = kwargs['device']
         topic = 'devices/' + device + '/logs'
-        Stream.subscribe(topic=topic, func=kwargs['func'])
+        Wia().Stream.subscribe(topic=topic, func=kwargs['func'])
 
     @classmethod
     def unsubscribe(self, **kwargs):
         device = kwargs['device']
         topic = 'devices/' + device + '/logs'
-        Stream.unsubscribe(topic=topic)
+        Wia().Stream.unsubscribe(topic=topic)
 
     @classmethod
     def list(self, **kwargs):
         list_logs = get('logs', **kwargs)
         for log in list_logs['logs']:
             data = log
-            logger.info("log: %s", data)
-        logger.info("count: %s", list_logs['count'])
+            logging.info("Log: %s", data)
+        logging.info("Count: %s", list_logs['count'])
         return list_logs
 
 class Function(object):
@@ -228,16 +228,15 @@ class Function(object):
         path = 'functions'
         data = {'name': kwargs['name']}
         new_function = post(path, data)
-        device = wia.device_id
-        topic = 'devices/' + device + '/functions/' + new_function['id'] + '/call'
+        topic = 'devices/' + Wia().client_id + '/functions/' + new_function['id'] + '/call'
         attempts = 0
         while attempts < 6:
-            Stream.subscribe(topic=topic, func=kwargs['function'])
+            Wia().Stream.subscribe(topic=topic, func=kwargs['function'])
             time.sleep(0.5)
             attempts += 1
-            if Stream.subscribed == True:
+            if Wia().Stream.subscribed == True:
                 break
-        if not Stream.subscribed:
+        if not Wia().Stream.subscribed:
             raise Exception("SUBSCRIPTION UNSUCCESSFUL")
         return new_function
 
@@ -251,17 +250,17 @@ class Function(object):
 
     @classmethod
     def call(self, **kwargs):
-        if wia.Stream.connected:
+        if Wia().Stream.connected:
             topic = 'devices/' + kwargs['device'] + '/functions/' + kwargs['func'] + '/call'
             if 'data' not in kwargs:
-                Stream.publish(topic=topic)
+                Wia().Stream.publish(topic=topic)
             elif type(kwargs['data']) is dict:
-                Stream.publish(topic=topic, **kwargs['data'])
+                Wia().Stream.publish(topic=topic, **kwargs['data'])
             else:
                 data = kwargs['data']
                 kwargs.pop('data')
                 kwargs['data'] = {'arg': data}
-                Stream.publish(topic=topic, **kwargs['data'])
+                Wia().Stream.publish(topic=topic, **kwargs['data'])
         else:
             raise Exception("Unable to call function, not connected to stream")
 
@@ -270,8 +269,8 @@ class Function(object):
         list_functions = get('functions', **kwargs)
         for function in list_functions['functions']:
             data = function
-            logger.info("function: %s", data)
-        logger.info("count: %s", list_functions['count'])
+            logging.debug("Function: %s", data)
+        logging.debug("Count: %s", list_functions['count'])
         return list_functions
 
 class Customer(object):
@@ -293,4 +292,4 @@ class WhoAmI(object):
     @classmethod
     def retrieve(self):
         response = get('whoami')
-        return WhoAmI(**response)
+        return WhoAmI(**response.json())

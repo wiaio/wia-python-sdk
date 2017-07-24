@@ -65,7 +65,7 @@ class Wia(_Singleton('SingletonMeta', (object,), {})):
     def access_token(self, value):
         self.__access_token = value
         self.__auth_info = self.WhoAmI.retrieve()
-        if self.__auth_info is not None:
+        if self.__access_token is not None and self.__auth_info is not None:
             self.__client_id = self.__auth_info.contextData['id']
             logging.debug("Setting client_id as %s", self.__client_id)
         else:

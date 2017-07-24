@@ -13,20 +13,19 @@ wia_post:
                 contain data for post request
 '''
 def post(path, kwargs):
+    logging.debug('In post request')
     url = generate_url(path)
     headers = generate_headers()
 
     if 'file' in kwargs:
+        logging.debug("Has file argument.")
         kwargsCopy = dict(kwargs)
         del kwargsCopy['file']
         r = requests.post(url, data=kwargsCopy, headers=headers, files={'file': kwargs['file']})
     else:
+        logging.debug("No file argument. Posting as JSON.")
         r = requests.post(url, json=kwargs, headers=headers)
-    try:
-        jsonResponse = r.json()
-    except ValueError:
-        pass
-    return jsonResponse
+    return r
 
 '''
 wia_put:
@@ -40,7 +39,7 @@ def put(path, **kwargs):
     headers = generate_headers()
     data = kwargs
     r = requests.put(url, json=data, headers=headers)
-    return r.json()
+    return r
 
 '''
 wia_get:
@@ -54,7 +53,7 @@ def get(path, **kwargs):
     headers = generate_headers()
 
     r = requests.get(url, headers=headers, params=kwargs)
-    return r.json()
+    return r
 
 '''
 wia_delete:
