@@ -1,5 +1,9 @@
 import requests
-import wia
+import logging
+
+from wia import Wia
+
+# TODO: Return error and response in object
 
 '''
 wia_post:
@@ -9,14 +13,8 @@ wia_post:
                 contain data for post request
 '''
 def post(path, kwargs):
-    key = 'Bearer ' + wia.secret_key
-    url = wia.rest_api_base + '/' + path
-    headers = {}
-    if wia.secret_key is not None:
-        headers['Authorization'] = key
-
-    if wia.app_key is not None:
-        headers['x-app-key'] = wia.app_key
+    url = generate_url(path)
+    headers = generate_headers()
 
     if 'file' in kwargs:
         kwargsCopy = dict(kwargs)
@@ -38,10 +36,8 @@ wia_put:
                 contain data for put request
 '''
 def put(path, **kwargs):
-    url = wia.rest_api_base + '/' + path
-    key = 'Bearer ' + wia.secret_key
-    headers = {'Authorization': key,
-                'x-app-key': wia.app_key}
+    url = generate_url(path)
+    headers = generate_headers()
     data = kwargs
     r = requests.put(url, json=data, headers=headers)
     return r.json()
@@ -53,22 +49,44 @@ wia_get:
         kwargs: variable-length dict which can
                 contain query params
 '''
-def get(path=None, **kwargs):
-    key = 'Bearer ' + wia.secret_key
-    url = wia.rest_api_base + '/' + path
-    headers = {'Authorization': key,
-                'x-app-key': wia.app_key}
+def get(path, **kwargs):
+    url = generate_url(path)
+    headers = generate_headers()
+
     r = requests.get(url, headers=headers, params=kwargs)
     return r.json()
+
 '''
 wia_delete:
     args:
         path: string specifying url path
 '''
 def delete(path):
-    url = wia.rest_api_base + '/' + path
-    key = 'Bearer ' + wia.secret_key
-    headers = {'Authorization': key,
-                'x-app-key': wia.app_key}
+    url = generate_url(path)
+    headers = generate_headers()
+
     r = requests.delete(url, headers=headers)
     return r
+
+def generate_url(path):
+    if path is None:
+        path = ''
+
+    url = Wia().rest_config['protocol'] + '://' + Wia().rest_config['host'] + '/' + Wia().rest_config['basePath'] + '/' + path
+
+    logging.debug('URL: %s', url)
+
+    return url
+
+def generate_headers():
+    headers = {}
+
+    if Wia().access_token is not None:
+        headers['Authorization'] = 'Bearer ' + Wia().access_token
+
+    if Wia().app_key is not None:
+        headers['x-app-key'] = Wia().app_key
+
+    logging.debug('Headers: %s', headers)
+
+    return headers

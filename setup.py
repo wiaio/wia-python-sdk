@@ -7,8 +7,8 @@ with open('LONG_DESCRIPTION.rst') as f:
 exec(open("wia/version.py").read())
 
 install_requires = [
-    "requests>=2.7,<3.0",
-    "paho-mqtt>=1.2"
+    "requests>=2.18,<3.0",
+    "paho-mqtt>=1.3"
 ]
 
 setup(

@@ -3,8 +3,7 @@ from wia.rest_client import post, get, put, delete
 from wia.util import logger
 from wia.stream_client import Stream
 import time
-
-unsubscribe_flag = False
+import logging
 
 class Device(object):
     def __init__(self, **kwargs):
@@ -27,10 +26,6 @@ class Device(object):
     @classmethod
     def retrieve(self, id):
         path = 'devices/' + id
-        if (id == 'me'):
-            retrieved_device = get(path)
-        else:
-            retrieved_device = get(path)
         return Device(**retrieved_device)
 
     def save(self):
@@ -55,6 +50,7 @@ class Device(object):
 
 class Event(object):
     def __init__(self, **kwargs):
+        self.id = (kwargs['id'] if 'id' in kwargs else None)
         self.name = (kwargs['name'] if 'name' in kwargs else None)
         self.data = (kwargs['data'] if 'data' in kwargs else None)
         self.file = (kwargs['file'] if 'file' in kwargs else None)
@@ -62,17 +58,14 @@ class Event(object):
 
     @classmethod
     def publish(self, **kwargs):
-        current_device = wia.Device.retrieve('me')
         path = 'events'
-
-        #data = kwargs
-
-        if wia.Stream.connected and current_device.id:
-            topic = 'devices/' + current_device.id + '/' + path + '/' + kwargs['name']
+        if kwargs['file'] is None and wia.Stream.connected and Wia().client_id is not None:
+            topic = 'devices/' + Wia().client_id + '/' + path + '/' + kwargs['name']
             Stream.publish(topic=topic, **kwargs)
-            return {}
+            return Event()
         else:
-            return post(path, kwargs)
+            response = post(path, **kwargs)
+            return Event(response)
 
     @classmethod
     def subscribe(self, **kwargs):
@@ -96,12 +89,11 @@ class Event(object):
 
     @classmethod
     def list(self, **kwargs):
-        list_events = get('events', **kwargs)
-        for event in list_events['events']:
-            data = event
-            logger.info("event: %s", data)
-        logger.info("count: %s", list_events['count'])
-        return list_events
+        response = get('events', **kwargs)
+        events = []
+        for event in response['events']:
+            events = Event(event)
+        return {'event':events,'count':response['count']}
 
 class Sensor(object):
     def __init__(self, **kwargs):
@@ -111,10 +103,9 @@ class Sensor(object):
 
     @classmethod
     def publish(self, **kwargs):
-        current_device = wia.Device.retrieve('me')
         path = 'sensors'
-        if wia.Stream.connected and current_device.id:
-            topic = 'devices/' + current_device.id + '/' + path + '/' + kwargs['name']
+        if wia.Stream.connected and Wia().client_id is not None:
+            topic = 'devices/' + Wia().client_id + '/' + path + '/' + kwargs['name']
             Stream.publish(topic=topic, **kwargs)
             return {}
         else:
@@ -155,11 +146,9 @@ class Location(object):
 
     @classmethod
     def publish(self, **kwargs):
-        current_device = wia.Device.retrieve('me')
         path = 'locations'
-        # new_location = post(path, kwargs)
-        if wia.Stream.connected and current_device.id:
-            topic = 'devices/' + current_device.id + '/' + path
+        if wia.Stream.connected and Wia().client_id is not None:
+            topic = 'devices/' + Wia().client_id + '/' + path
             Stream.publish(topic=topic, **kwargs)
             return {}
         else:
@@ -195,11 +184,9 @@ class Log(object):
 
     @classmethod
     def publish(self, **kwargs):
-        current_device = wia.Device.retrieve('me')
         path = 'logs'
-        # new_log = post(path, kwargs)
-        if wia.Stream.connected and current_device.id:
-            topic = 'devices/' + current_device.id + '/' + path + '/' + kwargs['level']
+        if wia.Stream.connected and Wia().client_id is not None:
+            topic = 'devices/' + Wia().client_id + '/' + path + '/' + kwargs['level']
             Stream.publish(topic=topic, **kwargs)
             return {}
         else:
@@ -297,3 +284,13 @@ class Customer(object):
         kwargs['scope'] = 'customer'
         kwargs['grantType'] = 'password'
         return post('auth/token', kwargs)
+
+class WhoAmI(object):
+    def __init__(self, **kwargs):
+        self.contextData = (kwargs['contextData'] if 'contextData' in kwargs else None)
+        self.scope = (kwargs['scope'] if 'scope' in kwargs else None)
+
+    @classmethod
+    def retrieve(self):
+        response = get('whoami')
+        return WhoAmI(**response)
