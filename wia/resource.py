@@ -291,7 +291,7 @@ class Function(WiaResource):
     @classmethod
     def create(self, **kwargs):
         path = 'functions'
-        response = post(path, data)
+        response = post(path, kwargs)
 
         if WiaResource.is_success(response):
             return Function(**response.json())
