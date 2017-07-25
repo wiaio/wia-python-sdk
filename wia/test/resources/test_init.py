@@ -11,14 +11,18 @@ from wia import Wia
 
 class InitTest(unittest.TestCase):
     def test_init_access_token(self):
+        logging.info("Starting test_init_access_token")
         access_token = os.environ['device_secret_key']
         wia = Wia()
         wia.access_token = access_token
         whoami = wia.WhoAmI.retrieve()
         self.assertIsInstance(whoami, type(wia.WhoAmI))
+        access_token = None
+        logging.info("Finished test_init_access_token")
 
     def test_stream_connect(self):
-        logging.debug("Starting test_stream_connect")
+        logging.info("Starting test_stream_connect")
+        access_token = os.environ['device_secret_key']
         wia = Wia()
         wia.Stream.connect()
         count = 0
@@ -28,7 +32,8 @@ class InitTest(unittest.TestCase):
             if wia.Stream.connected:
                 break
         self.assertTrue(wia.Stream.connected)
-        logging.debug("Finished test_stream_connect")
+        access_token = None
+        logging.info("Finished test_stream_connect")
 
 if __name__ == '__main__':
     unittest.main()
