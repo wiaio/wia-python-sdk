@@ -61,7 +61,7 @@ class Device(WiaResource):
     @classmethod
     def delete(self, id):
         path = 'devices/' + id
-        repsonse = delete(path)
+        response = delete(path)
         if WiaResource.is_success(response):
             return WiaResourceDelete(**response.json())
         else:
