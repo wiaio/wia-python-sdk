@@ -203,7 +203,11 @@ class Location(WiaResource):
             Wia().Stream.publish(topic=topic, **kwargs)
             return {}
         else:
-            return post(path, kwargs)
+            response = post(path, kwargs)
+            if WiaResource.is_success(response):
+                return Location(**response.json())
+            else:
+                return WiaResource.error_response(response)
 
     @classmethod
     def subscribe(self, **kwargs):
@@ -244,7 +248,11 @@ class Log(WiaResource):
             Wia().Stream.publish(topic=topic, **kwargs)
             return {}
         else:
-            return post(path, kwargs)
+            response = post(path, kwargs)
+            if WiaResource.is_success(response):
+                return Log(**response.json())
+            else:
+                return WiaResource.error_response(response)
 
     @classmethod
     def subscribe(self, **kwargs):
@@ -283,19 +291,12 @@ class Function(WiaResource):
     @classmethod
     def create(self, **kwargs):
         path = 'functions'
-        data = {'name': kwargs['name']}
-        new_function = post(path, data)
-        topic = 'devices/' + Wia().client_id + '/functions/' + new_function['id'] + '/call'
-        attempts = 0
-        while attempts < 6:
-            Wia().Stream.subscribe(topic=topic, func=kwargs['function'])
-            time.sleep(0.5)
-            attempts += 1
-            if Wia().Stream.subscribed == True:
-                break
-        if not Wia().Stream.subscribed:
-            raise Exception("SUBSCRIPTION UNSUCCESSFUL")
-        return new_function
+        response = post(path, data)
+
+        if WiaResource.is_success(response):
+            return Function(**response.json())
+        else:
+            return WiaResource.error_response(response)
 
     @classmethod
     def delete(self, id):
