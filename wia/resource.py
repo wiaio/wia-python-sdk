@@ -263,7 +263,7 @@ class Log(WiaResource):
         response = get('logs', **kwargs)
         if WiaResource.is_success(response):
             responseJson = response.json()
-            locations = []
+            logs = []
             for log in responseJson['logs']:
                 logs.append(Log(**log))
             return {'logs':logs,'count': responseJson['count']}
