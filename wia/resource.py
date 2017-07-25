@@ -47,10 +47,10 @@ class Device(WiaResource):
     def create(self, **kwargs):
         path = 'devices'
         response = post(path, kwargs)
-        if is_success(response):
+        if WiaResource.is_success(response):
             return Device(**response.json())
         else:
-            return error_response(response)
+            return WiaResource.error_response(response)
 
     @classmethod
     def retrieve(self, id):
@@ -354,19 +354,19 @@ class Customer(WiaResource):
     def create(self, **kwargs):
         path = 'customers'
         response = post(path, kwargs)
-        if is_success(response):
+        if WiaResource.is_success(response):
             return Customer(**response.json())
         else:
-            return error_response(response)
+            return WiaResource.error_response(response)
 
     @classmethod
     def retrieve(self, id):
         path = 'customers/' + id
         response = get(path)
-        if is_success(response):
+        if WiaResource.is_success(response):
             return Customer(**response.json())
         else:
-            return error_response(response)
+            return WiaResource.error_response(response)
 
     def delete(self, id):
         path = 'customers/' + id
