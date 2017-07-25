@@ -73,12 +73,15 @@ class Device(WiaResource):
 
     @classmethod
     def list(self, **kwargs):
-        list_devices = get('devices', **kwargs)
-        for device in list_devices['devices']:
-            data = device
-            logging.debug("Device: %s", data)
-        logging.debug("Count: %s", list_devices['count'])
-        return list_devices
+        response = get('devices', **kwargs)
+        if WiaResource.is_success(response):
+            responseJson = response.json()
+            devices = []
+            for device in responseJson['devices']:
+                devices.append(Device(**device))
+            return {'devices':devices,'count': responseJson['count']}
+        else:
+            return WiaResource.error_response(response)
 
 class Event(WiaResource):
     def __init__(self, **kwargs):
@@ -348,6 +351,45 @@ class Customer(WiaResource):
         response = post('customers/signup', kwargs)
         if WiaResource.is_success(response):
             return Customer(**response.json())
+        else:
+            return WiaResource.error_response(response)
+
+    @classmethod
+    def create(self, **kwargs):
+        path = 'customers'
+        response = post(path, kwargs)
+        if is_success(response):
+            return Customer(**response.json())
+        else:
+            return error_response(response)
+
+    @classmethod
+    def retrieve(self, id):
+        path = 'customers/' + id
+        response = get(path)
+        if is_success(response):
+            return Customer(**response.json())
+        else:
+            return error_response(response)
+
+    def delete(self, id):
+        path = 'customers/' + id
+        repsonse = delete(path)
+
+        if WiaResource.is_success(response):
+            return WiaResourceDelete(**response.json())
+        else:
+            return WiaResource.error_response(response)
+
+    @classmethod
+    def list(self, **kwargs):
+        response = get('customers', **kwargs)
+        if WiaResource.is_success(response):
+            responseJson = response.json()
+            customers = []
+            for customer in responseJson['customers']:
+                customers.append(Customer(**customer))
+            return {'customers':customers,'count': responseJson['count']}
         else:
             return WiaResource.error_response(response)
 
