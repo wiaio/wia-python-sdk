@@ -4,6 +4,7 @@ import resource
 import json
 import re
 import sys
+import logging
 
 from wia import Wia
 
@@ -41,34 +42,36 @@ class Stream(object):
 
     @classmethod
     def subscribe(self, **kwargs):
-        function_subscriptions[kwargs['topic']] = kwargs['func']
+        topic = kwargs['topic']
+        function_subscriptions[topic] = kwargs['func']
         def thread_proc():
-            client.subscribe(kwargs['topic'], qos=0)
+            client.subscribe(topic, qos=0)
             subscribing_event = threading.Event()
         t = threading.Thread(group=None, target=thread_proc, name=None)
         t.run()
+        logging.debug("Subscribed to topic: %s", topic)
 
     @classmethod
     def unsubscribe(self, **kwargs):
-        function_subscriptions.pop(kwargs['topic'])
         topic = kwargs['topic']
+        function_subscriptions.pop(kwargs['topic'])
         client.unsubscribe(topic)
+        logging.debug("Unsubscribed from topic: %s", topic)
 
     @classmethod
     def on_connect(self, client, userdata, flags, rc):
         self.connected = True
-        print("Connect success")
+        logging.debug("Connected to stream")
 
     @classmethod
     def on_disconnect(self, client, userdata, rc):
         self.connected = False
-        print("Disconnect success")
+        logging.debug("Disconnected from stream")
 
     @classmethod
     def on_subscribe(self, client, userdata, msg, granted_qos):
         self.subscribed = True
         self.subscribed_count += 1
-        print("Subscribe success")
 
     @classmethod
     def on_message(self, client, userdata, msg):
@@ -113,4 +116,3 @@ class Stream(object):
         self.subscribed_count -= 1
         if self.subscribed_count == 0:
             self.subscribed = False
-        print("Unsubscribe success")
