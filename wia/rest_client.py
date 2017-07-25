@@ -3,8 +3,6 @@ import logging
 
 from wia import Wia
 
-# TODO: Return error and response in object
-
 '''
 wia_post:
     args:
