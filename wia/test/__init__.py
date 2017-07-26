@@ -1,11 +1,15 @@
-import wia
+try:
+    import unittest2 as unittest
+except ImportError:
+    import unittest
+
 import os
 
 def all():
     path = os.path.dirname(os.path.realpath(__file__))
-    return unittest2.defaultTestLoader.discover(path)
+    return unittest.defaultTestLoader.discover(path)
 
 def resources():
     path = os.path.dirname(os.path.realpath(__file__))
-    return unittest2.defaultTestLoader.discover(
+    return unittest.defaultTestLoader.discover(
         os.path.join(path, "resources"))
