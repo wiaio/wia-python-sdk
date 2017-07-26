@@ -157,7 +157,7 @@ class Sensor(WiaResource):
         if Wia().Stream.connected and Wia().client_id is not None:
             topic = 'devices/' + Wia().client_id + '/' + path + '/' + kwargs['name']
             Wia().Stream.publish(topic=topic, **kwargs)
-            return {}
+            return Sensor()
         else:
             response = post(path, kwargs)
             if WiaResource.is_success(response):
@@ -212,7 +212,7 @@ class Location(WiaResource):
         if Wia().Stream.connected and Wia().client_id is not None:
             topic = 'devices/' + Wia().client_id + '/' + path
             Wia().Stream.publish(topic=topic, **kwargs)
-            return {}
+            return Location()
         else:
             response = post(path, kwargs)
             if WiaResource.is_success(response):
@@ -257,7 +257,7 @@ class Log(WiaResource):
         if Wia().Stream.connected and Wia().client_id is not None:
             topic = 'devices/' + Wia().client_id + '/' + path + '/' + kwargs['level']
             Wia().Stream.publish(topic=topic, **kwargs)
-            return {}
+            return Log()
         else:
             response = post(path, kwargs)
             if WiaResource.is_success(response):

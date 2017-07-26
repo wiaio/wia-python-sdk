@@ -8,6 +8,7 @@ import os
 import logging
 
 from wia import Wia
+from wia.error import WiaError, WiaValidationError, WiaUnauthorisedError, WiaForbiddenError, WiaNotFoundError
 
 class InitTest(unittest.TestCase):
     def test_init_access_token(self):
