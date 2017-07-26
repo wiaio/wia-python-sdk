@@ -62,6 +62,15 @@ class Device(WiaResource):
             return WiaResource.error_response(response)
 
     @classmethod
+    def update(self, id, **kwargs):
+        path = 'devices/' + id
+        response = put(path, kwargs)
+        if WiaResource.is_success(response):
+            return Device(**response.json())
+        else:
+            return WiaResource.error_response(response)
+
+    @classmethod
     def delete(self, id):
         path = 'devices/' + id
         response = delete(path)
