@@ -56,7 +56,10 @@ class Device(WiaResource):
     def retrieve(self, id):
         path = 'devices/' + id
         response = get(path)
-        return Device(**response.json())
+        if WiaResource.is_success(response):
+            return Device(**response.json())
+        else:
+            return WiaResource.error_response(response)
 
     @classmethod
     def delete(self, id):
