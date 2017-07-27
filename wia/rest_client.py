@@ -31,7 +31,7 @@ wia_put:
         kwargs: variable-length dict which can
                 contain data for put request
 '''
-def put(path, **kwargs):
+def put(path, kwargs):
     url = generate_url(path)
     headers = generate_headers()
     data = kwargs
