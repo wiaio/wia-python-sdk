@@ -62,9 +62,11 @@ class Device(WiaResource):
             return WiaResource.error_response(response)
 
     @classmethod
-    def update(self, id, **kwargs):
-        path = 'devices/' + id
-        response = put(path, kwargs)
+    def update(self, **kwargs):
+        path = 'devices/' + kwargs['id']
+        dictCopy = dict(kwargs)
+        del dictCopy['id']
+        response = put(path, dictCopy)
         if WiaResource.is_success(response):
             return Device(**response.json())
         else:
