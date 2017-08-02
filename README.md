@@ -3,8 +3,15 @@
 ## Documentation
 For full documentation visit [http://docs.wia.io/](http://docs.wia.io/)
 
+## Creating an Instance
+To create an instance of the Wia object add this line of code to your project:
+wia = Wia()
+
+You will also need to import Wia using the following line of code at the beginning of your project:
+from wia import Wia
+
 ## License
-This SDK is distributed under the the MIT License
+This SDK is distributed under the MIT License
 
 Copyright (c) 2010-2016 Wia Technologies Limited. https://wia.io
 

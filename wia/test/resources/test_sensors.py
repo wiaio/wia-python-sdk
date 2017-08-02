@@ -58,7 +58,7 @@ class SensorsTest(unittest.TestCase):
         wia = Wia()
         wia.access_token = os.environ['org_secret_key']
         result = wia.Sensor.list(device = os.environ['device_id'], name='test_sensor_1')
-        self.assertFalse(result.has_key('error'))
+        self.assertFalse('error' in result)
         for sensor in result['sensors']:
             self.assertEqual('test_sensor_1', sensor.name)
         wia.access_token = None
@@ -68,8 +68,8 @@ class SensorsTest(unittest.TestCase):
         wia.access_token = os.environ['org_secret_key']
         hour_ago = int((time.time())*1000 - 3600000)
         result = wia.Sensor.list(device=os.environ['device_id'], order='timestamp', sort='desc', since=hour_ago)
-        self.assertFalse(result.has_key('error'))
-        self.assertTrue(result.has_key('count'))
+        self.assertFalse('error' in result)
+        self.assertTrue('count' in result)
         self.assertTrue(type(result['count']) == int)
         wia.access_token = None
 
