@@ -16,7 +16,7 @@ class CustomerTest(unittest.TestCase):
     #     wia = Wia()
     #     wia.access_token = os.environ['org_secret_key']
     #     wia.app_key = os.environ['app_key']
-    #     customer = wia.Customer.create(fullName='Eric TheCoolest',
+    #     customer = wia.Customer.create(fullName='John Smith',
     #                                     email='socool@true.com')
     #     self.assertEqual(customer.fullName, 'Eric TheCoolest')
     #     self.assertEqual(customer.email, 'socool@true.com')
@@ -28,7 +28,7 @@ class CustomerTest(unittest.TestCase):
     #     wia.access_token = os.environ['org_secret_key']
     #     wia.app_key = os.environ['app_key']
     #     customer = wia.Customer.retrieve(self.__class__.test_id)
-    #     self.assertEqual(customer.fullName, 'Eric TheCoolest')
+    #     self.assertEqual(customer.fullName, 'John Smith')
     #     wia.access_token = None
     #
     # def test_customer_delete(self):

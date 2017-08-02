@@ -40,9 +40,9 @@ class LocationsTest(unittest.TestCase):
         wia.access_token = os.environ['org_secret_key']
         result = wia.Location.list(device=os.environ['device_id'], limit=10, page=0)
         self.__class__.locations_count = result['count']
-        self.assertTrue(result['locations'])
+        self.assertTrue('locations' in result)
         self.assertTrue(type(result['locations']) == list)
-        self.assertTrue(result['count'])
+        self.assertTrue('count' in result)
         self.assertTrue(type(result['count']) == int)
         wia.access_token = None
 

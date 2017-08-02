@@ -48,9 +48,9 @@ class SensorsTest(unittest.TestCase):
         result = wia.Sensor.list(device=os.environ['device_id'], limit=10, page=0)
         #print('LIST', result)
         self.__class__.sensor_count = result['count']
-        self.assertTrue(result['sensors'])
+        self.assertTrue('sensors' in result)
         self.assertTrue(type(result['sensors']) == list)
-        self.assertTrue(result['count'])
+        self.assertTrue('count' in result)
         self.assertTrue(type(result['count']) == int)
         wia.access_token = None
 

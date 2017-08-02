@@ -65,9 +65,9 @@ class DeviceTest(unittest.TestCase):
         wia = Wia()
         wia.access_token = os.environ['user_secret_key']
         list_return = wia.Device.list(limit=20, page=0)
-        self.assertTrue(list_return['devices'])
+        self.assertTrue('devices' in list_return)
         self.assertTrue(type(list_return['devices']) == list)
-        self.assertTrue(list_return['count'])
+        self.assertTrue('count' in list_return)
         self.assertTrue(type(list_return['count']) == int)
         wia.access_token = None
 

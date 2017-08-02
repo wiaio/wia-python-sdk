@@ -16,7 +16,7 @@ class LogsTest(unittest.TestCase):
         wia = Wia()
         wia.access_token = os.environ['device_secret_key']
         result = wia.Log.publish(level='info', message='test1')
-        self.assertTrue(result)
+        self.assertTrue(result is not None)
         wia.access_token = None
 
     def test_logs_publish(self):
@@ -47,9 +47,9 @@ class LogsTest(unittest.TestCase):
         wia = Wia()
         wia.access_token = os.environ['org_secret_key']
         result = wia.Log.list(device=os.environ['device_id'], limit=10, page=0)
-        self.assertTrue(result['logs'])
+        self.assertTrue('logs' in result)
         self.assertTrue(type(result['logs']) == list)
-        self.assertTrue(result['count'])
+        self.assertTrue('count' in result)
         self.assertTrue(type(result['count']) == int)
         wia.secret_key = None
 

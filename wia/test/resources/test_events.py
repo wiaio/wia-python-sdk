@@ -19,13 +19,6 @@ class EventsTest(unittest.TestCase):
         self.assertTrue(event.id is not None)
         wia.access_token = None
 
-    def test_events_publish_rest_error(self):
-        wia = Wia()
-        wia.access_token = os.environ['device_secret_key']
-        result = wia.Event.publish(abc='def')
-        self.assertIsInstance(result, WiaError)
-        wia.access_token = None
-
     def test_events_publish(self):
         wia = Wia()
         wia.access_token = os.environ['device_secret_key']
@@ -79,9 +72,9 @@ class EventsTest(unittest.TestCase):
         wia.access_token = os.environ['org_secret_key']
         result = wia.Event.list(device=os.environ['device_id'], limit=10, page=0)
         self.__class__.event_count = result['count']
-        self.assertTrue(result['events'])
+        self.assertTrue('events' in result)
         self.assertTrue(type(result['events']) == list)
-        self.assertTrue(result['count'])
+        self.assertTrue('count' in result)
         self.assertTrue(type(result['count']) == int)
         wia.access_token = None
 
@@ -202,6 +195,13 @@ class EventsTest(unittest.TestCase):
         wia.access_token = None
 
     # ERROR TESTS
+    def test_events_publish_rest_error(self):
+        wia = Wia()
+        wia.access_token = os.environ['device_secret_key']
+        result = wia.Event.publish(abc='def')
+        self.assertIsInstance(result, WiaError)
+        wia.access_token = None
+
     def test_event_publish_not_authorized(self):
         wia = Wia()
         wia.Stream.disconnect()
