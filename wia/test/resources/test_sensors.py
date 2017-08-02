@@ -23,7 +23,7 @@ class SensorsTest(unittest.TestCase):
         wia.access_token = os.environ['device_secret_key']
         wia.Stream.connect()
         count = 0
-        while count <= 5:
+        while count <= 10:
             time.sleep(0.5)
             count += 1
             if wia.Stream.connected:
@@ -34,7 +34,7 @@ class SensorsTest(unittest.TestCase):
         self.assertTrue(sensor is not None)
         wia.Stream.disconnect()
         count = 0
-        while count <= 5:
+        while count <= 10:
             time.sleep(0.5)
             count += 1
             if not wia.Stream.connected:
@@ -83,7 +83,7 @@ class SensorsTest(unittest.TestCase):
         wia.Stream.connect()
         count = 0
         # waits for Stream to be connected
-        while count <= 5:
+        while count <= 10:
             time.sleep(0.5)
             count += 1
             if wia.Stream.connected:
@@ -95,7 +95,7 @@ class SensorsTest(unittest.TestCase):
         wia.Sensor.subscribe(device=os.environ['device_id'], func=wildcard_function)
         wia.Sensor.subscribe(device=os.environ['device_id'], name='subscribe_test_sensor', func=specific_function)
         count = 0
-        while count <= 5:
+        while count <= 10:
             time.sleep(0.5)
             count += 1
             if wia.Stream.subscribed:
@@ -105,7 +105,7 @@ class SensorsTest(unittest.TestCase):
 
         wia.Stream.disconnect()
         count = 0
-        while count <= 5:
+        while count <= 10:
             time.sleep(0.5)
             count += 1
             if not wia.Stream.connected:
@@ -117,7 +117,7 @@ class SensorsTest(unittest.TestCase):
 
         wia.Stream.connect()
         count = 0
-        while count <= 5:
+        while count <= 10:
             time.sleep(0.5)
             count += 1
             if wia.Stream.connected:
@@ -135,7 +135,7 @@ class SensorsTest(unittest.TestCase):
         # unsubscribe from sensor
         wia.Sensor.unsubscribe(device=os.environ['device_id'])
         wia.Sensor.unsubscribe(device=os.environ['device_id'], name='subscribe_test_sensor')
-        while count <= 5:
+        while count <= 10:
             time.sleep(0.5)
             count += 1
             if wia.Stream.subscribed_count < initial_subscribe_count:
@@ -143,7 +143,7 @@ class SensorsTest(unittest.TestCase):
         self.assertTrue(wia.Stream.subscribed_count < initial_subscribe_count)
         wia.Stream.disconnect()
         count = 0
-        while count <= 5:
+        while count <= 10:
             time.sleep(0.5)
             count += 1
             if not wia.Stream.connected:
@@ -156,7 +156,7 @@ class SensorsTest(unittest.TestCase):
         wia = Wia()
         wia.Stream.disconnect()
         count = 0
-        while count <= 5:
+        while count <= 10:
             time.sleep(0.5)
             count += 1
             if not wia.Stream.connected:

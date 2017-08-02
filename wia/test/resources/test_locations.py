@@ -16,7 +16,7 @@ class LocationsTest(unittest.TestCase):
         wia.access_token = os.environ['device_secret_key']
         wia.Stream.connect()
         count = 0
-        while count <= 5:
+        while count <= 10:
             time.sleep(0.5)
             count += 1
             if wia.Stream.connected:
@@ -27,7 +27,7 @@ class LocationsTest(unittest.TestCase):
         self.assertTrue(location is not None)
         wia.Stream.disconnect()
         count = 0
-        while count <= 5:
+        while count <= 10:
             time.sleep(0.5)
             count += 1
             if not wia.Stream.connected:
@@ -82,7 +82,7 @@ class LocationsTest(unittest.TestCase):
         wia.access_token = os.environ['org_secret_key']
         wia.Stream.connect()
         count = 0
-        while count <= 5:
+        while count <= 10:
             time.sleep(0.5)
             count += 1
             if wia.Stream.connected:
@@ -93,7 +93,7 @@ class LocationsTest(unittest.TestCase):
         # subscribe to location
         wia.Location.subscribe(device=os.environ['device_id'], func=location_function)
         count = 0
-        while count <= 5:
+        while count <= 10:
             time.sleep(0.5)
             count += 1
             if wia.Stream.subscribed:
@@ -103,7 +103,7 @@ class LocationsTest(unittest.TestCase):
 
         wia.Stream.disconnect()
         count = 0
-        while count <= 5:
+        while count <= 10:
             time.sleep(0.5)
             count += 1
             if not wia.Stream.connected:
@@ -115,7 +115,7 @@ class LocationsTest(unittest.TestCase):
 
         wia.Stream.connect()
         count = 0
-        while count <= 5:
+        while count <= 10:
             time.sleep(0.5)
             count += 1
             if wia.Stream.connected:
@@ -131,7 +131,7 @@ class LocationsTest(unittest.TestCase):
         initial_subscribe_count = wia.Stream.subscribed_count
         wia.Location.unsubscribe(device=os.environ['device_id'])
         count = 0
-        while count <= 5:
+        while count <= 10:
             time.sleep(0.5)
             count += 1
             if wia.Stream.subscribed_count < initial_subscribe_count:
@@ -139,7 +139,7 @@ class LocationsTest(unittest.TestCase):
         self.assertTrue(wia.Stream.subscribed_count < initial_subscribe_count)
         wia.Stream.disconnect()
         count = 0
-        while count <= 5:
+        while count <= 10:
             time.sleep(0.5)
             count += 1
             if not wia.Stream.connected:
@@ -152,7 +152,7 @@ class LocationsTest(unittest.TestCase):
         wia = Wia()
         wia.Stream.disconnect()
         count = 0
-        while count < 5:
+        while count < 10:
             time.sleep(0.5)
             count += 1
             if not wia.Stream.connected:

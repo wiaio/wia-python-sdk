@@ -24,7 +24,7 @@ class EventsTest(unittest.TestCase):
         wia.access_token = os.environ['device_secret_key']
         wia.Stream.connect()
         count = 0
-        while count <= 5:
+        while count <= 10:
             time.sleep(0.5)
             count += 1
             if wia.Stream.connected:
@@ -35,7 +35,7 @@ class EventsTest(unittest.TestCase):
         self.assertTrue(result is not None)
         wia.Stream.disconnect()
         count = 0
-        while count <= 5:
+        while count <= 10:
             time.sleep(0.5)
             count += 1
             if not wia.Stream.connected:
@@ -54,7 +54,7 @@ class EventsTest(unittest.TestCase):
         wia.access_token = os.environ['device_secret_key']
         wia.Stream.connect()
         count = 0
-        while count <= 5:
+        while count <= 10:
             time.sleep(0.5)
             count += 1
             if wia.Stream.connected:
@@ -125,7 +125,7 @@ class EventsTest(unittest.TestCase):
         wia.Stream.connect()
         count = 0
         # waits for Stream to be connected
-        while count <= 5:
+        while count <= 10:
             time.sleep(0.5)
             count += 1
             if wia.Stream.connected:
@@ -137,7 +137,7 @@ class EventsTest(unittest.TestCase):
         wia.Event.subscribe(device=os.environ['device_id'], func=wildcard_function)
         wia.Event.subscribe(device=os.environ['device_id'], name='subscribe_test_event', func=specific_function)
         count = 0
-        while count <= 5:
+        while count <= 10:
             time.sleep(0.5)
             count += 1
             if wia.Stream.subscribed:
@@ -147,7 +147,7 @@ class EventsTest(unittest.TestCase):
 
         wia.Stream.disconnect()
         count = 0
-        while count <= 5:
+        while count <= 10:
             time.sleep(0.5)
             count += 1
             if not wia.Stream.connected:
@@ -159,7 +159,7 @@ class EventsTest(unittest.TestCase):
 
         wia.Stream.connect()
         count = 0
-        while count <= 5:
+        while count <= 10:
             time.sleep(0.5)
             count += 1
             if wia.Stream.connected:
@@ -178,7 +178,7 @@ class EventsTest(unittest.TestCase):
         # unsubscribe from event
         wia.Event.unsubscribe(device=os.environ['device_id'])
         wia.Event.unsubscribe(device=os.environ['device_id'], name='subscribe_test_event')
-        while count <= 5:
+        while count <= 10:
             time.sleep(0.5)
             count += 1
             if wia.Stream.subscribed_count < initial_subscribe_count:
@@ -186,7 +186,7 @@ class EventsTest(unittest.TestCase):
         self.assertTrue(wia.Stream.subscribed_count < initial_subscribe_count)
         wia.Stream.disconnect()
         count = 0
-        while count <= 5:
+        while count <= 10:
             time.sleep(0.5)
             count += 1
             if not wia.Stream.connected:
@@ -206,7 +206,7 @@ class EventsTest(unittest.TestCase):
         wia = Wia()
         wia.Stream.disconnect()
         count = 0
-        while count <= 5:
+        while count <= 10:
             time.sleep(0.5)
             count += 1
             if not wia.Stream.connected:
