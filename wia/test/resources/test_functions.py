@@ -19,7 +19,7 @@
 #         wia.access_token = os.environ['device_secret_key']
 #         wia.Stream.connect()
 #         count = 0
-#         while count < 5:
+#         while count <= 5:
 #             time.sleep(0.5)
 #             count += 1
 #             if wia.Stream.connected:
@@ -32,7 +32,7 @@
 #         self.__class__.test_id = result['id']
 #         wia.Stream.disconnect()
 #         count = 0
-#         while count < 5:
+#         while count <= 5:
 #             time.sleep(0.5)
 #             count += 1
 #             if not wia.Stream.connected:
@@ -54,7 +54,7 @@
 #             print(payload)
 #         wia.Stream.connect()
 #         count = 0
-#         while count < 5:
+#         while count <= 5:
 #             time.sleep(0.5)
 #             count += 1
 #             if wia.Stream.connected:
@@ -73,7 +73,7 @@
 #         time.sleep(2)
 #         wia.Stream.disconnect()
 #         count = 0
-#         while count < 5:
+#         while count <= 5:
 #             time.sleep(0.5)
 #             count += 1
 #             if not wia.Stream.connected:

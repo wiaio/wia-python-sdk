@@ -27,7 +27,7 @@ class InitTest(unittest.TestCase):
         wia = Wia()
         wia.Stream.connect()
         count = 0
-        while count < 5:
+        while count <= 5:
             time.sleep(0.5)
             count += 1
             if wia.Stream.connected:
