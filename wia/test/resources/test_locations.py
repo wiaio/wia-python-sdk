@@ -1,119 +1,181 @@
-import wia
-import unittest2
+try:
+    import unittest2 as unittest
+except ImportError:
+    import unittest
+
+import logging
 import time
 import os
 
-class LocationsTest(unittest2.TestCase):
-    # timeout = 100000000
-    # mailbox = {}
-    #
-    # def test_locations_publish(self):
-    #     wia.secret_key = os.environ['device_secret_key']
-    #     wia.Stream.connect()
-    #     count = 0
-    #     while(count < self.timeout):
-    #         count += 1
-    #         if wia.Stream.connected:
-    #             break
-    #     if not wia.Stream.connected:
-    #         raise Exception("unable to connect")
-    #     publish_return = wia.Location.publish(latitude=50, longitude=60)
-    #     self.assertTrue(publish_return['id'])
-    #     wia.Stream.disconnect()
-    #     count = 0
-    #     while(count < self.timeout):
-    #         count += 1
-    #         if not wia.Stream.connected:
-    #             break
-    #     if wia.Stream.connected:
-    #         raise Exception("Unable to disconnect")
-    #     wia.secret_key = None
-    #
-    # def test_locations_list(self):
-    #     wia.secret_key = os.environ['org_secret_key']
-    #     list_return = wia.Location.list(device=wia.device_id, limit=10, page=0)
-    #     self.__class__.locations_count = list_return['count']
-    #     self.assertTrue(list_return['locations'])
-    #     self.assertTrue(type(list_return['locations']) == list)
-    #     self.assertTrue(list_return['count'])
-    #     self.assertTrue(type(list_return['count']) == int)
-    #     wia.secret_key = None
-    #
-    # def test_locations_list_order_sort(self):
-    #     wia.secret_key = os.environ['org_secret_key']
-    #     list_return = wia.Location.list(device=wia.device_id, limit=10, page=0, order='timestamp', sort='desc')
-    #     timestamp_list = []
-    #     for location in list_return['locations']:
-    #         timestamp_list.append(location['timestamp'])
-    #     descending = timestamp_list[:]
-    #     descending.sort(reverse=True)
-    #     self.assertEqual(descending, timestamp_list)
-    #     list_return = wia.Location.list(device=wia.device_id, order='timestamp', sort='asc')
-    #     timestamp_list = []
-    #     for location in list_return['locations']:
-    #         timestamp_list.append(location['timestamp'])
-    #     ascending = timestamp_list[:]
-    #     ascending.sort()
-    #     self.assertEqual(ascending, timestamp_list)
-    #     wia.secret_key = None
-    #
-    # def test_locations_list_since_until(self):
-    #     wia.secret_key = os.environ['org_secret_key']
-    #     hour_ago = int((time.time())*1000 - 3600000)
-    #     list_return = wia.Location.list(device=wia.device_id, order='timestamp', sort='desc', since=hour_ago)
-    #     self.assertTrue(list_return['count'] <= self.__class__.locations_count)
-    #     list_return = {}
-    #     list_return = wia.Location.list(device=wia.device_id, order='timestamp', sort='desc', until=hour_ago)
-    #     self.assertTrue(list_return['count'] <= self.__class__.locations_count)
-    #     wia.secret_key = None
-    #
-    def test_locations_subscribe(self):
-        pass
-        # wia.secret_key = os.environ['org_secret_key']
-        # self.__class__.mailbox = {}
-        # def location_function(payload):
-        #     self.__class__.mailbox = payload
-        # wia.Stream.connect()
-        # count = 0
-        # while count < self.timeout:
-        #     count += 1
-        #     if wia.Stream.connected:
-        #         break
-        # if not wia.Stream.connected:
-        #     raise Exception("Unable to connect")
-        # wia.Location.subscribe(device=wia.device_id, func=location_function)
-        # count = 0
-        # while count < self.timeout:
-        #     count += 1
-        #     if wia.Stream.subscribed:
-        #         break
-        # if not wia.Stream.subscribed:
-        #     raise Exception("Unable to subscribe")
-        # wia.secret_key = os.environ['device_secret_key']
-        # wia.Location.publish(longitude=60, latitude=50)
-        # wia.secret_key = os.environ['org_secret_key']
-        # time.sleep(5)
-        # self.assertEqual(self.__class__.mailbox['latitude'], 50)
-        # self.assertEqual(self.__class__.mailbox['longitude'], 60)
-        # initial_subscribe_count = wia.Stream.subscribed_count
-        # wia.Location.unsubscribe(device=wia.device_id)
-        # count = 0
-        # while count < self.timeout:
-        #     count += 1
-        #     if wia.Stream.subscribed_count < initial_subscribe_count:
-        #         break
-        # if wia.Stream.subscribed_count == initial_subscribe_count:
-        #     raise Exception("Unable to unsubscribe")
-        # wia.Stream.disconnect()
-        # count = 0
-        # while count < self.timeout:
-        #     count += 1
-        #     if not wia.Stream.connected:
-        #         break
-        # if wia.Stream.connected:
-        #     raise Exception("Unable to disconnect")
-        # wia.secret_key = None
+from wia import Wia
+from wia.error import WiaError, WiaValidationError, WiaUnauthorisedError, WiaForbiddenError, WiaNotFoundError
 
+class LocationsTest(unittest.TestCase):
+    def test_locations_publish(self):
+        wia = Wia()
+        wia.access_token = os.environ['device_secret_key']
+        wia.Stream.connect()
+        count = 0
+        while count <= 10:
+            time.sleep(0.5)
+            count += 1
+            if wia.Stream.connected:
+                time.sleep(1)
+                break
+        self.assertTrue(wia.Stream.connect)
+        location = wia.Location.publish(latitude=50, longitude=60)
+        self.assertTrue(location is not None)
+        wia.Stream.disconnect()
+        count = 0
+        while count <= 10:
+            time.sleep(0.5)
+            count += 1
+            if not wia.Stream.connected:
+                break
+        self.assertFalse(wia.Stream.connected)
+        wia.access_token = None
+
+    def test_locations_list(self):
+        wia = Wia()
+        wia.access_token = os.environ['org_secret_key']
+        result = wia.Location.list(device=os.environ['device_id'], limit=10, page=0)
+        self.__class__.locations_count = result['count']
+        self.assertTrue('locations' in result)
+        self.assertTrue(type(result['locations']) == list)
+        self.assertTrue('count' in result)
+        self.assertTrue(type(result['count']) == int)
+        wia.access_token = None
+
+    def test_locations_list_order_desc(self):
+        wia = Wia()
+        wia.access_token = os.environ['org_secret_key']
+        result = wia.Location.list(device=os.environ['device_id'], limit=10, page=0, order='timestamp', sort='desc')
+        locations_list = []
+        #for location in result['locations']:
+            #print location.timestamp
+        wia.access_token = None
+
+    def test_locations_list_order_asc(self):
+        wia = Wia()
+        wia.access_token = os.environ['org_secret_key']
+        result = wia.Location.list(device=os.environ['device_id'], limit=10, page=0, order='timestamp', sort='asc')
+        locations_list = []
+        #for location in result['locations']:
+            #print location.timestamp
+        wia.access_token = None
+
+    def test_locations_list_since_until(self):
+        wia = Wia()
+        wia.access_token = os.environ['org_secret_key']
+        hour_ago = int((time.time())*1000 - 3600000)
+        result = wia.Location.list(device=os.environ['device_id'], order='timestamp', sort='desc', since=hour_ago)
+        self.assertTrue(type(result['count']) == int)
+        result = {}
+        result = wia.Location.list(device=os.environ['device_id'], order='timestamp', sort='desc', until=hour_ago)
+        self.assertTrue(type(result['count']) == int)
+        wia.access_token = None
+
+    def test_locations_subscribe(self):
+        wia = Wia()
+        def location_function(payload):
+            pass
+        wia.access_token = os.environ['org_secret_key']
+        wia.Stream.connect()
+        count = 0
+        while count <= 10:
+            time.sleep(0.5)
+            count += 1
+            if wia.Stream.connected:
+                time.sleep(1)
+                break
+        self.assertTrue(wia.Stream.connected)
+
+        # subscribe to location
+        wia.Location.subscribe(device=os.environ['device_id'], func=location_function)
+        count = 0
+        while count <= 10:
+            time.sleep(0.5)
+            count += 1
+            if wia.Stream.subscribed:
+                time.sleep(1)
+                break
+        self.assertTrue(wia.Stream.subscribed)
+
+        wia.Stream.disconnect()
+        count = 0
+        while count <= 10:
+            time.sleep(0.5)
+            count += 1
+            if not wia.Stream.connected:
+                break
+        self.assertFalse(wia.Stream.connected)
+
+        # publish location
+        wia.access_token = os.environ['device_secret_key']
+
+        wia.Stream.connect()
+        count = 0
+        while count <= 10:
+            time.sleep(0.5)
+            count += 1
+            if wia.Stream.connected:
+                break
+        self.assertTrue(wia.Stream.connected)
+
+        wia.Location.publish(longitude=60, latitude=50)
+
+        wia.access_token = os.environ['org_secret_key']
+        time.sleep(0.5)
+
+        # unsubscribe from location
+        initial_subscribe_count = wia.Stream.subscribed_count
+        wia.Location.unsubscribe(device=os.environ['device_id'])
+        count = 0
+        while count <= 10:
+            time.sleep(0.5)
+            count += 1
+            if wia.Stream.subscribed_count < initial_subscribe_count:
+                break
+        self.assertTrue(wia.Stream.subscribed_count < initial_subscribe_count)
+        wia.Stream.disconnect()
+        count = 0
+        while count <= 10:
+            time.sleep(0.5)
+            count += 1
+            if not wia.Stream.connected:
+                break
+        self.assertFalse(wia.Stream.connected)
+        wia.access_token = None
+
+    # ERROR TESTS
+    def test_location_publish_not_authorized(self):
+        wia = Wia()
+        wia.Stream.disconnect()
+        count = 0
+        while count < 10:
+            time.sleep(0.5)
+            count += 1
+            if not wia.Stream.connected:
+                break
+        self.assertFalse(wia.Stream.connected)
+        wia.access_token = os.environ['org_secret_key']
+        location = wia.Location.publish(latitude=10, longitude=10)
+        self.assertIsInstance(location, WiaError)
+        wia.access_token = None
+
+    def test_location_publish_wrong_params(self):
+        wia = Wia()
+        wia.access_token = os.environ['device_secret_key']
+        location = wia.Location.publish(name='fail')
+        self.assertIsInstance(location, WiaError)
+        wia.access_token = None
+
+    def test_list_location_not_found(self):
+        wia = Wia()
+        wia.access_token = os.environ['org_secret_key']
+        result = wia.Location.list(device='Unknown')
+        self.assertIsInstance(result, WiaError)
+        wia.access_token = None
 
 if __name__ == '__main__':
     unittest2.main()

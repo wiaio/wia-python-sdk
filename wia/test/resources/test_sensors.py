@@ -1,122 +1,186 @@
-import wia
-import unittest2
+try:
+    import unittest2 as unittest
+except ImportError:
+    import unittest
+
+import logging
 import time
 import os
 
-class SensorsTest(unittest2.TestCase):
-    timeout = 100000000
-    mailbox = {}
+from wia import Wia
+from wia.error import WiaError, WiaValidationError, WiaUnauthorisedError, WiaForbiddenError, WiaNotFoundError
 
+class SensorsTest(unittest.TestCase):
     def test_sensors_publish_rest(self):
-        wia.secret_key = os.environ['device_secret_key']
-        publish_return = wia.Sensor.publish(name='test_sensor_rest_1', data=99)
-        wia.secret_key = None
+        wia = Wia()
+        wia.access_token = os.environ['device_secret_key']
+        sensor = wia.Sensor.publish(name='test_sensor_rest_1', data=99)
+        self.assertTrue(sensor is not None)
+        wia.access_token = None
 
     def test_sensors_publish(self):
-        wia.secret_key = os.environ['device_secret_key']
+        wia = Wia()
+        wia.access_token = os.environ['device_secret_key']
         wia.Stream.connect()
         count = 0
-        while count < self.timeout:
+        while count <= 10:
+            time.sleep(0.5)
             count += 1
             if wia.Stream.connected:
+                time.sleep(1)
                 break
-        if not wia.Stream.connected:
-            raise Exception("Unable to connect")
-        publish_return = wia.Sensor.publish(name='test_sensor_1', data=99)
-        self.assertTrue(publish_return['id'])
+        self.assertTrue(wia.Stream.connected)
+        sensor = wia.Sensor.publish(name='test_sensor_mqtt', data=130)
+        self.assertTrue(sensor is not None)
         wia.Stream.disconnect()
         count = 0
-        while count < self.timeout:
+        while count <= 10:
+            time.sleep(0.5)
             count += 1
             if not wia.Stream.connected:
                 break
-        if wia.Stream.connected:
-            raise Exception("Unable to disconnect")
-        wia.secret_key = None
+        self.assertFalse(wia.Stream.connected)
+        wia.access_token = None
 
-    # def test_sensors_list(self):
-    #     wia.secret_key = os.environ['org_secret_key']
-    #     list_return = wia.Sensor.list(device=wia.device_id, limit=10, page=0)
-    #     self.__class__.sensor_count = list_return['count']
-    #     self.assertTrue(list_return['sensors'])
-    #     self.assertTrue(type(list_return['sensors']) == list)
-    #     self.assertTrue(list_return['count'])
-    #     self.assertTrue(type(list_return['count']) == int)
-    #     wia.secret_key = None
-    #
-    # def test_sensors_list_order_sort(self):
-    #     wia.secret_key = os.environ['org_secret_key']
-    #     list_return = wia.Sensor.list(device=wia.device_id, limit=10, page=0, order='timestamp', sort='desc')
-    #     timestamp_list = []
-    #     for sensor in list_return['sensors']:
-    #         timestamp_list.append(sensor['timestamp'])
-    #     descending = timestamp_list[:]
-    #     descending.sort(reverse=True)
-    #     self.assertEqual(descending, timestamp_list)
-    #     list_return = wia.Sensor.list(device=wia.device_id, limit=10, page=0, order='timestamp', sort='asc')
-    #     timestamp_list = []
-    #     for sensor in list_return['sensors']:
-    #         timestamp_list.append(sensor['timestamp'])
-    #     ascending = timestamp_list[:]
-    #     ascending.sort()
-    #     self.assertEqual(ascending, timestamp_list)
-    #     wia.secret_key = None
-    #
-    # def test_sensors_list_name(self):
-    #     wia.secret_key = os.environ['org_secret_key']
-    #     list_return = wia.Sensor.list(device = wia.device_id, name='test_sensor_1')
-    #     for sensor in list_return['sensors']:
-    #         self.assertEqual('test_sensor_1', sensor['name'])
-    #     wia.secret_key = None
-    #
-    # def test_sensors_list_since_until(self):
-    #     wia.secret_key = os.environ['org_secret_key']
-    #     hour_ago = int((time.time())*1000 - 3600000)
-    #     list_return = wia.Sensor.list(device=wia.device_id, order='timestamp', sort='desc', since=hour_ago)
-    #     self.assertTrue(list_return['count'] <= self.__class__.sensor_count)
-    #     list_return = {}
-    #     list_return = wia.Sensor.list(device=wia.device_id, order='timestamp', sort='desc', until=hour_ago)
-    #     self.assertTrue(list_return['count'] <= self.__class__.sensor_count)
-    #     wia.secret_key = None
-    #
+    def test_sensors_list(self):
+        wia = Wia()
+        wia.access_token = os.environ['org_secret_key']
+        result = wia.Sensor.list(device=os.environ['device_id'], limit=10, page=0)
+        #print('LIST', result)
+        self.__class__.sensor_count = result['count']
+        self.assertTrue('sensors' in result)
+        self.assertTrue(type(result['sensors']) == list)
+        self.assertTrue('count' in result)
+        self.assertTrue(type(result['count']) == int)
+        wia.access_token = None
+
+    def test_sensors_list_name(self):
+        wia = Wia()
+        wia.access_token = os.environ['org_secret_key']
+        result = wia.Sensor.list(device = os.environ['device_id'], name='test_sensor_1')
+        self.assertFalse('error' in result)
+        for sensor in result['sensors']:
+            self.assertEqual('test_sensor_1', sensor.name)
+        wia.access_token = None
+
+    def test_sensors_list_since_until(self):
+        wia = Wia()
+        wia.access_token = os.environ['org_secret_key']
+        hour_ago = int((time.time())*1000 - 3600000)
+        result = wia.Sensor.list(device=os.environ['device_id'], order='timestamp', sort='desc', since=hour_ago)
+        self.assertFalse('error' in result)
+        self.assertTrue('count' in result)
+        self.assertTrue(type(result['count']) == int)
+        wia.access_token = None
+
     def test_sensors_subscribe(self):
-        pass
-        # wia.secret_key = os.environ['org_secret_key']
-        # self.__class__.mailbox = {}
-        # def wildcard_function(payload):
-        #     pass
-        # def specific_function(payload):
-        #     self.__class__.mailbox = payload
-        # wia.Stream.connect()
-        # count = 0
-        # while count < self.timeout:
-        #     count += 1
-        #     if wia.Stream.connected:
-        #         break
-        # if not wia.Stream.connected:
-        #     raise Exception("Unable to connect")
-        # wia.Sensor.subscribe(device=wia.device_id, func=wildcard_function)
-        # wia.Sensor.subscribe(device=wia.device_id, func=specific_function, name='subscribe_test_sensor')
-        #
-        # wia.secret_key = os.environ['device_secret_key']
-        # wia.Sensor.publish(name='subscribe_test_sensor', data=99)
-        #
-        # # wia.secret_key = os.environ['org_secret_key']
-        #
-        # self.assertEqual(self.__class__.mailbox['name'], 'subscribe_test_sensor')
-        # self.assertEqual(self.__class__.mailbox['data'], 99)
-        # wia.Sensor.unsubscribe(device=wia.device_id, name='subscribe_test_sensor')
-        # wia.Sensor.unsubscribe(device=wia.device_id)
-        #
-        # count = 0
-        # initial_subscribe_count = wia.Stream.subscribed_count
-        # while count < self.timeout:
-        #     count += 1
-        #     if wia.Stream.subscribed_count < initial_subscribe_count:
-        #         break
-        # if wia.Stream.subscribed_count == initial_subscribe_count:
-        #     raise Exception("Unable to unsubscribe")
-        # wia.secret_key = None
+        wia = Wia()
+        def wildcard_function(payload):
+            pass
+        def specific_function(payload):
+            pass
+        wia.access_token = os.environ['org_secret_key']
+        wia.Stream.connect()
+        count = 0
+        # waits for Stream to be connected
+        while count <= 10:
+            time.sleep(0.5)
+            count += 1
+            if wia.Stream.connected:
+                time.sleep(1)
+                break
+        self.assertTrue(wia.Stream.connected)
+
+        # subscirbe to sensor
+        wia.Sensor.subscribe(device=os.environ['device_id'], func=wildcard_function)
+        wia.Sensor.subscribe(device=os.environ['device_id'], name='subscribe_test_sensor', func=specific_function)
+        count = 0
+        while count <= 10:
+            time.sleep(0.5)
+            count += 1
+            if wia.Stream.subscribed:
+                time.sleep(1)
+                break
+        self.assertTrue(wia.Stream.subscribed)
+
+        wia.Stream.disconnect()
+        count = 0
+        while count <= 10:
+            time.sleep(0.5)
+            count += 1
+            if not wia.Stream.connected:
+                break
+        self.assertFalse(wia.Stream.connected)
+
+        # publish sensor data
+        wia.access_token = os.environ['device_secret_key']
+
+        wia.Stream.connect()
+        count = 0
+        while count <= 10:
+            time.sleep(0.5)
+            count += 1
+            if wia.Stream.connected:
+                break
+        self.assertTrue(wia.Stream.connected)
+
+        wia.Sensor.publish(name='subscribe_test_sensor', data=29)
+
+        wia.access_token = os.environ['org_secret_key']
+        time.sleep(0.5)
+
+        count = 0
+        initial_subscribe_count = wia.Stream.subscribed_count
+
+        # unsubscribe from sensor
+        wia.Sensor.unsubscribe(device=os.environ['device_id'])
+        wia.Sensor.unsubscribe(device=os.environ['device_id'], name='subscribe_test_sensor')
+        while count <= 10:
+            time.sleep(0.5)
+            count += 1
+            if wia.Stream.subscribed_count < initial_subscribe_count:
+                break
+        self.assertTrue(wia.Stream.subscribed_count < initial_subscribe_count)
+        wia.Stream.disconnect()
+        count = 0
+        while count <= 10:
+            time.sleep(0.5)
+            count += 1
+            if not wia.Stream.connected:
+                break
+        self.assertFalse(wia.Stream.connected)
+        wia.access_token = None
+
+    # ERROR TESTING
+    def test_publish_sensor_not_authorized(self):
+        wia = Wia()
+        wia.Stream.disconnect()
+        count = 0
+        while count <= 10:
+            time.sleep(0.5)
+            count += 1
+            if not wia.Stream.connected:
+                time.sleep(1)
+                break
+        self.assertFalse(wia.Stream.connected)
+        wia.access_token = os.environ['org_secret_key']
+        sensor = wia.Sensor.publish(name='fail', data=401)
+        self.assertIsInstance(sensor, WiaError)
+        wia.access_token = None
+
+    def test_publish_sensor_wrong_params(self):
+        wia = Wia()
+        wia.access_token = os.environ['device_secret_key']
+        sensor = wia.Sensor.publish(abc='not_param')
+        self.assertIsInstance(sensor, WiaError)
+        wia.access_token = None
+
+    def test_list_sensor_not_found(self):
+        wia = Wia()
+        wia.access_token = os.environ['org_secret_key']
+        result = wia.Sensor.list(device='Unknown')
+        self.assertIsInstance(result, WiaError)
+        wia.access_token = None
 
 if __name__ == '__main__':
     unittest2.main()

@@ -1,10 +1,12 @@
 import paho.mqtt.client as mqtt
-import wia
 import threading
 import resource
 import json
 import re
 import sys
+import logging
+
+from wia import Wia
 
 client = mqtt.Client()
 function_subscriptions = {}
@@ -17,13 +19,13 @@ class Stream(object):
     @classmethod
     def connect(self):
         global client
-        client.username_pw_set(wia.secret_key, ' ')
+        client.username_pw_set(Wia().access_token, ' ')
         client.on_connect = Stream.on_connect
         client.on_disconnect = Stream.on_disconnect
         client.on_subscribe = Stream.on_subscribe
         client.on_unsubscribe = Stream.on_unsubscribe
         client.on_message = Stream.on_message
-        client.connect(wia.stream_host, wia.stream_port, 60)
+        client.connect(Wia().stream_config['host'], Wia().stream_config['port'], 60)
         client.loop_start()
 
     @classmethod
@@ -40,34 +42,36 @@ class Stream(object):
 
     @classmethod
     def subscribe(self, **kwargs):
-        function_subscriptions[kwargs['topic']] = kwargs['func']
+        topic = kwargs['topic']
+        function_subscriptions[topic] = kwargs['func']
         def thread_proc():
-            client.subscribe(kwargs['topic'], qos=0)
+            client.subscribe(topic, qos=0)
             subscribing_event = threading.Event()
         t = threading.Thread(group=None, target=thread_proc, name=None)
         t.run()
+        logging.debug("Subscribed to topic: %s", topic)
 
     @classmethod
     def unsubscribe(self, **kwargs):
-        function_subscriptions.pop(kwargs['topic'])
         topic = kwargs['topic']
+        function_subscriptions.pop(kwargs['topic'])
         client.unsubscribe(topic)
+        logging.debug("Unsubscribed from topic: %s", topic)
 
     @classmethod
     def on_connect(self, client, userdata, flags, rc):
         self.connected = True
-        print("Connect success")
+        logging.debug("Connected to stream")
 
     @classmethod
     def on_disconnect(self, client, userdata, rc):
         self.connected = False
-        print("Disconnect success")
+        logging.debug("Disconnected from stream")
 
     @classmethod
     def on_subscribe(self, client, userdata, msg, granted_qos):
         self.subscribed = True
         self.subscribed_count += 1
-        print("Subscribe success")
 
     @classmethod
     def on_message(self, client, userdata, msg):
@@ -112,4 +116,3 @@ class Stream(object):
         self.subscribed_count -= 1
         if self.subscribed_count == 0:
             self.subscribed = False
-        print("Unsubscribe success")
