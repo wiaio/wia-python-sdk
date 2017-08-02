@@ -269,14 +269,22 @@ class Log(WiaResource):
 
     @classmethod
     def subscribe(self, **kwargs):
-        device = kwargs['device']
-        topic = 'devices/' + device + '/logs'
+        device=kwargs['device']
+        topic='devices/' + device + '/logs/'
+        if 'level' in kwargs:
+            topic += kwargs['level']
+        else:
+            topic += '+'
         Wia().Stream.subscribe(topic=topic, func=kwargs['func'])
 
     @classmethod
     def unsubscribe(self, **kwargs):
-        device = kwargs['device']
-        topic = 'devices/' + device + '/logs'
+        device=kwargs['device']
+        topic='devices/' + device + '/logs/'
+        if 'level' in kwargs:
+            topic += kwargs['level']
+        else:
+            topic += '+'
         Wia().Stream.unsubscribe(topic=topic)
 
     @classmethod
