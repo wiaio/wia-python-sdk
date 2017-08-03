@@ -5,7 +5,6 @@ For full documentation visit [http://docs.wia.io/](http://docs.wia.io/)
 
 ## Installation
 You will need to have `pip` already installed on your machine. Then run the command:
-
 ```
 pip install wia
 ```
