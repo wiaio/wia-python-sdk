@@ -3,12 +3,33 @@
 ## Documentation
 For full documentation visit [http://docs.wia.io/](http://docs.wia.io/)
 
-## Creating an Instance
-To create an instance of the Wia object add this line of code to your project:
-wia = Wia()
+## Installation
+You will need to have `pip` already installed on your machine. Then run the command:
 
-You will also need to import Wia using the following line of code at the beginning of your project:
+```
+pip install wia
+```
+
+## Usage
+Import the Wia library
+```python
 from wia import Wia
+```
+
+Create an instance of Wia
+```python
+wia = Wia()
+```
+
+Example code
+```python
+from wia import Wia
+
+wia = Wia()
+wia.access_token = "your-access-token"
+
+wia.Event.publish(name="Test Event", data=21)
+```
 
 ## License
 This SDK is distributed under the MIT License
