@@ -17,7 +17,6 @@ class DeviceTest(unittest.TestCase):
         wia = Wia()
         wia.access_token = os.environ['org_secret_key']
         device = wia.Device.create(name='johnDoe',serialNumber='test', public=True)
-        self.__class__.test_id = device.id
         self.assertEqual(device.name, 'johnDoe')
         wia.access_token = None
 
@@ -29,15 +28,6 @@ class DeviceTest(unittest.TestCase):
         self.assertEqual(device.name, 'janeDoe')
         id = device.id
         device = wia.Device.retrieve(id)
-        self.assertTrue(device.delete(device.id))
-        wia.access_token = None
-
-    # retrieves device created in the first function in this page
-    def test_retrieve(self):
-        wia = Wia()
-        wia.access_token = os.environ['org_secret_key']
-        device = wia.Device.retrieve(self.__class__.test_id)
-        self.assertEqual(device.name, 'johnDoe')
         self.assertTrue(device.delete(device.id))
         wia.access_token = None
 
@@ -57,7 +47,6 @@ class DeviceTest(unittest.TestCase):
         wia = Wia()
         wia.access_token = os.environ['org_secret_key']
         test_device = wia.Device.create(name='toBeDestroyed', public=True)
-        test_device = wia.Device.retrieve(test_device.id)
         self.assertTrue(test_device.delete(test_device.id))
         wia.access_token = None
 
