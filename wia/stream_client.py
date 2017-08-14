@@ -1,6 +1,5 @@
 import paho.mqtt.client as mqtt
 import threading
-import resource
 import json
 import re
 import sys
