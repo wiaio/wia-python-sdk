@@ -24,11 +24,9 @@ class Wia(_Singleton('SingletonMeta', (object,), {})):
         from wia.resource import (
             Device,
             Event,
-            Sensor,
             Location,
             Log,
-            Function,
-            Customer,
+            Space,
             WhoAmI
         )
 
@@ -49,13 +47,11 @@ class Wia(_Singleton('SingletonMeta', (object,), {})):
 
         self.Device = Device()
         self.Event = Event()
-        self.Sensor = Sensor()
         self.Location = Location()
         self.Log = Log()
-        self.Function = Function()
-        self.Customer = Customer()
-        self.WhoAmI = WhoAmI()
+        self.Space = Space()
         self.Stream = Stream()
+        self.WhoAmI = WhoAmI()
 
     @property
     def access_token(self):
@@ -64,12 +60,15 @@ class Wia(_Singleton('SingletonMeta', (object,), {})):
     @access_token.setter
     def access_token(self, value):
         self.__access_token = value
-        self.__auth_info = self.WhoAmI.retrieve()
-        if self.__access_token is not None and self.__auth_info is not None:
-            self.__client_id = self.__auth_info.contextData['id']
-            logging.debug("Setting client_id as %s", self.__client_id)
+        if self.__access_token is not None:
+            self.__auth_info = self.WhoAmI.retrieve()
+            if self.__auth_info is not None:
+                self.__client_id = self.__auth_info.id
+                logging.debug("Setting client_id as %s", self.__client_id)
         else:
-            logging.debug("Could not retrieve client info. Unable to set client_id")
+            self.__auth_info = None
+            self.__client_id = None
+            logging.debug("Resetting client info.")
 
     @property
     def app_key(self):
