@@ -13,52 +13,52 @@ from wia.error import WiaError, WiaValidationError, WiaUnauthorisedError, WiaFor
 class DeviceTest(unittest.TestCase):
     test_id = ''
 
-    def test_public_org_create(self):
-        wia = Wia()
-        wia.access_token = os.environ['org_secret_key']
-        device = wia.Device.create(name='johnDoe',serialNumber='test', public=True)
-        self.assertEqual(device.name, 'johnDoe')
-        wia.access_token = None
+    # def test_public_org_create(self):
+    #     wia = Wia()
+    #     wia.access_token = os.environ['org_secret_key']
+    #     device = wia.Device.create(name='johnDoe',serialNumber='test', public=True)
+    #     self.assertEqual(device.name, 'johnDoe')
+    #     wia.access_token = None
+    #
+    # def test_user_create(self):
+    #     wia = Wia()
+    #     wia.access_token = os.environ['user_secret_key']
+    #     device = wia.Device.create(name='janeDoe')
+    #     time.sleep(1)
+    #     self.assertEqual(device.name, 'janeDoe')
+    #     id = device.id
+    #     device = wia.Device.retrieve(id)
+    #     self.assertTrue(device.delete(device.id))
+    #     wia.access_token = None
+    #
+    # def test_update(self):
+    #     wia = Wia()
+    #     wia.access_token = os.environ['org_secret_key']
+    #     test_device = wia.Device.create(name='johnDoe', public=True)
+    #     device = wia.Device.retrieve(test_device.id)
+    #     self.assertEqual(device.name, 'johnDoe')
+    #     device = wia.Device.update(name="janeDoe", id=device.id)
+    #     now_device = wia.Device.retrieve(device.id)
+    #     self.assertEqual(now_device.name, 'janeDoe')
+    #     self.assertTrue(now_device.delete(device.id))
+    #     wia.access_token = None
 
-    def test_user_create(self):
-        wia = Wia()
-        wia.access_token = os.environ['user_secret_key']
-        device = wia.Device.create(name='janeDoe')
-        time.sleep(1)
-        self.assertEqual(device.name, 'janeDoe')
-        id = device.id
-        device = wia.Device.retrieve(id)
-        self.assertTrue(device.delete(device.id))
-        wia.access_token = None
-
-    def test_update(self):
-        wia = Wia()
-        wia.access_token = os.environ['org_secret_key']
-        test_device = wia.Device.create(name='johnDoe', public=True)
-        device = wia.Device.retrieve(test_device.id)
-        self.assertEqual(device.name, 'johnDoe')
-        device = wia.Device.update(name="janeDoe", id=device.id)
-        now_device = wia.Device.retrieve(device.id)
-        self.assertEqual(now_device.name, 'janeDoe')
-        self.assertTrue(now_device.delete(device.id))
-        wia.access_token = None
-
-    def test_delete(self):
-        wia = Wia()
-        wia.access_token = os.environ['org_secret_key']
-        test_device = wia.Device.create(name='toBeDestroyed', public=True)
-        self.assertTrue(test_device.delete(test_device.id))
-        wia.access_token = None
-
-    def test_device_list(self):
-        wia = Wia()
-        wia.access_token = os.environ['user_secret_key']
-        list_return = wia.Device.list(limit=20, page=0)
-        self.assertTrue('devices' in list_return)
-        self.assertTrue(type(list_return['devices']) == list)
-        self.assertTrue('count' in list_return)
-        self.assertTrue(type(list_return['count']) == int)
-        wia.access_token = None
+    # def test_delete(self):
+    #     wia = Wia()
+    #     wia.access_token = os.environ['org_secret_key']
+    #     test_device = wia.Device.create(name='toBeDestroyed', public=True)
+    #     self.assertTrue(test_device.delete(test_device.id))
+    #     wia.access_token = None
+    #
+    # def test_device_list(self):
+    #     wia = Wia()
+    #     wia.access_token = os.environ['user_secret_key']
+    #     list_return = wia.Device.list(limit=20, page=0)
+    #     self.assertTrue('devices' in list_return)
+    #     self.assertTrue(type(list_return['devices']) == list)
+    #     self.assertTrue('count' in list_return)
+    #     self.assertTrue(type(list_return['count']) == int)
+    #     wia.access_token = None
 
     def test_devices_list_order_desc(self):
         wia = Wia()
@@ -78,16 +78,16 @@ class DeviceTest(unittest.TestCase):
             #print device.createdAt
         wia.access_token = None
 
-    def test_device_list_public(self):
-        wia = Wia()
-        wia.access_token = os.environ['org_secret_key']
-        list_return = wia.Device.list(public=False)
-        for device in list_return['devices']:
-            self.assertFalse(device.public)
-        list_return = wia.Device.list(public=True)
-        for device in list_return['devices']:
-            self.assertTrue(device.public)
-        wia.access_token = None
+    # def test_device_list_public(self):
+    #     wia = Wia()
+    #     wia.access_token = os.environ['org_secret_key']
+    #     list_return = wia.Device.list(public=False)
+    #     for device in list_return['devices']:
+    #         self.assertFalse(device.public)
+    #     list_return = wia.Device.list(public=True)
+    #     for device in list_return['devices']:
+    #         self.assertTrue(device.public)
+    #     wia.access_token = None
 
     # ERROR TESTS
     def test_create_device_not_authorized(self):
