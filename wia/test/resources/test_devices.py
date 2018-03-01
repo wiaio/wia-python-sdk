@@ -60,23 +60,23 @@ class DeviceTest(unittest.TestCase):
     #     self.assertTrue(type(list_return['count']) == int)
     #     wia.access_token = None
 
-    def test_devices_list_order_desc(self):
-        wia = Wia()
-        wia.access_token = os.environ['user_secret_key']
-        result = wia.Device.list(order='createdAt', sort='desc')
-        devices_list = []
-        #for device in result['devices']:
-            #print device.createdAt
-        wia.access_token = None
-
-    def test_devices_list_order_asc(self):
-        wia = Wia()
-        wia.access_token = os.environ['user_secret_key']
-        result = wia.Device.list(order='createdAt', sort='asc')
-        devices_list = []
-        #for device in result['devices']:
-            #print device.createdAt
-        wia.access_token = None
+    # def test_devices_list_order_desc(self):
+    #     wia = Wia()
+    #     wia.access_token = os.environ['user_secret_key']
+    #     result = wia.Device.list(order='createdAt', sort='desc')
+    #     devices_list = []
+    #     #for device in result['devices']:
+    #         #print device.createdAt
+    #     wia.access_token = None
+    #
+    # def test_devices_list_order_asc(self):
+    #     wia = Wia()
+    #     wia.access_token = os.environ['user_secret_key']
+    #     result = wia.Device.list(order='createdAt', sort='asc')
+    #     devices_list = []
+    #     #for device in result['devices']:
+    #         #print device.createdAt
+    #     wia.access_token = None
 
     # def test_device_list_public(self):
     #     wia = Wia()
@@ -88,42 +88,42 @@ class DeviceTest(unittest.TestCase):
     #     for device in list_return['devices']:
     #         self.assertTrue(device.public)
     #     wia.access_token = None
-
-    # ERROR TESTS
-    def test_create_device_not_authorized(self):
-        wia = Wia()
-        wia.access_token = os.environ['device_secret_key']
-        device = wia.Device.create(name='fail', public=True)
-        self.assertIsInstance(device, WiaError)
-        wia.access_token = None
-
-    def test_create_device_invalid_params(self):
-        wia = Wia()
-        wia.access_token = os.environ['org_secret_key']
-        device = wia.Device.create(name='fail', public='Oops')
-        self.assertIsInstance(device, WiaError)
-        wia.access_token = None
-
-    def test_create_device_wrong_params(self):
-        wia = Wia()
-        wia.access_token = os.environ['org_secret_key']
-        device = wia.Device.create(name='fail', data=100)
-        self.assertIsInstance(device, WiaError)
-        wia.access_token = None
-
-    def test_device_delete_unknown(self):
-        wia = Wia()
-        wia.access_token = os.environ['org_secret_key']
-        device = wia.Device.delete('nonexisting')
-        self.assertIsInstance(device, WiaError)
-        wia.access_token = None
-
-    def test_device_retrieve_unknown(self):
-        wia = Wia()
-        wia.access_token = os.environ['org_secret_key']
-        device = wia.Device.retrieve('dev_nonexisting')
-        self.assertIsInstance(device, WiaError)
-        wia.access_token = None
+    #
+    # # ERROR TESTS
+    # def test_create_device_not_authorized(self):
+    #     wia = Wia()
+    #     wia.access_token = os.environ['device_secret_key']
+    #     device = wia.Device.create(name='fail', public=True)
+    #     self.assertIsInstance(device, WiaError)
+    #     wia.access_token = None
+    #
+    # def test_create_device_invalid_params(self):
+    #     wia = Wia()
+    #     wia.access_token = os.environ['org_secret_key']
+    #     device = wia.Device.create(name='fail', public='Oops')
+    #     self.assertIsInstance(device, WiaError)
+    #     wia.access_token = None
+    #
+    # def test_create_device_wrong_params(self):
+    #     wia = Wia()
+    #     wia.access_token = os.environ['org_secret_key']
+    #     device = wia.Device.create(name='fail', data=100)
+    #     self.assertIsInstance(device, WiaError)
+    #     wia.access_token = None
+    #
+    # def test_device_delete_unknown(self):
+    #     wia = Wia()
+    #     wia.access_token = os.environ['org_secret_key']
+    #     device = wia.Device.delete('nonexisting')
+    #     self.assertIsInstance(device, WiaError)
+    #     wia.access_token = None
+    #
+    # def test_device_retrieve_unknown(self):
+    #     wia = Wia()
+    #     wia.access_token = os.environ['org_secret_key']
+    #     device = wia.Device.retrieve('dev_nonexisting')
+    #     self.assertIsInstance(device, WiaError)
+    #     wia.access_token = None
 
 if __name__ == '__main__':
     unittest2.main()
