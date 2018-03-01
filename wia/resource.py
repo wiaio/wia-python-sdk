@@ -32,15 +32,60 @@ class WiaResourceDelete(WiaResource):
         self.id = (kwargs['id'] if 'id' in kwargs else None)
         self.deleted = (kwargs['deleted'] if 'deleted' in kwargs else None)
 
+class Space(WiaResource):
+    def __init__(self, **kwargs):
+        self.id = (kwargs['id'] if 'id' in kwargs else None)
+        self.name = (kwargs['name'] if 'name' in kwargs else None)
+        self.createdAt = (kwargs['createdAt'] if 'createdAt' in kwargs else None)
+        self.updatedAt = (kwargs['updatedAt'] if 'updatedAt' in kwargs else None)
+
+    @classmethod
+    def create(self, **kwargs):
+        path = 'spaces'
+        response = post(path, kwargs)
+        if WiaResource.is_success(response):
+            return Space(**response.json())
+        else:
+            return WiaResource.error_response(response)
+
+    @classmethod
+    def retrieve(self, id):
+        path = 'spaces/' + id
+        response = get(path)
+        if WiaResource.is_success(response):
+            return Space(**response.json())
+        else:
+            return WiaResource.error_response(response)
+
+    @classmethod
+    def update(self, **kwargs):
+        path = 'spaces/' + kwargs['id']
+        dictCopy = dict(kwargs)
+        del dictCopy['id']
+        response = put(path, dictCopy)
+        if WiaResource.is_success(response):
+            return Space(**response.json())
+        else:
+            return WiaResource.error_response(response)
+
+    @classmethod
+    def list(self, **kwargs):
+        response = get('spaces', **kwargs)
+        if WiaResource.is_success(response):
+            responseJson = response.json()
+            spaces = []
+            for space in responseJson['spaces']:
+                spaces.append(Space(**space))
+            return {'spaces':spaces,'count': responseJson['count']}
+        else:
+            return WiaResource.error_response(response)
+
 class Device(WiaResource):
     def __init__(self, **kwargs):
         self.id = (kwargs['id'] if 'id' in kwargs else None)
         self.name = (kwargs['name'] if 'name' in kwargs else None)
-        self.sensors = (kwargs['sensors'] if 'sensors' in kwargs else None)
         self.events = (kwargs['events'] if 'events' in kwargs else None)
         self.location = (kwargs['location'] if 'location' in kwargs else None)
-        self.public = (kwargs['public'] if 'public' in kwargs else None)
-        self.isOnline = (kwargs['isOnline'] if 'isOnline' in kwargs else None)
         self.createdAt = (kwargs['createdAt'] if 'createdAt' in kwargs else None)
         self.updatedAt = (kwargs['updatedAt'] if 'updatedAt' in kwargs else None)
 
@@ -147,7 +192,6 @@ class Event(WiaResource):
             return {'events':events,'count': responseJson['count']}
         else:
             return WiaResource.error_response(response)
-
 
 class Location(WiaResource):
     def __init__(self, **kwargs):
@@ -268,7 +312,8 @@ class AccessToken(WiaResource):
 
 class WhoAmI(WiaResource):
     def __init__(self, **kwargs):
-        self.contextData = (kwargs if kwargs else None)
+        self.id = (kwargs['id'] if 'id' in kwargs else None)
+        self.contextData = (kwargs['contextData'] if 'contextData' in kwargs else None)
         self.scope = (kwargs['scope'] if 'scope' in kwargs else None)
 
     @classmethod
