@@ -40,42 +40,42 @@ class Space(WiaResource):
         self.updatedAt = (kwargs['updatedAt'] if 'updatedAt' in kwargs else None)
 
     @classmethod
-    def create(self, **kwargs):
+    def create(cls, **kwargs):
         path = 'spaces'
         response = post(path, kwargs)
         if WiaResource.is_success(response):
-            return Space(**response.json())
+            return cls(**response.json())
         else:
             return WiaResource.error_response(response)
 
     @classmethod
-    def retrieve(self, id):
+    def retrieve(cls, id):
         path = 'spaces/' + id
         response = get(path)
         if WiaResource.is_success(response):
-            return Space(**response.json())
+            return cls(**response.json())
         else:
             return WiaResource.error_response(response)
 
     @classmethod
-    def update(self, **kwargs):
+    def update(cls, **kwargs):
         path = 'spaces/' + kwargs['id']
         dictCopy = dict(kwargs)
         del dictCopy['id']
         response = put(path, dictCopy)
         if WiaResource.is_success(response):
-            return Space(**response.json())
+            return cls(**response.json())
         else:
             return WiaResource.error_response(response)
 
     @classmethod
-    def list(self, **kwargs):
+    def list(cls, **kwargs):
         response = get('spaces', **kwargs)
         if WiaResource.is_success(response):
             responseJson = response.json()
             spaces = []
             for space in responseJson['spaces']:
-                spaces.append(Space(**space))
+                spaces.append(cls(**space))
             return {'spaces':spaces,'count': responseJson['count']}
         else:
             return WiaResource.error_response(response)
@@ -89,32 +89,32 @@ class Device(WiaResource):
         self.createdAt = (kwargs['createdAt'] if 'createdAt' in kwargs else None)
         self.updatedAt = (kwargs['updatedAt'] if 'updatedAt' in kwargs else None)
 
-    @staticmethod
-    def create(**kwargs):
+    @classmethod
+    def create(cls, **kwargs):
         path = 'devices'
         response = post(path, kwargs)
         if WiaResource.is_success(response):
-            return Device(**response.json())
+            return cls(**response.json())
         else:
             return WiaResource.error_response(response)
 
-    @staticmethod
-    def retrieve(id):
+    @classmethod
+    def retrieve(cls, id):
         path = 'devices/' + id
         response = get(path)
         if WiaResource.is_success(response):
-            return Device(**response.json())
+            return cls(**response.json())
         else:
             return WiaResource.error_response(response)
 
-    @staticmethod
-    def update(**kwargs):
+    @classmethod
+    def update(cls, **kwargs):
         path = 'devices/' + kwargs['id']
         dictCopy = dict(kwargs)
         del dictCopy['id']
         response = put(path, dictCopy)
         if WiaResource.is_success(response):
-            return Device(**response.json())
+            return cls(**response.json())
         else:
             return WiaResource.error_response(response)
 
@@ -127,14 +127,14 @@ class Device(WiaResource):
         else:
             return WiaResource.error_response(response)
 
-    @staticmethod
-    def list(**kwargs):
+    @classmethod
+    def list(cls, **kwargs):
         response = get('devices', **kwargs)
         if WiaResource.is_success(response):
             responseJson = response.json()
             devices = []
             for device in responseJson['devices']:
-                devices.append(Device(**device))
+                devices.append(cls(**device))
             return {'devices':devices,'count': responseJson['count']}
         else:
             return WiaResource.error_response(response)
@@ -147,17 +147,17 @@ class Event(WiaResource):
         self.file = (kwargs['file'] if 'file' in kwargs else None)
         self.timestamp = (kwargs['timestamp'] if 'timestamp' in kwargs else None)
 
-    @staticmethod
-    def publish(**kwargs):
+    @classmethod
+    def publish(cls, **kwargs):
         path = 'events'
         if not ('file' in kwargs) and Wia().Stream.connected and Wia().client_id is not None:
             topic = 'devices/' + Wia().client_id + '/' + path + '/' + kwargs['name']
             Wia().Stream.publish(topic=topic, **kwargs)
-            return Event()
+            return cls()
         else:
             response = post(path, kwargs)
             if WiaResource.is_success(response):
-                return Event(**response.json())
+                return cls(**response.json())
             else:
                 return WiaResource.error_response(response)
 
@@ -181,14 +181,14 @@ class Event(WiaResource):
             topic += '+'
         Wia().Stream.unsubscribe(topic=topic)
 
-    @staticmethod
-    def list(**kwargs):
+    @classmethod
+    def list(cls, **kwargs):
         response = get('events', **kwargs)
         if WiaResource.is_success(response):
             responseJson = response.json()
             events = []
             for event in responseJson['events']:
-                events.append(Event(**event))
+                events.append(cls(**event))
             return {'events':events,'count': responseJson['count']}
         else:
             return WiaResource.error_response(response)
@@ -208,7 +208,7 @@ class Location(WiaResource):
         if Wia().Stream.connected and Wia().client_id is not None:
             topic = 'devices/' + Wia().client_id + '/' + path
             Wia().Stream.publish(topic=topic, **kwargs)
-            return Location()
+            return cls()
         else:
             response = post(path, kwargs)
             if WiaResource.is_success(response):
@@ -228,14 +228,14 @@ class Location(WiaResource):
         topic = 'devices/' + device + '/locations'
         Wia().Stream.unsubscribe(topic=topic)
 
-    @staticmethod
-    def list(**kwargs):
+    @classmethod
+    def list(cls, **kwargs):
         response = get('locations', **kwargs)
         if WiaResource.is_success(response):
             responseJson = response.json()
             locations = []
             for location in responseJson['locations']:
-                locations.append(Location(**location))
+                locations.append(cls(**location))
             return {'locations':locations,'count': responseJson['count']}
         else:
             return WiaResource.error_response(response)
@@ -247,8 +247,8 @@ class Log(WiaResource):
         self.data = (kwargs['data'] if 'data' in kwargs else None)
         self.timestamp = (kwargs['timestamp'] if 'timestamp' in kwargs else None)
 
-    @staticmethod
-    def publish(**kwargs):
+    @classmethod
+    def publish(cls, **kwargs):
         path = 'logs'
         if Wia().Stream.connected and Wia().client_id is not None:
             topic = 'devices/' + Wia().client_id + '/' + path + '/' + kwargs['level']
@@ -257,7 +257,7 @@ class Log(WiaResource):
         else:
             response = post(path, kwargs)
             if WiaResource.is_success(response):
-                return Log(**response.json())
+                return cls(**response.json())
             else:
                 return WiaResource.error_response(response)
 
@@ -281,14 +281,14 @@ class Log(WiaResource):
             topic += '+'
         Wia().Stream.unsubscribe(topic=topic)
 
-    @staticmethod
-    def list(**kwargs):
+    @classmethod
+    def list(cls, **kwargs):
         response = get('logs', **kwargs)
         if WiaResource.is_success(response):
             responseJson = response.json()
             logs = []
             for log in responseJson['logs']:
-                logs.append(Log(**log))
+                logs.append(cls(**log))
             return {'logs':logs,'count': responseJson['count']}
         else:
             return WiaResource.error_response(response)
@@ -302,11 +302,11 @@ class AccessToken(WiaResource):
         self.expiresIn = (kwargs['expiresIn'] if 'expiresIn' in kwargs else None)
         self.scope = (kwargs['scope'] if 'scope' in kwargs else None)
 
-    @staticmethod
-    def create(**kwargs):
+    @classmethod
+    def create(cls, **kwargs):
         response = post('auth/token', kwargs)
         if WiaResource.is_success(response):
-            return AccessToken(**response.json())
+            return cls(**response.json())
         else:
             return WiaResource.error_response(response)
 
