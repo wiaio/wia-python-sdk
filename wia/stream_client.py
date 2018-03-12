@@ -1,5 +1,5 @@
 import paho.mqtt.client as mqtt
-import threading
+import time
 import json
 import re
 import sys
@@ -17,7 +17,7 @@ class Stream:
         self.function_subscriptions = {}
 
 
-    def connect(self):
+    def connect(self, async=True):
         self.__init__()
         self.client.username_pw_set(Wia().access_token, ' ')
         self.client.on_connect = self.on_connect
@@ -26,8 +26,10 @@ class Stream:
         self.client.on_unsubscribe = self.on_unsubscribe
         self.client.on_message = self.on_message
         self.client.connect(Wia().stream_config['host'], Wia().stream_config['port'], 60)
-        self.client.loop_start()
+        if async:
+            self.client.loop_start()
         self.connected = True
+        time.sleep(1)
 
 
     def disconnect(self):
@@ -43,13 +45,6 @@ class Stream:
         topic = kwargs['topic']
         self.function_subscriptions[topic] = kwargs['func']
         self.client.subscribe(topic, qos=0)
-        #self.client.loop_forever()
-        # def thread_proc(self, topic):
-        #     self.client.subscribe(topic, qos=0)
-        #     subscribing_event = threading.Event()
-        #
-        # t = threading.Thread(group=None, target=thread_proc, args=(self, topic), name=None)
-        # t.run()
 
 
 
@@ -114,3 +109,6 @@ class Stream:
         self.subscribed_count -= 1
         if self.subscribed_count == 0:
             self.subscribed = False
+
+    def loop_forever(self):
+        self.client.loop_forever()
