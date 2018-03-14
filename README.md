@@ -1,4 +1,5 @@
 # Wia SDK for Python [![Build Status](https://travis-ci.org/wiaio/wia-python-sdk.svg?branch=master)](https://travis-ci.org/wiaio/wia-python-sdk)
+[![Coverage Status](https://coveralls.io/repos/github/wiaio/wia-python-sdk/badge.svg?branch=master)](https://coveralls.io/github/wiaio/wia-python-sdk?branch=master)
 
 ## Documentation
 For full documentation visit [http://docs.wia.io/](http://docs.wia.io/)

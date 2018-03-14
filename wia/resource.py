@@ -41,6 +41,11 @@ class Space(WiaResource):
 
     @classmethod
     def create(cls, **kwargs):
+        """
+        Creates a Space in Wia for devices
+        :param kwargs:
+        :return: Returns a newly created space
+        """
         path = 'spaces'
         response = post(path, kwargs)
         if WiaResource.is_success(response):
@@ -50,6 +55,11 @@ class Space(WiaResource):
 
     @classmethod
     def retrieve(cls, id):
+        """
+        Retrieves a Space by ID
+        :param id: ID of the space
+        :return: Instance of the Space object
+        """
         path = 'spaces/' + id
         response = get(path)
         if WiaResource.is_success(response):
@@ -296,14 +306,14 @@ class Log(WiaResource):
 
 class AccessToken(WiaResource):
     def __init__(self, **kwargs):
-        self.accessToken = (kwargs['accessToken'] if 'accessToken' in kwargs else None)
+        self.accessToken = kwargs['token'] if 'token' in kwargs else None
         self.refreshToken = (kwargs['refreshToken'] if 'refreshToken' in kwargs else None)
         self.tokenType = (kwargs['tokenType'] if 'tokenType' in kwargs else None)
         self.expiresIn = (kwargs['expiresIn'] if 'expiresIn' in kwargs else None)
         self.scope = (kwargs['scope'] if 'scope' in kwargs else None)
 
     @classmethod
-    def create(cls, **kwargs):
+    def create(cls, kwargs):
         response = post('auth/token', kwargs)
         if WiaResource.is_success(response):
             return cls(**response.json())

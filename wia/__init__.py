@@ -27,7 +27,8 @@ class Wia(_Singleton('SingletonMeta', (object,), {})):
             Location,
             Log,
             Space,
-            WhoAmI
+            WhoAmI,
+            AccessToken
         )
 
         from wia.stream_client import (
@@ -40,6 +41,7 @@ class Wia(_Singleton('SingletonMeta', (object,), {})):
         self.__app_key = None
         self.__auth_info = None
         self.__client_id = None
+
         self.__rest_config = {"protocol":'https',"host":'api.wia.io',"port":443,"basePath":'v1'}
         self.__stream_config = {"protocol":'mqtt',"host":'api.wia.io',"port":1883}
 
@@ -52,6 +54,7 @@ class Wia(_Singleton('SingletonMeta', (object,), {})):
         self.Space = Space()
         self.Stream = Stream()
         self.WhoAmI = WhoAmI()
+        self.AccessToken = AccessToken()
 
     @property
     def access_token(self):
@@ -69,6 +72,18 @@ class Wia(_Singleton('SingletonMeta', (object,), {})):
             self.__auth_info = None
             self.__client_id = None
             logging.debug("Resetting client info.")
+
+    @staticmethod
+    def access_token_create(**kwargs):
+        if kwargs['username'] is None or kwargs['password'] is None:
+            return "No Username/password supplied"
+        if 'skope' not in kwargs:
+            kwargs['scope'] = 'user'
+        if 'grantType' not in kwargs:
+            kwargs['grantType'] = 'password'
+        token = Wia().AccessToken.create(kwargs)
+        Wia().access_token = token.accessToken
+        return token
 
     @property
     def app_key(self):

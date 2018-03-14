@@ -12,7 +12,7 @@ wia_post:
 '''
 def post(path, kwargs):
     url = generate_url(path)
-    headers = generate_headers()
+    headers = generate_headers(path)
 
     if 'file' in kwargs:
         logging.debug("Has file argument.")
@@ -47,7 +47,7 @@ wia_get:
 '''
 def get(path, **kwargs):
     url = generate_url(path)
-    headers = generate_headers()
+    headers = generate_headers(path)
 
     r = requests.get(url, headers=headers, params=kwargs)
     return r
@@ -59,7 +59,7 @@ wia_delete:
 '''
 def delete(path):
     url = generate_url(path)
-    headers = generate_headers()
+    headers = generate_headers(path)
 
     r = requests.delete(url, headers=headers)
     return r
@@ -74,15 +74,15 @@ def generate_url(path):
 
     return url
 
-def generate_headers():
+def generate_headers(path):
     headers = {}
-
-    if Wia().access_token is not None:
-        headers['Authorization'] = 'Bearer ' + Wia().access_token
 
     if Wia().app_key is not None:
         headers['x-app-key'] = Wia().app_key
 
-    logging.debug('Headers: %s', headers)
+
+    if Wia().access_token is not None:
+        headers['Authorization'] = 'Bearer ' + Wia().access_token
+
 
     return headers
