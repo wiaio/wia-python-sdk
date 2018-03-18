@@ -15,8 +15,7 @@ notifications:
   slack:
     secure: Ht0fu2XHcQHZgCM/YXMpfpygqx/hhdEpTY7hiw3K3abCdQhqHwil7UVUGlru+lQ9Se46cyzejw4FqdM++atvYD/Ge9Vy00DTCBzFhTbzfHCSipX7Zp421LcwD0NtJB9u3+mUfFHygmFfKbS5iI/uPfRxnHvAzhso0BXKtaDF6WfusxA50z2Byy6kzGWVJIYxhJkXBwu++5o/+wacCv7wqrCOk1dDHvYgf3rgWo4MH5oN9s+N7+9l4n2GdfmkpawUk1IWL/cQG0mxErhQBZeNmQ6dBr+xYadLoeXN4LvZy9EthyI5Wg5csSTWDms5RYDfO+OlGd85zBg1/XyeVZsIrcf9nZAc4A5AJLefYvR5Ok40stAqHwbXtbqaO/bwH/v/eSz1Rq7xgFmSv8sBe/BHpnKr8pNm8yqqEBd5HiZIXYqjgETW1msfC8RP1dTIA+YsJQNdRbKoFU8rAJT3gnID4XgFOTumsxZo/LlXQqEZSdxtiIs9V4mZgU1st4Graavxqjw+H7fbju5K0QMkZ7+TGpHQOttEd38ZaIkXDHk4gk8Whs52CvcmA3KrsPH05emYPCBWOYh834NP6K+MIokiD0MKWpvM/8UTPRnkHWetQY1TfNieGsxyt5nVCorFUhAaMiyI2NyBskOsn8G35OX1BbiXqkjpRd9LLtTkmUuQgH0=
 script:
-- coverage run setup.py test
-
+- python -W all -m coverage run setup.py test
 after_success:
   - coveralls
 before_deploy:
