@@ -22,113 +22,18 @@ class EventsTest(unittest.TestCase):
 
     def test_events_publish_file(self):
         wia = Wia()
-        wia.access_token = "d_sk_wtNQgg28mdHsGq2Xz7yK4f9O" #os.environ['device_secret_key']
+        wia.access_token = os.environ['device_secret_key']
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        result = wia.Event.publish(name='test_event_other_filesud', data=1300, file=open(dir_path+'/test-file.txt', 'rb'))
+        wia.access_token = None
+
+
+    def test_events_publish_file_text(self):
+        wia = Wia()
+        wia.access_token = os.environ['device_secret_key']
         dir_path = os.path.dirname(os.path.realpath(__file__))
         result = wia.Event.publish(name='test_event_other_file', file=(dir_path+'/test-file.txt'))
         wia.access_token = None
-
-    # def test_events_publish(self):
-    #     wia = Wia()
-    #     wia.access_token = os.environ['device_secret_key']
-    #     wia.Stream.connect()
-    #     count = 0
-    #     while count <= 10:
-    #         time.sleep(0.5)
-    #         count += 1
-    #         if wia.Stream.connected:
-    #             time.sleep(1)
-    #             break
-    #     self.assertTrue(wia.Stream.connected)
-    #     result = wia.Event.publish(name='test_event_mqtt', data=130)
-    #     self.assertTrue(result is not None)
-    #     wia.Stream.disconnect()
-    #     count = 0
-    #     while count <= 10:
-    #         time.sleep(0.5)
-    #         count += 1
-    #         if not wia.Stream.connected:
-    #             break
-    #     self.assertFalse(wia.Stream.connected)
-    #     wia.access_token = None
-
-    # def test_events_subscribe(self):
-    #     wia = Wia()
-    #     def wildcard_function(payload):
-    #         pass
-    #     def specific_function(payload):
-    #         pass
-    #     wia.access_token = os.environ['org_secret_key']
-    #     wia.Stream.connect()
-    #     count = 0
-    #     # waits for Stream to be connected
-    #     while count <= 10:
-    #         time.sleep(0.5)
-    #         count += 1
-    #         if wia.Stream.connected:
-    #             time.sleep(1)
-    #             break
-    #     self.assertTrue(wia.Stream.connected)
-    #
-    #     # subscirbe to event
-    #     wia.Event.subscribe(device=os.environ['device_id'], func=wildcard_function)
-    #     wia.Event.subscribe(device=os.environ['device_id'], name='subscribe_test_event', func=specific_function)
-    #     count = 0
-    #     while count <= 10:
-    #         time.sleep(0.5)
-    #         count += 1
-    #         if wia.Stream.subscribed:
-    #             time.sleep(1)
-    #             break
-    #     self.assertTrue(wia.Stream.subscribed)
-    #
-    #     wia.Stream.disconnect()
-    #     count = 0
-    #     while count <= 10:
-    #         time.sleep(0.5)
-    #         count += 1
-    #         if not wia.Stream.connected:
-    #             break
-    #     self.assertFalse(wia.Stream.connected)
-    #
-    #     # publish event data
-    #     wia.access_token = os.environ['device_secret_key']
-    #
-    #     wia.Stream.connect()
-    #     count = 0
-    #     while count <= 10:
-    #         time.sleep(0.5)
-    #         count += 1
-    #         if wia.Stream.connected:
-    #             break
-    #     self.assertTrue(wia.Stream.connected)
-    #
-    #     wia.Event.publish(name='subscribe_test_event', data=97)
-    #
-    #     wia.access_token = os.environ['org_secret_key']
-    #     time.sleep(0.5)
-    #
-    #     count = 0
-    #     initial_subscribe_count = wia.Stream.subscribed_count
-    #     #print(initial_subscribe_count)
-    #
-    #     # unsubscribe from event
-    #     wia.Event.unsubscribe(device=os.environ['device_id'])
-    #     wia.Event.unsubscribe(device=os.environ['device_id'], name='subscribe_test_event')
-    #     while count <= 10:
-    #         time.sleep(0.5)
-    #         count += 1
-    #         if wia.Stream.subscribed_count < initial_subscribe_count:
-    #             break
-    #     self.assertTrue(wia.Stream.subscribed_count < initial_subscribe_count)
-    #     wia.Stream.disconnect()
-    #     count = 0
-    #     while count <= 10:
-    #         time.sleep(0.5)
-    #         count += 1
-    #         if not wia.Stream.connected:
-    #             break
-    #     self.assertFalse(wia.Stream.connected)
-    #     wia.access_token = None
 
     # ERROR TESTS
     def test_events_publish_rest_error(self):
