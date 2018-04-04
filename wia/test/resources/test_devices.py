@@ -6,6 +6,7 @@ except ImportError:
 import time
 import os
 import logging
+import datetime
 
 from wia import Wia
 from wia.error import WiaError, WiaValidationError, WiaUnauthorisedError, WiaForbiddenError, WiaNotFoundError
@@ -19,7 +20,12 @@ class DeviceTest(unittest.TestCase):
     #     device = wia.Device.create(name='johnDoe',serialNumber='test', public=True)
     #     self.assertEqual(device.name, 'johnDoe')
     #     wia.access_token = None
-    #
+    #     wia = Wia()
+    #     wia.access_token_create(username=os.environ['WIA_TEST_USERNAME'],
+    #                             password=os.environ['WIA_TEST_PASSWORD'])
+    #     random_name = str(datetime.date.today()) + str(random.getrandbits(128))
+    #     space = wia.Space.create(name=random_name)
+
     # def test_user_create(self):
     #     wia = Wia()
     #     wia.access_token = os.environ['user_secret_key']

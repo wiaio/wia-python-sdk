@@ -22,10 +22,19 @@ class SpacesTest(unittest.TestCase):
         space_retrieve = wia.Space.retrieve(space.id)
         self.assertTrue(space.name == space_retrieve.name)
 
+
     def test_spaces_list(self):
         wia = Wia()
         spaces = wia.Space.list()
         self.assertTrue(spaces['count'] > 0)
+
+    def test_spaces_create_device(self):
+        wia = Wia()
+        spaces = wia.Space.list()
+        testSpace = spaces['spaces'][0]
+        testDevice = wia.Device.create(**{"name": "testDevice", "space.id": testSpace.id})
+        self.assertIsInstance(testDevice, type(Wia().Device))
+
 
 
 if __name__ == '__main__':

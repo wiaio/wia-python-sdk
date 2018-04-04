@@ -6,6 +6,7 @@ except ImportError:
 import logging
 import time
 import os
+import sys
 
 from wia import Wia
 from wia.error import WiaError, WiaValidationError, WiaUnauthorisedError, WiaForbiddenError, WiaNotFoundError
@@ -16,6 +17,14 @@ class EventsTest(unittest.TestCase):
         wia.access_token = os.environ['device_secret_key']
         event = wia.Event.publish(name='test_event_other_rest', data=130)
         self.assertTrue(event.id is not None)
+        wia.access_token = None
+
+
+    def test_events_publish_file(self):
+        wia = Wia()
+        wia.access_token = "d_sk_wtNQgg28mdHsGq2Xz7yK4f9O" #os.environ['device_secret_key']
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        result = wia.Event.publish(name='test_event_other_file', file=(dir_path+'/test-file.txt'))
         wia.access_token = None
 
     # def test_events_publish(self):

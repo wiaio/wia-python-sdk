@@ -18,7 +18,8 @@ def post(path, kwargs):
         logging.debug("Has file argument.")
         kwargsCopy = dict(kwargs)
         del kwargsCopy['file']
-        r = requests.post(url, data=kwargsCopy, headers=headers, files={'file': kwargs['file']})
+        with open(kwargs['file'], 'rb') as f:
+            r = requests.post(url, data=kwargsCopy, headers=headers, files={'file': f})
     else:
         logging.debug("No file argument. Posting as JSON.")
         r = requests.post(url, json=kwargs, headers=headers)

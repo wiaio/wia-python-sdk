@@ -90,6 +90,8 @@ class Space(WiaResource):
         else:
             return WiaResource.error_response(response)
 
+    #def toDoc
+
 class Device(WiaResource):
     def __init__(self, **kwargs):
         self.id = (kwargs['id'] if 'id' in kwargs else None)
