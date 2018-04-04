@@ -110,5 +110,3 @@ class Stream:
         if self.subscribed_count == 0:
             self.subscribed = False
 
-    def loop_forever(self):
-        self.client.loop_forever()
