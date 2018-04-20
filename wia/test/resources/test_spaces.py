@@ -98,7 +98,7 @@ class SpacesTest(unittest.TestCase):
 
     def test_device_retrieve_unknown(self):
         wia = Wia()
-        wia.access_token = os.environ['org_secret_key']
+        wia.access_token = os.environ['device_secret_key']
         device = wia.Device.retrieve('dev_nonexisting')
         self.assertIsInstance(device, WiaError)
         wia.access_token = None
