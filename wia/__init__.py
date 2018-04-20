@@ -25,6 +25,7 @@ class Wia(_Singleton('SingletonMeta', (object,), {})):
             Device,
             Event,
             Location,
+            Command,
             Log,
             Space,
             WhoAmI,
@@ -50,6 +51,7 @@ class Wia(_Singleton('SingletonMeta', (object,), {})):
         self.Device = Device()
         self.Event = Event()
         self.Location = Location()
+        self.Command = Command()
         self.Log = Log()
         self.Space = Space()
         self.Stream = Stream()

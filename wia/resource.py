@@ -90,7 +90,6 @@ class Space(WiaResource):
         else:
             return WiaResource.error_response(response)
 
-    #def toDoc
 
 class Device(WiaResource):
     def __init__(self, **kwargs):
@@ -123,7 +122,7 @@ class Device(WiaResource):
     def update(cls, **kwargs):
         path = 'devices/' + kwargs['id']
         dictCopy = dict(kwargs)
-        del dictCopy['id']
+        #del dictCopy['id']
         response = put(path, dictCopy)
         if WiaResource.is_success(response):
             return cls(**response.json())
@@ -249,6 +248,64 @@ class Location(WiaResource):
             for location in responseJson['locations']:
                 locations.append(cls(**location))
             return {'locations':locations,'count': responseJson['count']}
+        else:
+            return WiaResource.error_response(response)
+
+class Command(WiaResource):
+    def __init__(self, **kwargs):
+        self.id = (kwargs['id'] if 'id' in kwargs else None)
+        self.name = (kwargs['name'] if 'name' in kwargs else None)
+        self.slug = (kwargs['slug'] if 'slug' in kwargs else None)
+        self.createdAt = (kwargs['createdAt'] if 'createdAt' in kwargs else None)
+        self.updatedAt = (kwargs['updatedAt'] if 'updatedAt' in kwargs else None)
+
+    @classmethod
+    def create(cls, **kwargs):
+        path = 'commands'
+        response = post(path, kwargs)
+        if WiaResource.is_success(response):
+            return cls(**response.json())
+        else:
+            return WiaResource.error_response(response)
+
+    @classmethod
+    def retrieve(cls, id):
+        path = 'commands/' + id
+        response = get(path)
+        if WiaResource.is_success(response):
+            return cls(**response.json())
+        else:
+            return WiaResource.error_response(response)
+
+    @classmethod
+    def update(cls, **kwargs):
+        path = 'commands/' + kwargs['id']
+        dictCopy = dict(kwargs)
+        del dictCopy['id']
+        response = put(path, dictCopy)
+        if WiaResource.is_success(response):
+            return cls(**response.json())
+        else:
+            return WiaResource.error_response(response)
+
+    @staticmethod
+    def delete(id):
+        path = 'commands/' + id
+        response = delete(path)
+        if WiaResource.is_success(response):
+            return WiaResourceDelete(**response.json())
+        else:
+            return WiaResource.error_response(response)
+
+    @classmethod
+    def list(cls, **kwargs):
+        response = get('commands', **kwargs)
+        if WiaResource.is_success(response):
+            responseJson = response.json()
+            commands = []
+            for command in responseJson['commands']:
+                commands.append(cls(**command))
+            return {'commands':commands,'count': responseJson['count']}
         else:
             return WiaResource.error_response(response)
 

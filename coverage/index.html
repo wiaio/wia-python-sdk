@@ -1,0 +1,1229 @@
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Coverage report</title>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript" src="jquery.debounce.min.js"></script>
+    <script type="text/javascript" src="jquery.tablesorter.min.js"></script>
+    <script type="text/javascript" src="jquery.hotkeys.js"></script>
+    <script type="text/javascript" src="coverage_html.js"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(coverage.index_ready);
+    </script>
+</head>
+<body class="indexfile">
+
+<div id="header">
+    <div class="content">
+        <h1>Coverage report:
+            <span class="pc_cov">40%</span>
+        </h1>
+
+        <img id="keyboard_icon" src="keybd_closed.png" alt="Show keyboard shortcuts" />
+
+        <form id="filter_container">
+            <input id="filter" type="text" value="" placeholder="filter..." />
+        </form>
+    </div>
+</div>
+
+<div class="help_panel">
+    <img id="panel_icon" src="keybd_open.png" alt="Hide keyboard shortcuts" />
+    <p class="legend">Hot-keys on this page</p>
+    <div>
+    <p class="keyhelp">
+        <span class="key">n</span>
+        <span class="key">s</span>
+        <span class="key">m</span>
+        <span class="key">x</span>
+        
+        <span class="key">c</span> &nbsp; change column sorting
+    </p>
+    </div>
+</div>
+
+<div id="index">
+    <table class="index">
+        <thead>
+            
+            <tr class="tablehead" title="Click to sort">
+                <th class="name left headerSortDown shortkey_n">Module</th>
+                <th class="shortkey_s">statements</th>
+                <th class="shortkey_m">missing</th>
+                <th class="shortkey_x">excluded</th>
+                
+                <th class="right shortkey_c">coverage</th>
+            </tr>
+        </thead>
+        
+        <tfoot>
+            <tr class="total">
+                <td class="name left">Total</td>
+                <td>12540</td>
+                <td>7535</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="5005 12540">40%</td>
+            </tr>
+        </tfoot>
+        <tbody>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_Projects_wia-python-sdk_wia___init___py.html">/home/wia/Projects/wia-python-sdk/wia/__init__.py</a></td>
+                <td>88</td>
+                <td>8</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="80 88">91%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_Projects_wia-python-sdk_wia_error_py.html">/home/wia/Projects/wia-python-sdk/wia/error.py</a></td>
+                <td>17</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="17 17">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_Projects_wia-python-sdk_wia_resource_py.html">/home/wia/Projects/wia-python-sdk/wia/resource.py</a></td>
+                <td>238</td>
+                <td>132</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="106 238">45%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_Projects_wia-python-sdk_wia_rest_client_py.html">/home/wia/Projects/wia-python-sdk/wia/rest_client.py</a></td>
+                <td>43</td>
+                <td>14</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="29 43">67%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_Projects_wia-python-sdk_wia_stream_client_py.html">/home/wia/Projects/wia-python-sdk/wia/stream_client.py</a></td>
+                <td>88</td>
+                <td>49</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="39 88">44%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_Projects_wia-python-sdk_wia_test_resources___init___py.html">/home/wia/Projects/wia-python-sdk/wia/test/resources/__init__.py</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="0 0">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_Projects_wia-python-sdk_wia_test_resources_test_devices_py.html">/home/wia/Projects/wia-python-sdk/wia/test/resources/test_devices.py</a></td>
+                <td>13</td>
+                <td>3</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="10 13">77%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_Projects_wia-python-sdk_wia_test_resources_test_events_py.html">/home/wia/Projects/wia-python-sdk/wia/test/resources/test_events.py</a></td>
+                <td>24</td>
+                <td>3</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="21 24">88%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_Projects_wia-python-sdk_wia_test_resources_test_init_py.html">/home/wia/Projects/wia-python-sdk/wia/test/resources/test_init.py</a></td>
+                <td>32</td>
+                <td>3</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="29 32">91%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_Projects_wia-python-sdk_wia_test_resources_test_locations_py.html">/home/wia/Projects/wia-python-sdk/wia/test/resources/test_locations.py</a></td>
+                <td>28</td>
+                <td>3</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="25 28">89%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_Projects_wia-python-sdk_wia_test_test_stream_py.html">/home/wia/Projects/wia-python-sdk/wia/test/test_stream.py</a></td>
+                <td>23</td>
+                <td>3</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="20 23">87%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_Projects_wia-python-sdk_wia_version_py.html">/home/wia/Projects/wia-python-sdk/wia/version.py</a></td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="1 1">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_certifi___init___py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/certifi/__init__.py</a></td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="2 2">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_certifi_core_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/certifi/core.py</a></td>
+                <td>12</td>
+                <td>3</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="9 12">75%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_chardet___init___py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/chardet/__init__.py</a></td>
+                <td>11</td>
+                <td>7</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="4 11">36%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_chardet_big5freq_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/chardet/big5freq.py</a></td>
+                <td>3</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="3 3">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_chardet_big5prober_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/chardet/big5prober.py</a></td>
+                <td>14</td>
+                <td>6</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="8 14">57%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_chardet_chardistribution_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/chardet/chardistribution.py</a></td>
+                <td>117</td>
+                <td>83</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="34 117">29%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_chardet_charsetgroupprober_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/chardet/charsetgroupprober.py</a></td>
+                <td>70</td>
+                <td>61</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="9 70">13%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_chardet_charsetprober_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/chardet/charsetprober.py</a></td>
+                <td>50</td>
+                <td>36</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="14 50">28%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_chardet_codingstatemachine_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/chardet/codingstatemachine.py</a></td>
+                <td>27</td>
+                <td>18</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="9 27">33%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_chardet_compat_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/chardet/compat.py</a></td>
+                <td>10</td>
+                <td>4</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="6 10">60%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_chardet_cp949prober_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/chardet/cp949prober.py</a></td>
+                <td>14</td>
+                <td>6</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="8 14">57%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_chardet_enums_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/chardet/enums.py</a></td>
+                <td>34</td>
+                <td>1</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="33 34">97%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_chardet_escprober_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/chardet/escprober.py</a></td>
+                <td>56</td>
+                <td>45</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="11 56">20%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_chardet_escsm_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/chardet/escsm.py</a></td>
+                <td>17</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="17 17">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_chardet_eucjpprober_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/chardet/eucjpprober.py</a></td>
+                <td>47</td>
+                <td>34</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="13 47">28%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_chardet_euckrfreq_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/chardet/euckrfreq.py</a></td>
+                <td>3</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="3 3">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_chardet_euckrprober_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/chardet/euckrprober.py</a></td>
+                <td>14</td>
+                <td>6</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="8 14">57%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_chardet_euctwfreq_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/chardet/euctwfreq.py</a></td>
+                <td>3</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="3 3">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_chardet_euctwprober_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/chardet/euctwprober.py</a></td>
+                <td>14</td>
+                <td>6</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="8 14">57%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_chardet_gb2312freq_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/chardet/gb2312freq.py</a></td>
+                <td>3</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="3 3">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_chardet_gb2312prober_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/chardet/gb2312prober.py</a></td>
+                <td>14</td>
+                <td>6</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="8 14">57%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_chardet_hebrewprober_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/chardet/hebrewprober.py</a></td>
+                <td>74</td>
+                <td>48</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="26 74">35%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_chardet_jisfreq_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/chardet/jisfreq.py</a></td>
+                <td>3</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="3 3">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_chardet_jpcntx_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/chardet/jpcntx.py</a></td>
+                <td>80</td>
+                <td>61</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="19 80">24%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_chardet_langbulgarianmodel_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/chardet/langbulgarianmodel.py</a></td>
+                <td>5</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="5 5">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_chardet_langcyrillicmodel_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/chardet/langcyrillicmodel.py</a></td>
+                <td>13</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="13 13">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_chardet_langgreekmodel_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/chardet/langgreekmodel.py</a></td>
+                <td>5</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="5 5">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_chardet_langhebrewmodel_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/chardet/langhebrewmodel.py</a></td>
+                <td>3</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="3 3">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_chardet_langthaimodel_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/chardet/langthaimodel.py</a></td>
+                <td>3</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="3 3">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_chardet_langturkishmodel_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/chardet/langturkishmodel.py</a></td>
+                <td>3</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="3 3">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_chardet_latin1prober_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/chardet/latin1prober.py</a></td>
+                <td>50</td>
+                <td>29</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="21 50">42%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_chardet_mbcharsetprober_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/chardet/mbcharsetprober.py</a></td>
+                <td>42</td>
+                <td>33</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="9 42">21%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_chardet_mbcsgroupprober_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/chardet/mbcsgroupprober.py</a></td>
+                <td>14</td>
+                <td>3</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="11 14">79%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_chardet_mbcssm_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/chardet/mbcssm.py</a></td>
+                <td>41</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="41 41">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_chardet_sbcharsetprober_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/chardet/sbcharsetprober.py</a></td>
+                <td>73</td>
+                <td>60</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="13 73">18%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_chardet_sbcsgroupprober_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/chardet/sbcsgroupprober.py</a></td>
+                <td>19</td>
+                <td>8</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="11 19">58%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_chardet_sjisprober_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/chardet/sjisprober.py</a></td>
+                <td>47</td>
+                <td>34</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="13 47">28%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_chardet_universaldetector_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/chardet/universaldetector.py</a></td>
+                <td>124</td>
+                <td>104</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="20 124">16%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_chardet_utf8prober_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/chardet/utf8prober.py</a></td>
+                <td>41</td>
+                <td>29</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="12 41">29%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_chardet_version_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/chardet/version.py</a></td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="2 2">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_idna___init___py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/idna/__init__.py</a></td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="2 2">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_idna_core_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/idna/core.py</a></td>
+                <td>275</td>
+                <td>237</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="38 275">14%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_idna_idnadata_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/idna/idnadata.py</a></td>
+                <td>4</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="4 4">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_idna_intranges_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/idna/intranges.py</a></td>
+                <td>29</td>
+                <td>24</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="5 29">17%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_idna_package_data_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/idna/package_data.py</a></td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="1 1">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_linecache2___init___py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/linecache2/__init__.py</a></td>
+                <td>177</td>
+                <td>157</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="20 177">11%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_paho___init___py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/paho/__init__.py</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="0 0">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_paho_mqtt___init___py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/paho/mqtt/__init__.py</a></td>
+                <td>3</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="3 3">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_paho_mqtt_client_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/paho/mqtt/client.py</a></td>
+                <td>1605</td>
+                <td>1026</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="579 1605">36%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_paho_mqtt_matcher_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/paho/mqtt/matcher.py</a></td>
+                <td>56</td>
+                <td>44</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="12 56">21%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_requests___init___py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/requests/__init__.py</a></td>
+                <td>50</td>
+                <td>7</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="43 50">86%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_requests___version___py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/requests/__version__.py</a></td>
+                <td>10</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="10 10">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_requests__internal_utils_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/requests/_internal_utils.py</a></td>
+                <td>16</td>
+                <td>5</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="11 16">69%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_requests_adapters_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/requests/adapters.py</a></td>
+                <td>214</td>
+                <td>98</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="116 214">54%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_requests_api_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/requests/api.py</a></td>
+                <td>22</td>
+                <td>7</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="15 22">68%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_requests_auth_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/requests/auth.py</a></td>
+                <td>162</td>
+                <td>129</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="33 162">20%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_requests_certs_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/requests/certs.py</a></td>
+                <td>4</td>
+                <td>1</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="3 4">75%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_requests_compat_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/requests/compat.py</a></td>
+                <td>37</td>
+                <td>13</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="24 37">65%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_requests_cookies_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/requests/cookies.py</a></td>
+                <td>236</td>
+                <td>148</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="88 236">37%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_requests_exceptions_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/requests/exceptions.py</a></td>
+                <td>34</td>
+                <td>6</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="28 34">82%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_requests_hooks_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/requests/hooks.py</a></td>
+                <td>15</td>
+                <td>6</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="9 15">60%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_requests_models_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/requests/models.py</a></td>
+                <td>443</td>
+                <td>217</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="226 443">51%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_requests_packages_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/requests/packages.py</a></td>
+                <td>6</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="6 6">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_requests_sessions_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/requests/sessions.py</a></td>
+                <td>270</td>
+                <td>126</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="144 270">53%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_requests_status_codes_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/requests/status_codes.py</a></td>
+                <td>8</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="8 8">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_requests_structures_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/requests/structures.py</a></td>
+                <td>40</td>
+                <td>11</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="29 40">73%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_requests_utils_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/requests/utils.py</a></td>
+                <td>400</td>
+                <td>264</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="136 400">34%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_six_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/six.py</a></td>
+                <td>450</td>
+                <td>215</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="235 450">52%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_traceback2___init___py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/traceback2/__init__.py</a></td>
+                <td>240</td>
+                <td>191</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="49 240">20%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_unittest2___init___py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/unittest2/__init__.py</a></td>
+                <td>21</td>
+                <td>5</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="16 21">76%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_unittest2_case_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/unittest2/case.py</a></td>
+                <td>772</td>
+                <td>532</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="240 772">31%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_unittest2_collector_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/unittest2/collector.py</a></td>
+                <td>7</td>
+                <td>3</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="4 7">57%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_unittest2_compatibility_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/unittest2/compatibility.py</a></td>
+                <td>158</td>
+                <td>120</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="38 158">24%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_unittest2_loader_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/unittest2/loader.py</a></td>
+                <td>312</td>
+                <td>262</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="50 312">16%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_unittest2_main_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/unittest2/main.py</a></td>
+                <td>151</td>
+                <td>121</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="30 151">20%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_unittest2_result_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/unittest2/result.py</a></td>
+                <td>123</td>
+                <td>90</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="33 123">27%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_unittest2_runner_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/unittest2/runner.py</a></td>
+                <td>159</td>
+                <td>127</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="32 159">20%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_unittest2_signals_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/unittest2/signals.py</a></td>
+                <td>47</td>
+                <td>34</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="13 47">28%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_unittest2_suite_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/unittest2/suite.py</a></td>
+                <td>216</td>
+                <td>172</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="44 216">20%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_unittest2_util_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/unittest2/util.py</a></td>
+                <td>72</td>
+                <td>55</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="17 72">24%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_urllib3___init___py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/urllib3/__init__.py</a></td>
+                <td>38</td>
+                <td>12</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="26 38">68%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_urllib3__collections_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/urllib3/_collections.py</a></td>
+                <td>177</td>
+                <td>90</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="87 177">49%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_urllib3_connection_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/urllib3/connection.py</a></td>
+                <td>160</td>
+                <td>64</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="96 160">60%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_urllib3_connectionpool_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/urllib3/connectionpool.py</a></td>
+                <td>317</td>
+                <td>131</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="186 317">59%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_urllib3_contrib___init___py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/urllib3/contrib/__init__.py</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="0 0">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_urllib3_contrib_pyopenssl_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/urllib3/contrib/pyopenssl.py</a></td>
+                <td>230</td>
+                <td>228</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="2 230">1%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_urllib3_contrib_socks_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/urllib3/contrib/socks.py</a></td>
+                <td>71</td>
+                <td>62</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="9 71">13%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_urllib3_exceptions_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/urllib3/exceptions.py</a></td>
+                <td>96</td>
+                <td>21</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="75 96">78%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_urllib3_fields_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/urllib3/fields.py</a></td>
+                <td>69</td>
+                <td>56</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="13 69">19%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_urllib3_filepost_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/urllib3/filepost.py</a></td>
+                <td>39</td>
+                <td>27</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="12 39">31%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_urllib3_packages___init___py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/urllib3/packages/__init__.py</a></td>
+                <td>3</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="3 3">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_urllib3_packages_six_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/urllib3/packages/six.py</a></td>
+                <td>444</td>
+                <td>207</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="237 444">53%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_urllib3_packages_ssl_match_hostname___init___py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/urllib3/packages/ssl_match_hostname/__init__.py</a></td>
+                <td>11</td>
+                <td>6</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="5 11">45%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_urllib3_poolmanager_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/urllib3/poolmanager.py</a></td>
+                <td>164</td>
+                <td>74</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="90 164">55%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_urllib3_request_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/urllib3/request.py</a></td>
+                <td>38</td>
+                <td>26</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="12 38">32%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_urllib3_response_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/urllib3/response.py</a></td>
+                <td>308</td>
+                <td>167</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="141 308">46%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_urllib3_util___init___py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/urllib3/util/__init__.py</a></td>
+                <td>10</td>
+                <td>0</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="10 10">100%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_urllib3_util_connection_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/urllib3/util/connection.py</a></td>
+                <td>66</td>
+                <td>24</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="42 66">64%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_urllib3_util_request_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/urllib3/util/request.py</a></td>
+                <td>45</td>
+                <td>33</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="12 45">27%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_urllib3_util_response_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/urllib3/util/response.py</a></td>
+                <td>32</td>
+                <td>17</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="15 32">47%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_urllib3_util_retry_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/urllib3/util/retry.py</a></td>
+                <td>148</td>
+                <td>95</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="53 148">36%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_urllib3_util_selectors_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/urllib3/util/selectors.py</a></td>
+                <td>363</td>
+                <td>297</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="66 363">18%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_urllib3_util_ssl__py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/urllib3/util/ssl_.py</a></td>
+                <td>126</td>
+                <td>69</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="57 126">45%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_urllib3_util_timeout_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/urllib3/util/timeout.py</a></td>
+                <td>59</td>
+                <td>25</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="34 59">58%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_urllib3_util_url_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/urllib3/util/url.py</a></td>
+                <td>103</td>
+                <td>48</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="55 103">53%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_home_wia_PycharmProjects_wia_venv_lib_python3_5_site-packages_urllib3_util_wait_py.html">/home/wia/PycharmProjects/wia/venv/lib/python3.5/site-packages/urllib3/util/wait.py</a></td>
+                <td>16</td>
+                <td>12</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="4 16">25%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_usr_lib_pycharm-2017_3_3_helpers_pycharm__jb_runner_tools_py.html">/usr/lib/pycharm-2017.3.3/helpers/pycharm/_jb_runner_tools.py</a></td>
+                <td>204</td>
+                <td>60</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="144 204">71%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_usr_lib_pycharm-2017_3_3_helpers_pycharm__jb_unittest_runner_py.html">/usr/lib/pycharm-2017.3.3/helpers/pycharm/_jb_unittest_runner.py</a></td>
+                <td>24</td>
+                <td>4</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="20 24">83%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_usr_lib_pycharm-2017_3_3_helpers_pycharm__jb_utils_py.html">/usr/lib/pycharm-2017.3.3/helpers/pycharm/_jb_utils.py</a></td>
+                <td>63</td>
+                <td>31</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="32 63">51%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_usr_lib_pycharm-2017_3_3_helpers_pycharm_teamcity___init___py.html">/usr/lib/pycharm-2017.3.3/helpers/pycharm/teamcity/__init__.py</a></td>
+                <td>6</td>
+                <td>1</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="5 6">83%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_usr_lib_pycharm-2017_3_3_helpers_pycharm_teamcity_common_py.html">/usr/lib/pycharm-2017.3.3/helpers/pycharm/teamcity/common.py</a></td>
+                <td>88</td>
+                <td>36</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="52 88">59%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_usr_lib_pycharm-2017_3_3_helpers_pycharm_teamcity_diff_tools_py.html">/usr/lib/pycharm-2017.3.3/helpers/pycharm/teamcity/diff_tools.py</a></td>
+                <td>56</td>
+                <td>33</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="23 56">41%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_usr_lib_pycharm-2017_3_3_helpers_pycharm_teamcity_messages_py.html">/usr/lib/pycharm-2017.3.3/helpers/pycharm/teamcity/messages.py</a></td>
+                <td>136</td>
+                <td>56</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="80 136">59%</td>
+            </tr>
+            
+            <tr class="file">
+                <td class="name left"><a href="_usr_lib_pycharm-2017_3_3_helpers_pycharm_teamcity_unittestpy_py.html">/usr/lib/pycharm-2017.3.3/helpers/pycharm/teamcity/unittestpy.py</a></td>
+                <td>211</td>
+                <td>121</td>
+                <td>0</td>
+                
+                <td class="right" data-ratio="90 211">43%</td>
+            </tr>
+            
+        </tbody>
+    </table>
+
+    <p id="no_rows">
+        No items found using the specified filter.
+    </p>
+</div>
+
+<div id="footer">
+    <div class="content">
+        <p>
+            <a class="nav" href="https://coverage.readthedocs.io">coverage.py v4.2</a>,
+            created at 2018-03-13 10:37
+        </p>
+    </div>
+</div>
+
+</body>
+</html>

@@ -39,7 +39,7 @@ wia_put:
 '''
 def put(path, kwargs):
     url = generate_url(path)
-    headers = generate_headers()
+    headers = generate_headers(path)
     data = kwargs
     r = requests.put(url, json=data, headers=headers)
     return r
