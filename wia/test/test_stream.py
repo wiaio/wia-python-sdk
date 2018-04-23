@@ -25,5 +25,15 @@ class StreamTest(unittest.TestCase):
                 break
         self.assertTrue(self.wia.Stream.connected)
 
+    def test_stream_disconnect(self):
+        self.wia.Stream.disconnect()
+        count = 0
+        while count <= 10:
+            time.sleep(0.5)
+            count += 1
+            if not self.wia.Stream.connected:
+                break
+        self.assertFalse(self.wia.Stream.connected)
+
 if __name__ == '__main__':
     unittest2.main()

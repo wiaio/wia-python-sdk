@@ -305,62 +305,87 @@ class Command(WiaResource):
             commands = []
             for command in responseJson['commands']:
                 commands.append(cls(**command))
-            return {'commands':commands,'count': responseJson['count']}
+            return {'commands': commands, 'count': responseJson['count']}
         else:
             return WiaResource.error_response(response)
 
-class Log(WiaResource):
-    def __init__(self, **kwargs):
-        self.level = (kwargs['level'] if 'level' in kwargs else None)
-        self.message = (kwargs['message'] if 'message' in kwargs else None)
-        self.data = (kwargs['data'] if 'data' in kwargs else None)
-        self.timestamp = (kwargs['timestamp'] if 'timestamp' in kwargs else None)
+    @staticmethod
+    def subscribe(**kwargs):
+        topic='devices/' + kwargs['device'] + '/commands/' + kwargs['slug'] + '/run'
+        Wia().Stream.subscribe(topic=topic, func=kwargs['func'])
+
+    @staticmethod
+    def unsubscribe(**kwargs):
+        topic='devices/' + kwargs['device'] + '/commands/' + kwargs['slug'] + '/run'
+        Wia().Stream.unsubscribe(topic=topic)
 
     @classmethod
-    def publish(cls, **kwargs):
-        path = 'logs'
+    def run(cls, **kwargs):
+
         if Wia().Stream.connected and Wia().client_id is not None:
-            topic = 'devices/' + Wia().client_id + '/' + path + '/' + kwargs['level']
-            Wia().Stream.publish(topic=topic, **kwargs)
-            return Log()
+            command = 'devices/' + Wia().client_id + '/commands/' + (kwargs['slug'] or kwargs['name']) + '/run'
+            Wia().Stream.run(command=command)
+            return cls()
         else:
-            response = post(path, kwargs)
+            response = post('commands', kwargs)
             if WiaResource.is_success(response):
                 return cls(**response.json())
             else:
                 return WiaResource.error_response(response)
 
-    @staticmethod
-    def subscribe(**kwargs):
-        device=kwargs['device']
-        topic='devices/' + device + '/logs/'
-        if 'level' in kwargs:
-            topic += kwargs['level']
-        else:
-            topic += '+'
-        Wia().Stream.subscribe(topic=topic, func=kwargs['func'])
 
-    @staticmethod
-    def unsubscribe(**kwargs):
-        device=kwargs['device']
-        topic='devices/' + device + '/logs/'
-        if 'level' in kwargs:
-            topic += kwargs['level']
-        else:
-            topic += '+'
-        Wia().Stream.unsubscribe(topic=topic)
-
-    @classmethod
-    def list(cls, **kwargs):
-        response = get('logs', **kwargs)
-        if WiaResource.is_success(response):
-            responseJson = response.json()
-            logs = []
-            for log in responseJson['logs']:
-                logs.append(cls(**log))
-            return {'logs':logs,'count': responseJson['count']}
-        else:
-            return WiaResource.error_response(response)
+# class Log(WiaResource):
+#     def __init__(self, **kwargs):
+#         self.level = (kwargs['level'] if 'level' in kwargs else None)
+#         self.message = (kwargs['message'] if 'message' in kwargs else None)
+#         self.data = (kwargs['data'] if 'data' in kwargs else None)
+#         self.timestamp = (kwargs['timestamp'] if 'timestamp' in kwargs else None)
+#
+#     @classmethod
+#     def publish(cls, **kwargs):
+#         path = 'logs'
+#         if Wia().Stream.connected and Wia().client_id is not None:
+#             topic = 'devices/' + Wia().client_id + '/' + path + '/' + kwargs['level']
+#             Wia().Stream.publish(topic=topic, **kwargs)
+#             return cls()
+#         else:
+#             response = post(path, kwargs)
+#             if WiaResource.is_success(response):
+#                 return cls(**response.json())
+#             else:
+#                 return WiaResource.error_response(response)
+#
+#     @staticmethod
+#     def subscribe(**kwargs):
+#         device=kwargs['device']
+#         topic='devices/' + device + '/logs/'
+#         if 'level' in kwargs:
+#             topic += kwargs['level']
+#         else:
+#             topic += '+'
+#         Wia().Stream.subscribe(topic=topic, func=kwargs['func'])
+#
+#     @staticmethod
+#     def unsubscribe(**kwargs):
+#         device=kwargs['device']
+#         topic='devices/' + device + '/logs/'
+#         if 'level' in kwargs:
+#             topic += kwargs['level']
+#         else:
+#             topic += '+'
+#         Wia().Stream.unsubscribe(topic=topic)
+#
+#     @classmethod
+#     def list(cls, **kwargs):
+#         response = get('logs', **kwargs)
+#         if WiaResource.is_success(response):
+#             responseJson = response.json()
+#             logs = []
+#             for log in responseJson['logs']:
+#                 logs.append(cls(**log))
+#             return {'logs':logs,'count': responseJson['count']}
+#         else:
+#             return WiaResource.error_response(response)
 
 
 class AccessToken(WiaResource):

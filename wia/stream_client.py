@@ -41,6 +41,12 @@ class Stream:
         kwargs.pop('topic')
         self.client.publish(topic, payload=json.dumps(kwargs), qos=0, retain=False)
 
+    def run(self, **kwargs):
+        command = kwargs['command']
+        kwargs.pop('command')
+        self.client.publish(command, payload=json.dumps(kwargs), qos=0, retain=False)
+
+
     def subscribe(self, **kwargs):
         topic = kwargs['topic']
         self.function_subscriptions[topic] = kwargs['func']

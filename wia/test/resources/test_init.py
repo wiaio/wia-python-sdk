@@ -44,26 +44,6 @@ class InitTest(unittest.TestCase):
         access_token = None
         logging.info("Finished test_init_app_token")
 
-    def test_stream_connect(self):
-        logging.info("Starting test_stream_connect")
-        access_token = os.environ['WIA_TEST_DEVICE_SECRET_KEY']
-        wia = Wia()
-        wia.Stream.connect()
-        count = 0
-        while count <= 10:
-            time.sleep(0.5)
-            count += 1
-            if wia.Stream.connected:
-                break
-        self.assertTrue(wia.Stream.connected)
-        access_token = None
-        logging.info("Finished test_stream_connect")
-
-    def test_stream_disconnect(self):
-        logging.info("Starting test_stream_connect")
-        wia = Wia()
-        wia.Stream.disconnect()
-        self.assertFalse(wia.Stream.connected)
 
 if __name__ == '__main__':
     unittest.main()
