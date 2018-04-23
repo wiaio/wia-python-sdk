@@ -305,12 +305,37 @@ class Command(WiaResource):
             commands = []
             for command in responseJson['commands']:
                 commands.append(cls(**command))
-            return {'commands':commands,'count': responseJson['count']}
+            return {'commands': commands, 'count': responseJson['count']}
         else:
             return WiaResource.error_response(response)
 
+    @staticmethod
+    def subscribe(**kwargs):
+        topic='devices/' + kwargs['device'] + '/commands/' + kwargs['slug'] + '/run'
+        Wia().Stream.subscribe(topic=topic, func=kwargs['func'])
+
+    @staticmethod
+    def unsubscribe(**kwargs):
+        topic='devices/' + kwargs['device'] + '/commands/' + kwargs['slug'] + '/run'
+        Wia().Stream.unsubscribe(topic=topic)
+
+    @classmethod
+    def run(cls, **kwargs):
+
+        if Wia().Stream.connected and Wia().client_id is not None:
+            command = 'devices/' + Wia().client_id + '/commands/' + (kwargs['slug'] or kwargs['name']) + '/run'
+            Wia().Stream.run(command=command)
+            return cls()
+        else:
+            response = post('commands', kwargs)
+            if WiaResource.is_success(response):
+                return cls(**response.json())
+            else:
+                return WiaResource.error_response(response)
+
+
 class Log(WiaResource):
-    def __init__(self, **kwargs):
+    def cls__init__(self, **kwargs):
         self.level = (kwargs['level'] if 'level' in kwargs else None)
         self.message = (kwargs['message'] if 'message' in kwargs else None)
         self.data = (kwargs['data'] if 'data' in kwargs else None)
@@ -322,7 +347,7 @@ class Log(WiaResource):
         if Wia().Stream.connected and Wia().client_id is not None:
             topic = 'devices/' + Wia().client_id + '/' + path + '/' + kwargs['level']
             Wia().Stream.publish(topic=topic, **kwargs)
-            return Log()
+            return cls()
         else:
             response = post(path, kwargs)
             if WiaResource.is_success(response):
