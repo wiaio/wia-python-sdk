@@ -305,7 +305,7 @@ class Command(WiaResource):
             commands = []
             for command in responseJson['commands']:
                 commands.append(cls(**command))
-            return {'commands': commands, 'count': responseJson['count']}
+            return {'commands':commands,'count': responseJson['count']}
         else:
             return WiaResource.error_response(response)
 
