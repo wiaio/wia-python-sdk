@@ -327,7 +327,7 @@ class Command(WiaResource):
             Wia().Stream.run(command=command)
             return cls()
         else:
-            response = post('commands', kwargs)
+            response = post('commands/run', kwargs)
             if WiaResource.is_success(response):
                 return cls(**response.json())
             else:
