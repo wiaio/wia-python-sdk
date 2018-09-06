@@ -24,7 +24,8 @@ class EventsTest(unittest.TestCase):
         wia = Wia()
         wia.access_token = os.environ['device_secret_key']
         dir_path = os.path.dirname(os.path.realpath(__file__))
-        result = wia.Event.publish(name='test_event_other_filesud', data=1300, file=open(dir_path+'/test-file.txt', 'rb'))
+        event = Wia().Event.publish(name='test_event_other_filesud', data=1300, file=open(dir_path+'/test-file.txt', 'rb'))
+        self.assertTrue(event.id is not None)
         wia.access_token = None
 
 
@@ -32,7 +33,8 @@ class EventsTest(unittest.TestCase):
         wia = Wia()
         wia.access_token = os.environ['device_secret_key']
         dir_path = os.path.dirname(os.path.realpath(__file__))
-        result = wia.Event.publish(name='test_event_other_file', file=(dir_path+'/test-file.txt'))
+        event = wia.Event.publish(name='test_event_other_file', file=(dir_path+'/test-file.txt'))
+        self.assertTrue(event.id is not None)
         wia.access_token = None
 
     # ERROR TESTS

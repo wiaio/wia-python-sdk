@@ -1,6 +1,3 @@
-import time
-import logging
-
 from wia import Wia
 from wia.rest_client import post, get, put, delete
 from wia.error import WiaError, WiaValidationError, WiaUnauthorisedError, WiaForbiddenError, WiaNotFoundError
@@ -27,6 +24,16 @@ class WiaResource():
         else:
             return WiaError(response)
 
+    @staticmethod
+    def json_converter(response):
+        resJson = None
+        try:
+            resJson = response.json()
+        except json.decoder.JSONDecodeError:
+           response = WiaResource.error_response(response)
+
+        return resJson or response
+
 class WiaResourceDelete(WiaResource):
     def __init__(self, **kwargs):
         self.id = (kwargs['id'] if 'id' in kwargs else None)
@@ -49,7 +56,7 @@ class Space(WiaResource):
         path = 'spaces'
         response = post(path, kwargs)
         if WiaResource.is_success(response):
-            return cls(**response.json())
+            return cls(**WiaResource.json_converter(response))
         else:
             return WiaResource.error_response(response)
 
@@ -63,7 +70,7 @@ class Space(WiaResource):
         path = 'spaces/' + id
         response = get(path)
         if WiaResource.is_success(response):
-            return cls(**response.json())
+            return cls(**WiaResource.json_converter(response))
         else:
             return WiaResource.error_response(response)
 
@@ -74,7 +81,7 @@ class Space(WiaResource):
         del dictCopy['id']
         response = put(path, dictCopy)
         if WiaResource.is_success(response):
-            return cls(**response.json())
+            return cls(**WiaResource.json_converter(response))
         else:
             return WiaResource.error_response(response)
 
@@ -105,7 +112,7 @@ class Device(WiaResource):
         path = 'devices'
         response = post(path, kwargs)
         if WiaResource.is_success(response):
-            return cls(**response.json())
+            return cls(**WiaResource.json_converter(response))
         else:
             return WiaResource.error_response(response)
 
@@ -114,7 +121,7 @@ class Device(WiaResource):
         path = 'devices/' + id
         response = get(path)
         if WiaResource.is_success(response):
-            return cls(**response.json())
+            return cls(**WiaResource.json_converter(response))
         else:
             return WiaResource.error_response(response)
 
@@ -125,7 +132,7 @@ class Device(WiaResource):
         #del dictCopy['id']
         response = put(path, dictCopy)
         if WiaResource.is_success(response):
-            return cls(**response.json())
+            return cls(**WiaResource.json_converter(response))
         else:
             return WiaResource.error_response(response)
 
@@ -168,7 +175,7 @@ class Event(WiaResource):
         else:
             response = post(path, kwargs)
             if WiaResource.is_success(response):
-                return cls(**response.json())
+                return cls(**WiaResource.json_converter(response))
             else:
                 return WiaResource.error_response(response)
 
@@ -223,7 +230,7 @@ class Location(WiaResource):
         else:
             response = post(path, kwargs)
             if WiaResource.is_success(response):
-                return cls(**response.json())
+                return cls(**WiaResource.json_converter(response))
             else:
                 return WiaResource.error_response(response)
 
@@ -264,7 +271,7 @@ class Command(WiaResource):
         path = 'commands'
         response = post(path, kwargs)
         if WiaResource.is_success(response):
-            return cls(**response.json())
+            return cls(**WiaResource.json_converter(response))
         else:
             return WiaResource.error_response(response)
 
@@ -273,7 +280,7 @@ class Command(WiaResource):
         path = 'commands/' + id
         response = get(path)
         if WiaResource.is_success(response):
-            return cls(**response.json())
+            return cls(**WiaResource.json_converter(response))
         else:
             return WiaResource.error_response(response)
 
@@ -284,7 +291,7 @@ class Command(WiaResource):
         del dictCopy['id']
         response = put(path, dictCopy)
         if WiaResource.is_success(response):
-            return cls(**response.json())
+            return cls(**WiaResource.json_converter(response))
         else:
             return WiaResource.error_response(response)
 
@@ -329,7 +336,7 @@ class Command(WiaResource):
         else:
             response = post('commands/run', kwargs)
             if WiaResource.is_success(response):
-                return cls(**response.json())
+                return cls(**WiaResource.json_converter(response))
             else:
                 return WiaResource.error_response(response)
 
@@ -351,7 +358,7 @@ class Command(WiaResource):
 #         else:
 #             response = post(path, kwargs)
 #             if WiaResource.is_success(response):
-#                 return cls(**response.json())
+#                 return cls(**WiaResource.json_converter(response))
 #             else:
 #                 return WiaResource.error_response(response)
 #
@@ -400,7 +407,7 @@ class AccessToken(WiaResource):
     def create(cls, kwargs):
         response = post('auth/token', kwargs)
         if WiaResource.is_success(response):
-            return cls(**response.json())
+            return cls(**WiaResource.json_converter(response))
         else:
             return WiaResource.error_response(response)
 
@@ -414,6 +421,6 @@ class WhoAmI(WiaResource):
     def retrieve(cls):
         response = get('whoami')
         if WiaResource.is_success(response):
-            return cls(**response.json())
+            return cls(**WiaResource.json_converter(response))
         else:
             return WiaResource.error_response(response)
