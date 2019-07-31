@@ -17,7 +17,7 @@ class Stream:
         self.function_subscriptions = {}
 
 
-    def connect(self, async=True):
+    def connect(self, _async=True):
         self.__init__()
         self.client.username_pw_set(Wia().access_token, ' ')
         self.client.on_connect = self.on_connect
@@ -26,7 +26,7 @@ class Stream:
         self.client.on_unsubscribe = self.on_unsubscribe
         self.client.on_message = self.on_message
         self.client.connect(Wia().stream_config['host'], Wia().stream_config['port'], 60)
-        if async:
+        if _async:
             self.client.loop_start()
         self.connected = True
         time.sleep(1)
