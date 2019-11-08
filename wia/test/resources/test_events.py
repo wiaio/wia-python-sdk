@@ -20,13 +20,13 @@ class EventsTest(unittest.TestCase):
         wia.access_token = None
 
 
-    def test_events_publish_file(self):
-        wia = Wia()
-        wia.access_token = os.environ['device_secret_key']
-        dir_path = os.path.dirname(os.path.realpath(__file__))
-        event = Wia().Event.publish(name='test_event_other_filesud', data=1300, file=open(dir_path+'/test-file.txt', 'rb'))
-        self.assertTrue(event.id is not None)
-        wia.access_token = None
+#     def test_events_publish_file(self):
+#         wia = Wia()
+#         wia.access_token = os.environ['device_secret_key']
+#         dir_path = os.path.dirname(os.path.realpath(__file__))
+#         event = Wia().Event.publish(name='test_event_other_filesud', data=1300, file=open(dir_path+'/test-file.txt', 'rb'))
+#         self.assertTrue(event.id is not None)
+#         wia.access_token = None
 
 
     def test_events_publish_file_text(self):
